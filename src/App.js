@@ -2,7 +2,6 @@ import { Component } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import { alivaWS } from "./socket/index";
-import { render } from "@testing-library/react";
 
 class App extends Component {
   async componentDidMount() {
