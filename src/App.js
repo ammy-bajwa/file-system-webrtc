@@ -25,11 +25,7 @@ class App extends Component {
           Connect with webrtc
         </button> */}
         <form>
-          <input
-            type="file"
-            webkitdirectory=""
-            multiple=""
-          />
+          <input type="file" webkitdirectory="" multiple="" required />
         </form>
       </div>
     );
