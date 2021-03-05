@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import "./App.css";
 import { alivaWS } from "./socket/index";
+import { handleDirUpload } from "./dirUtils/upload/index";
 
 class App extends Component {
   state = {
@@ -25,7 +26,13 @@ class App extends Component {
           Connect with webrtc
         </button> */}
         <form>
-          <input type="file" webkitdirectory="" multiple="" required />
+          <input
+            type="file"
+            webkitdirectory=""
+            multiple=""
+            required
+            onChange={handleDirUpload}
+          />
         </form>
       </div>
     );
