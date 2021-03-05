@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import logo from "./logo.svg";
 import "./App.css";
-import { initializeSocket } from "./socket/index";
+import { alivaWS } from "./socket/index";
 
 function App() {
   useEffect(() => {
-    initializeSocket();
+    alivaWS.initializeSocket("ws://localhost:4000/socket");
   }, []);
   return (
     <div className="App">
