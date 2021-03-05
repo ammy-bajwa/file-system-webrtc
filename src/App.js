@@ -5,7 +5,7 @@ import { alivaWS } from "./socket/index";
 
 class App extends Component {
   async componentDidMount() {
-    await alivaWS.initializeSocket("ws://localhost:4000/socket");
+    await alivaWS.initializeSocket("ws://localhost:5000/socket");
   }
   render() {
     return (
