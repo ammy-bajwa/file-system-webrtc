@@ -13,7 +13,7 @@ export const initializeSocket = function (wsAddress) {
     let channel = socket.channel("channel:signal", {});
     channel
       .join()
-      .receive("ok", (resp) => {
+      .receive("ok", function (resp) {
         console.log("Joined successfully", resp);
         this.channel = channel;
         resolve(socket);

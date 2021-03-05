@@ -17,9 +17,20 @@ class App extends Component {
     return (
       <div>
         <h1 className="text-center text-info">{status}</h1>
-        <button type="button" className="btn btn-dark">
+        {/* <button
+          type="button"
+          className="btn btn-dark"
+          onClick={handleWebRtcConnection}
+        >
           Connect with webrtc
-        </button>
+        </button> */}
+        <form>
+          <input
+            type="file"
+            webkitdirectory=""
+            multiple=""
+          />
+        </form>
       </div>
     );
   }
