@@ -1,7 +1,12 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect } from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import { initializeSocket } from "./socket/index";
 
 function App() {
+  useEffect(() => {
+    initializeSocket();
+  }, []);
   return (
     <div className="App">
       <header className="App-header">
