@@ -15,6 +15,7 @@ export const initializeSocket = function (wsAddress) {
       .join()
       .receive("ok", (resp) => {
         console.log("Joined successfully", resp);
+        this.channel = channel;
         resolve(socket);
       })
       .receive("error", (resp) => {

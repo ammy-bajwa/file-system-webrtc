@@ -1,29 +1,25 @@
 import { Component } from "react";
-import logo from "./logo.svg";
+import { v4 as uuidv4 } from "uuid";
+
 import "./App.css";
 import { alivaWS } from "./socket/index";
 
 class App extends Component {
+  state = {
+    status: "Click to connect to ws",
+    machineId: uuidv4(),
+  };
   async componentDidMount() {
     await alivaWS.initializeSocket("ws://localhost:5000/socket");
   }
   render() {
+    const { status } = this.state;
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div>
+        <h1 className="text-center text-info">{status}</h1>
+        <button type="button" className="btn btn-dark">
+          Connect with webrtc
+        </button>
       </div>
     );
   }
