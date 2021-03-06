@@ -1,20 +1,17 @@
-import { getChunksArr } from "../../fileUtils/getChunksArr/getChunksArr";
+import { addFilesMetadata } from "./addFilesMetadata/addFilesMetadata";
 
-export const handleDirUpload = async (fileElement) => {
-  let files = fileElement.files,
-    filesObj;
-  for (let i = 0; i < files.length; i++) {
-    const file = files[i];
-    const filePath = file["webkitRelativePath"];
-    const fileName = file["name"];
-    const fileSize = file["size"];
-    const cunksArr = await getChunksArr(fileSize, 40000);
-    filesObj = {
-      filePath,
-      fileName,
-      fileSize,
-      cunksArr,
-    };
-    console.log("filesObj: ", filesObj);
-  }
+import { uploadBatches } from "./uploadBatches/uploadBatches";
+
+export const handleDirUpload = async (
+  fileElement,
+  chunkSize,
+  numberOfChunksInSingleBatch
+) => {
+  const files = fileElement.files;
+  const filesWithMetadata = await addFilesMetadata(files, chunkSize);
+  console.log(filesWithMetadata);
+  const uploadInBatches = await uploadBatches(
+    filesWithMetadata,
+    numberOfChunksInSingleBatch
+  );
 };
