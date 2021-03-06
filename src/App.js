@@ -18,21 +18,26 @@ class App extends Component {
     return (
       <div>
         <h1 className="text-center text-info">{status}</h1>
-        {/* <button
+        <button
           type="button"
           className="btn btn-dark"
-          onClick={handleWebRtcConnection}
+          // onClick={handleWebRtcConnection}
         >
           Connect with webrtc
-        </button> */}
-        <form>
-          <input
-            type="file"
-            webkitdirectory=""
-            multiple=""
-            required
-            onChange={handleDirUpload}
-          />
+        </button>
+        <form className="row mt-2">
+          <div className="col-auto">
+            <input
+              className="form-control-file form-control mb-1"
+              type="file"
+              webkitdirectory=""
+              multiple=""
+              required
+            />
+            <button className="btn btn-success" type="submit">
+              Upload
+            </button>
+          </div>
         </form>
       </div>
     );
