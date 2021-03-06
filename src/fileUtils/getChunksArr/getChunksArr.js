@@ -1,6 +1,8 @@
-export const getChunksArr = (fileSize, chunkSize) => {
-  // chunkSize
-  console.log(Math.ceil(fileSize / chunkSize));
+export const getChunksArr = async (fileSize, chunkSize) => {
+  const getChunksArrPromise = new Promise((resolve, reject) => {
+    const numberOfArrayChunks = Math.ceil(fileSize / chunkSize);
+    // chunkSize
+    resolve(numberOfArrayChunks);
+  });
+  return await getChunksArrPromise;
 };
-
-getChunksArr(45245876, 40000);

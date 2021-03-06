@@ -3,7 +3,8 @@ import { v4 as uuidv4 } from "uuid";
 
 import "./App.css";
 import { alivaWS } from "./socket/index";
-import { handleDirUpload } from "./dirUtils/upload/index";
+// import { handleDirUpload } from "./dirUtils/upload/index";
+import { onSubmit } from "./forms/folderUploadForm/onSubmit/onSubmit";
 
 class App extends Component {
   state = {
@@ -25,7 +26,7 @@ class App extends Component {
         >
           Connect with webrtc
         </button>
-        <form className="row mt-2">
+        <form className="row mt-2" onSubmit={onSubmit}>
           <div className="col-auto">
             <input
               className="form-control-file form-control mb-1"
