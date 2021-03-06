@@ -8,13 +8,13 @@ export const handleDirUpload = async (fileElement) => {
     const filePath = file["webkitRelativePath"];
     const fileName = file["name"];
     const fileSize = file["size"];
+    const cunksArr = await getChunksArr(fileSize, 40000);
     filesObj = {
       filePath,
       fileName,
       fileSize,
+      cunksArr,
     };
-    const cunksArr = await getChunksArr(fileSize, 40000);
-    console.log(cunksArr);
-    console.log(filesObj);
+    console.log("filesObj: ", filesObj);
   }
 };
