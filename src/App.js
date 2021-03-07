@@ -9,6 +9,7 @@ import { onSubmit } from "./forms/folderUploadForm/onSubmit/onSubmit";
 class App extends Component {
   state = {
     machineId: uuidv4(),
+    files: [],
   };
   async componentDidMount() {
     await alivaWS.initializeSocket("ws://localhost:5000/socket");
@@ -38,7 +39,11 @@ class App extends Component {
         >
           Connect with webrtc
         </button>
-        <button type="button" className="btn btn-dark m-2" onClick={this.cleanDBs}>
+        <button
+          type="button"
+          className="btn btn-dark m-2"
+          onClick={this.cleanDBs}
+        >
           Clean All DBs
         </button>
         <form className="row mt-2" onSubmit={onSubmit}>
@@ -46,9 +51,10 @@ class App extends Component {
             <input
               className="form-control-file form-control mb-1"
               type="file"
-              // webkitdirectory=""
-              // multiple=""
-              multiple
+              webkitdirectory=""
+              multiple=""
+              // onChange={this.handleFileChange}
+              // multiple
               required
             />
             <button className="btn btn-success" type="submit">

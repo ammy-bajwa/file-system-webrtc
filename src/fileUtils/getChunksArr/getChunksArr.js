@@ -21,7 +21,6 @@ export const getChunksArr = async (fileSize, chunkSize) => {
         endSliceIndex: startSliceIndex + lastChunkIndex,
       };
       chunksArr.push(lastChunkObj);
-      debugger;
       resolve(chunksArr);
     } catch (error) {
       reject(error);
