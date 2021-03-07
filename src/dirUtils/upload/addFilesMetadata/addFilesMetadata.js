@@ -1,5 +1,7 @@
 import { getChunksArr } from "../../../fileUtils/getChunksArr/getChunksArr";
 
+import { setStatus } from "../../../status/status";
+
 export const addFilesMetadata = async (files, chunkSize) => {
   const filesMetadataPromise = new Promise(async (resolve, reject) => {
     try {
@@ -10,6 +12,7 @@ export const addFilesMetadata = async (files, chunkSize) => {
         const filePath = file["webkitRelativePath"];
         const fileName = file["name"];
         const fileSize = file["size"];
+        setStatus(`Adding metadata to ${fileName}`);
         const chunksArr = await getChunksArr(fileSize, chunkSize);
         filesObj = {
           filePath,

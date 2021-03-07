@@ -1,5 +1,7 @@
 import { getBatchesMetadata } from "./getBatchesMetadata/getBatchesMetadata";
 
+import { readBatches } from "./readBatches/readBatches";
+
 export const uploadBatches = async (
   filesWithMetadata,
   numberOfChunksInSingleBatch
@@ -12,11 +14,12 @@ export const uploadBatches = async (
     const { fileName, fileSize, chunksArr, file } = filesWithMetadata[
       outerIndex
     ];
-    getBatchesMetadata(
+    const batchesMetaData = await getBatchesMetadata(
       fileName,
       fileSize,
       chunksArr,
       numberOfChunksInSingleBatch
     );
+    await readBatches(file, batchesMetaData);
   }
 };
