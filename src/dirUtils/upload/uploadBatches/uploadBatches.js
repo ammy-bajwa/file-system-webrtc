@@ -1,6 +1,8 @@
 import { getBatchesMetadata } from "./getBatchesMetadata/getBatchesMetadata";
 
-import { readBatches } from "./readBatches/readBatches";
+import { readAndSaveBatches } from "./readAndSaveBatches/readAndSaveBatches";
+
+import { setStatus } from "../../../status/status";
 
 export const uploadBatches = async (
   filesWithMetadata,
@@ -20,6 +22,11 @@ export const uploadBatches = async (
       chunksArr,
       numberOfChunksInSingleBatch
     );
-    await readBatches(file, batchesMetaData);
+    await readAndSaveBatches(file, batchesMetaData);
+    setStatus(
+      `<h2>
+      ${file["name"]} has been saved successfully
+      </h2>`
+    );
   }
 };

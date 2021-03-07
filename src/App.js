@@ -13,6 +13,18 @@ class App extends Component {
   async componentDidMount() {
     await alivaWS.initializeSocket("ws://localhost:5000/socket");
   }
+
+  cleanDBs = () => {
+    window.indexedDB
+      .databases()
+      .then((r) => {
+        for (var i = 0; i < r.length; i++)
+          window.indexedDB.deleteDatabase(r[i].name);
+      })
+      .then(() => {
+        alert("All data cleared.");
+      });
+  };
   render() {
     return (
       <div>
@@ -25,6 +37,9 @@ class App extends Component {
           // onClick={handleWebRtcConnection}
         >
           Connect with webrtc
+        </button>
+        <button type="button" className="btn btn-dark m-2" onClick={this.cleanDBs}>
+          Clean All DBs
         </button>
         <form className="row mt-2" onSubmit={onSubmit}>
           <div className="col-auto">

@@ -12,7 +12,7 @@ export const addFilesMetadata = async (files, chunkSize) => {
         const filePath = file["webkitRelativePath"];
         const fileName = file["name"];
         const fileSize = file["size"];
-        setStatus(`Adding metadata to ${fileName}`);
+        setStatus(`<h2>Adding metadata to ${fileName}</h2>`);
         const chunksArr = await getChunksArr(fileSize, chunkSize);
         filesObj = {
           filePath,
