@@ -7,20 +7,25 @@ export const getBatchesMetadata = async (
   numberOfChunksInSingleBatch
 ) => {
   const totalChunksLength = chunksArr.length;
-  const baseBatches = Math.ceil(
+  const totalBatchesCount = Math.ceil(
     totalChunksLength / numberOfChunksInSingleBatch
   );
-  const totalBatchesCount = baseBatches + 1;
   let startBatchCounter = 0;
   let endBatchCounter = numberOfChunksInSingleBatch;
   for (let index = 0; index < totalBatchesCount; index++) {
+    let batchObj = {};
     const batchChunksObj = await getBatchIndexes(
       chunksArr,
       startBatchCounter,
       endBatchCounter
     );
+    batchObj.startBatchCounter = startBatchCounter;
+    batchObj.endBatchCounter = endBatchCounter;
+    batchObj.chunks = batchChunksObj;
+    batchObj.totalChunksCount = Object.keys(batchChunksObj).length;
+    batchObj.fileName = fileName;
     startBatchCounter = endBatchCounter;
     endBatchCounter = endBatchCounter + numberOfChunksInSingleBatch;
-    console.log("batchChunksObj: ", batchChunksObj);
+    console.log("batchObj: ", batchObj);
   }
 };
