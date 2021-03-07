@@ -8,17 +8,17 @@ import { onSubmit } from "./forms/folderUploadForm/onSubmit/onSubmit";
 
 class App extends Component {
   state = {
-    status: "Click to connect to ws",
     machineId: uuidv4(),
   };
   async componentDidMount() {
     await alivaWS.initializeSocket("ws://localhost:5000/socket");
   }
   render() {
-    const { status } = this.state;
     return (
       <div>
-        <h1 className="text-center text-info">{status}</h1>
+        <h1 id="statusElement" className="text-center text-large text-info">
+          Click to connect to WS
+        </h1>
         <button
           type="button"
           className="btn btn-dark"
