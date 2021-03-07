@@ -3,7 +3,8 @@ export const getChunksArr = async (fileSize, chunkSize) => {
     try {
       const numberOfArrayChunks = Math.floor(fileSize / chunkSize);
       const totalBaseChunksSize = numberOfArrayChunks * 40000;
-      const lastChunkSize = fileSize - totalBaseChunksSize;
+      const lastChunkIndex = fileSize + totalBaseChunksSize;
+      debugger;
       let startSliceIndex = 0,
         endSliceIndex = chunkSize,
         chunksArr = [];
@@ -18,7 +19,7 @@ export const getChunksArr = async (fileSize, chunkSize) => {
       }
       const lastChunkObj = {
         startSliceIndex: endSliceIndex,
-        endSliceIndex: endSliceIndex + lastChunkSize,
+        endSliceIndex: endSliceIndex + lastChunkIndex,
       };
       chunksArr.push(lastChunkObj);
       resolve(chunksArr);

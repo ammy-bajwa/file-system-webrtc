@@ -10,12 +10,13 @@ export const addFilesMetadata = async (files, chunkSize) => {
         const filePath = file["webkitRelativePath"];
         const fileName = file["name"];
         const fileSize = file["size"];
-        const cunksArr = await getChunksArr(fileSize, chunkSize);
+        const chunksArr = await getChunksArr(fileSize, chunkSize);
         filesObj = {
           filePath,
           fileName,
           fileSize,
-          cunksArr,
+          chunksArr,
+          file,
         };
         filesWithChunskingInfo.push(filesObj);
       }
