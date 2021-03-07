@@ -16,9 +16,9 @@ class App extends Component {
   render() {
     return (
       <div>
-        <h1 id="statusElement" className="text-center text-large text-info">
-          Click to connect to WS
-        </h1>
+        <div id="statusElement" className="text-center text-large text-info">
+          <h1>Click to connect to WS</h1>
+        </div>
         <button
           type="button"
           className="btn btn-dark"
