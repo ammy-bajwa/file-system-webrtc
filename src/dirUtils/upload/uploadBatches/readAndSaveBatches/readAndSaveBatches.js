@@ -18,7 +18,9 @@ export const readAndSaveBatches = async (file, batchesMetaData) => {
         `<h2>
             ${(startSliceIndex / 1000 / 1000).toFixed(
               2
-            )} MB has been saved of ${file["name"]} file
+            )} MB has been saved out of ${(file["size"] / 1000 / 1000).toFixed(
+          2
+        )} MB ${file["name"]} file
         </h2>`
       );
     }
