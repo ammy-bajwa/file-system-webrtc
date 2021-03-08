@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from "uuid";
+
 const iceServers = [
   {
     urls: ["stun:avm4962.com:3478", "stun:avm4962.com:5349"],
@@ -32,6 +34,7 @@ export const initializeWebRTC = function (channel, machineId) {
     try {
       const peerConnection = new RTCPeerConnection(iceServers);
       this.peerConnection = peerConnection;
+      const webrtcObj = this;
       peerConnection.onnegotiationneeded = async () => {
         console.log("On negotiation called");
         const offer = await peerConnection.createOffer();
@@ -41,6 +44,37 @@ export const initializeWebRTC = function (channel, machineId) {
           offer: offer,
         });
         console.log("Offer sended");
+      };
+
+      peerConnection.ondatachannel = (event) => {
+        const dataChannel = event.channel;
+        dataChannel.onopen = () => {
+          console.log("On datachannel open");
+          const dataChannelObj = {
+            id: uuidv4(),
+            dataChannel,
+          };
+          console.log("webrtcObj: ", webrtcObj);
+          webrtcObj.dataChannel.push(dataChannelObj);
+        };
+
+        dataChannel.onerror = function (error) {
+          console.log("Error:", error);
+        };
+
+        dataChannel.onmessage = async (event) => {
+          const message = event.data;
+          console.log("Got message: ", message);
+        };
+      };
+
+      peerConnection.onicecandidate = function (event) {
+        if (event.candidate) {
+          channel.push(`channel:sendIce`, {
+            candidate: JSON.stringify(event.candidate),
+            sender: machineId,
+          });
+        }
       };
       resolve(true);
     } catch (error) {
