@@ -4,8 +4,7 @@ export const saveFileMetadataInIndexedDB = async (
   file,
   fileName,
   fileSize,
-  batchesMetaData,
-  chunksArr
+  batchesMetaData
 ) => {
   const saveFileMetadataToIDBPromise = new Promise(async (resolve, reject) => {
     try {
@@ -16,13 +15,17 @@ export const saveFileMetadataInIndexedDB = async (
         },
       });
       const key = "metadata";
-      const value = {
-        file,
-        fileName,
-        fileSize,
-        batchesMetaData,
-        chunksArr,
-      };
+      let value = {};
+      if (fileSize < 200000000) {
+        value = {
+          file,
+          fileName,
+          fileSize,
+          batchesMetaData,
+        };
+      } else {
+      }
+
       await db.add("fileMetadata", value, key);
       db.close();
       resolve(true);

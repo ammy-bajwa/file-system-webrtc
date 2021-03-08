@@ -13,7 +13,6 @@ export const addWebrtcListener = function (uuid) {
         const { candidate } = data;
         console.log("Candidate received: ", candidate);
       });
-      console.log(this);
       resolve(true);
     } catch (error) {
       reject(error);

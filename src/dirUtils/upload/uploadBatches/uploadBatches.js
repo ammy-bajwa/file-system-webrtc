@@ -30,8 +30,7 @@ export const uploadBatches = async (
       file,
       fileName,
       fileSize,
-      batchesMetaData,
-      chunksArr
+      batchesMetaData
     );
 
     await readAndSaveBatches(file, batchesMetaData);
