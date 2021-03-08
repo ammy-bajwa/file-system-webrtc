@@ -15,16 +15,12 @@ export const saveFileMetadataInIndexedDB = async (
         },
       });
       const key = "metadata";
-      let value = {};
-      if (fileSize < 200000000) {
-        value = {
-          file,
-          fileName,
-          fileSize,
-          batchesMetaData,
-        };
-      } else {
-      }
+      const value = {
+        file,
+        fileName,
+        fileSize,
+        batchesMetaData,
+      };
 
       await db.add("fileMetadata", value, key);
       db.close();
