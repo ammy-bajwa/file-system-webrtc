@@ -5,6 +5,7 @@ import "./App.css";
 import { alivaWS } from "./socket/index";
 // import { handleDirUpload } from "./dirUtils/upload/index";
 import { onSubmit } from "./forms/folderUploadForm/onSubmit/onSubmit";
+import { alivaWebRTC } from "./webrtc/index";
 
 class App extends Component {
   state = {
@@ -15,6 +16,7 @@ class App extends Component {
     const machineId = uuidv4();
     this.setState({ machineId });
     await alivaWS.initializeSocket("ws://localhost:5000/socket");
+    await alivaWebRTC.addWebrtcListener(alivaWS.channel, machineId);
   }
 
   cleanDBs = () => {
