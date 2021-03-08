@@ -8,11 +8,14 @@ import { onSubmit } from "./forms/folderUploadForm/onSubmit/onSubmit";
 
 class App extends Component {
   state = {
-    machineId: uuidv4(),
+    machineId: "",
     files: [],
   };
   async componentDidMount() {
+    const machineId = uuidv4();
+    this.setState({ machineId });
     await alivaWS.initializeSocket("ws://localhost:5000/socket");
+    await alivaWS.addWebrtcListener(machineId);
   }
 
   cleanDBs = () => {
