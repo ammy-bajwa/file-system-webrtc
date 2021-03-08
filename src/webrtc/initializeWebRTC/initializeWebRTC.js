@@ -27,11 +27,21 @@ const iceServers = [
   },
 ];
 
-export const initializeWebRTC = function () {
+export const initializeWebRTC = function (channel, machineId) {
   return new Promise((resolve, reject) => {
     try {
       const peerConnection = new RTCPeerConnection(iceServers);
       this.peerConnection = peerConnection;
+      peerConnection.onnegotiationneeded = async () => {
+        console.log("On negotiation called");
+        const offer = await peerConnection.createOffer();
+        peerConnection.setLocalDescription(offer);
+        channel.push("channel:sendOffer", {
+          sender: machineId,
+          offer: offer,
+        });
+        console.log("Offer sended");
+      };
       resolve(true);
     } catch (error) {
       reject(error);
