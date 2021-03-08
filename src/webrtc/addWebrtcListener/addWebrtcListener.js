@@ -14,8 +14,8 @@ export const addWebrtcListener = function (channel, machineId, peerConnection) {
             sender: machineId,
             answer: answer,
           });
+          console.log("Offer received: ", offer);
         }
-        console.log("Offer received: ", offer);
       });
 
       channel.on(`channel:onAnswer`, async (data) => {
@@ -25,8 +25,8 @@ export const addWebrtcListener = function (channel, machineId, peerConnection) {
           await peerConnection.setRemoteDescription(
             new RTCSessionDescription(answer)
           );
+          console.log("Answer received: ", answer);
         }
-        console.log("Answer received: ", answer);
       });
 
       channel.on(`channel:onCandidate`, async (data) => {

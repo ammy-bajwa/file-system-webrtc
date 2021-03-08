@@ -22,6 +22,7 @@ class App extends Component {
       machineId,
       alivaWebRTC.peerConnection
     );
+    await alivaWebRTC.createDataChannel("dc");
     // await alivaWebRTC.sendOffer(alivaWS.channel, machineId);
   }
 

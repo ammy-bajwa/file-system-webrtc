@@ -55,7 +55,7 @@ export const initializeWebRTC = function (channel, machineId) {
             dataChannel,
           };
           console.log("webrtcObj: ", webrtcObj);
-          webrtcObj.dataChannel.push(dataChannelObj);
+          webrtcObj.dataChannels.push(dataChannelObj);
         };
 
         dataChannel.onerror = function (error) {
