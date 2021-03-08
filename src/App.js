@@ -16,7 +16,8 @@ class App extends Component {
     const machineId = uuidv4();
     this.setState({ machineId });
     await alivaWS.initializeSocket("ws://localhost:5000/socket");
-    await alivaWebRTC.addWebrtcListener(alivaWS.channel, machineId);
+    await alivaWebRTC.initializeWebRTC();
+    // await alivaWebRTC.addWebrtcListener(alivaWS.channel, machineId);
   }
 
   cleanDBs = () => {
