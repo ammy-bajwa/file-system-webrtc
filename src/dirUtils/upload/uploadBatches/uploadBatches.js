@@ -4,6 +4,8 @@ import { readAndSaveBatches } from "./readAndSaveBatches/readAndSaveBatches";
 
 import { setStatus } from "../../../status/status";
 
+import { saveFileMetadataInIndexedDB } from "../../../idbUtils/saveFileMetadataInIndexedDB/saveFileMetadataInIndexedDB";
+
 export const uploadBatches = async (
   filesWithMetadata,
   numberOfChunksInSingleBatch
@@ -22,7 +24,18 @@ export const uploadBatches = async (
       chunksArr,
       numberOfChunksInSingleBatch
     );
+    // Here we will save files metadata to indexed db
+
+    await saveFileMetadataInIndexedDB(
+      file,
+      fileName,
+      fileSize,
+      batchesMetaData,
+      chunksArr
+    );
+
     await readAndSaveBatches(file, batchesMetaData);
+
     setStatus(
       `<h2>
       ${file["name"]} has been saved successfully
