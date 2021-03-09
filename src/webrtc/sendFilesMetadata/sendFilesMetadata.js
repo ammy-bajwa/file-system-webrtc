@@ -6,7 +6,7 @@ export const sendFilesMetadata = function (idbFiles, alivaWebRTC) {
     for (let index = 0; index < idbFiles.length; index++) {
       const { name, size, batchesMetaData } = idbFiles[index];
 
-      if (size < 20000000) {
+      if (size < 10000000) {
         dataChannel.send(
           JSON.stringify({
             name,
