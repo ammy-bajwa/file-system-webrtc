@@ -6,16 +6,17 @@ import DisplayFiles from "./components/displayFiles";
 import "./App.css";
 import { alivaWS } from "./socket/index";
 import { onSubmit } from "./forms/folderUploadForm/onSubmit/onSubmit";
+import { getAllSavedFiles } from "./idbUtils/getAllSavedFiles/getAllSavedFiles";
 import { alivaWebRTC } from "./webrtc/index";
 
 class App extends Component {
   state = {
     machineId: "",
     files: [],
+    idbFiles: [],
   };
   async componentDidMount() {
     const machineId = uuidv4();
-    this.setState({ machineId });
     await alivaWS.initializeSocket("ws://localhost:5000/socket");
     await alivaWebRTC.initializeWebRTC(alivaWS.channel, machineId);
     await alivaWebRTC.addWebrtcListener(
@@ -23,7 +24,9 @@ class App extends Component {
       machineId,
       alivaWebRTC.peerConnection
     );
-    // await loadFilesFromIndexedDB();
+    const files = await getAllSavedFiles();
+    this.setState({ machineId, idbFiles: files });
+    console.log("files: ", files);
   }
 
   handleWebRtcConnection = async () => {
@@ -51,7 +54,7 @@ class App extends Component {
     }
   };
   render() {
-    const { files } = this.state;
+    const { files, idbFiles } = this.state;
     return (
       <div>
         <div id="statusElement" className="text-center text-large text-info">
@@ -59,7 +62,7 @@ class App extends Component {
         </div>
         <div>
           <h2>Files Present In IDB</h2>
-          <DisplayFiles files={files} />
+          <DisplayFiles files={idbFiles} />
           <button type="button" className="btn btn-outline-dark m-2">
             Sync Metadata
           </button>

@@ -8,7 +8,8 @@ export const saveFileMetadataInIndexedDB = async (
 ) => {
   const saveFileMetadataToIDBPromise = new Promise(async (resolve, reject) => {
     try {
-      const db = await openDB(fileName, 1, {
+      const dbName = `file__${fileName}`;
+      const db = await openDB(dbName, 1, {
         upgrade(db) {
           db.createObjectStore("fileMetadata");
           db.createObjectStore("chunks");
