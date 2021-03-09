@@ -8,7 +8,7 @@ import { createDataChannel } from "./createDataChannel/createDataChannel";
 
 export const alivaWebRTC = {
   peerConnection: null,
-  dataChannels: [],
+  dataChannels: {},
   addWebrtcListener,
   initializeWebRTC,
   sendOffer,

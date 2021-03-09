@@ -13,7 +13,7 @@ export const createDataChannel = function (dataChannelName) {
         id: uuidv4(),
         dataChannel,
       };
-      webrtcObj.dataChannels.push(dataChannelObj);
+      webrtcObj.dataChannels[dataChannelName] = dataChannelObj;
       resolve(dataChannel);
     };
 

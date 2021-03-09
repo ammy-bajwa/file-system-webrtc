@@ -16,6 +16,10 @@ class App extends Component {
     const machineId = uuidv4();
     this.setState({ machineId });
     await alivaWS.initializeSocket("ws://localhost:5000/socket");
+  }
+
+  handleWebRtcConnection = async () => {
+    const { machineId } = this.state;
     await alivaWebRTC.initializeWebRTC(alivaWS.channel, machineId);
     await alivaWebRTC.addWebrtcListener(
       alivaWS.channel,
@@ -23,8 +27,7 @@ class App extends Component {
       alivaWebRTC.peerConnection
     );
     await alivaWebRTC.createDataChannel("dc");
-    // await alivaWebRTC.sendOffer(alivaWS.channel, machineId);
-  }
+  };
 
   cleanDBs = () => {
     window.indexedDB
@@ -46,7 +49,7 @@ class App extends Component {
         <button
           type="button"
           className="btn btn-dark"
-          // onClick={handleWebRtcConnection}
+          onClick={this.handleWebRtcConnection}
         >
           Connect with webrtc
         </button>
