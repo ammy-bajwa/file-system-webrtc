@@ -57,7 +57,6 @@ export const initializeWebRTC = function (channel, machineId) {
             id: uuidv4(),
             dataChannel,
           };
-          console.log("webrtcObj: ", webrtcObj);
           setStatus("<h2>Webrtc connected</h2>");
           webrtcObj.dataChannels[label] = dataChannelObj;
         };
