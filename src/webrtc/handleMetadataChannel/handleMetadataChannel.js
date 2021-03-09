@@ -25,7 +25,9 @@ export const handleMetadataChannel = function (dataChannel) {
       );
       console.log("End");
       //   saveReceivedFileMetadata();
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
     // We will parse the received message
     // extract fileName
     // Get metadata if already exist
