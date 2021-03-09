@@ -7,7 +7,7 @@ const DisplayFiles = ({ files }) => {
     }
   }
   return (
-    <div>
+    <div className="m-4">
       {myFiles.map(({ name, size }, i) => (
         <span className="border border-dark rounded m-2 p-2" key={i}>
           {name}--{(size / 1000 / 1000).toFixed(2)}_MB
