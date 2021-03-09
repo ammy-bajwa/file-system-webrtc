@@ -23,6 +23,7 @@ class App extends Component {
       machineId,
       alivaWebRTC.peerConnection
     );
+    // await loadFilesFromIndexedDB();
   }
 
   handleWebRtcConnection = async () => {
@@ -56,28 +57,38 @@ class App extends Component {
         <div id="statusElement" className="text-center text-large text-info">
           <h1>Click to connect to WS</h1>
         </div>
-        <DisplayFiles files={files} />
-        <button
-          type="button"
-          className="btn btn-dark m-2"
-          onClick={this.handleWebRtcConnection}
-        >
-          Connect with webrtc
-        </button>
-        <button
-          type="button"
-          className="btn btn-dark m-2"
-          onClick={this.handleWebRtcConnection}
-        >
-          Send Files Metadata
-        </button>
-        <button
-          type="button"
-          className="btn btn-dark m-2"
-          onClick={this.cleanDBs}
-        >
-          Clean All DBs
-        </button>
+        <div>
+          <h2>Files Present In IDB</h2>
+          <DisplayFiles files={files} />
+          <button type="button" className="btn btn-outline-dark m-2">
+            Sync Metadata
+          </button>
+        </div>
+        <div>
+          <h2>Uploaded Files Will Be Here</h2>
+          <DisplayFiles files={files} />
+          <button
+            type="button"
+            className="btn btn-dark m-2"
+            onClick={this.handleWebRtcConnection}
+          >
+            Connect with webrtc
+          </button>
+          <button
+            type="button"
+            className="btn btn-dark m-2"
+            onClick={this.handleWebRtcConnection}
+          >
+            Send Files Metadata
+          </button>
+          <button
+            type="button"
+            className="btn btn-dark m-2"
+            onClick={this.cleanDBs}
+          >
+            Clean All DBs
+          </button>
+        </div>
         <form className="row mt-2" onSubmit={onSubmit}>
           <div className="col-auto">
             <input
