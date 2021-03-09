@@ -1,9 +1,10 @@
 import { Component } from "react";
 import { v4 as uuidv4 } from "uuid";
 
+import DisplayFiles from "./components/displayFiles";
+
 import "./App.css";
 import { alivaWS } from "./socket/index";
-// import { handleDirUpload } from "./dirUtils/upload/index";
 import { onSubmit } from "./forms/folderUploadForm/onSubmit/onSubmit";
 import { alivaWebRTC } from "./webrtc/index";
 
@@ -40,18 +41,35 @@ class App extends Component {
         alert("All data cleared.");
       });
   };
+
+  handleFileChange = (event) => {
+    const files = event.target.files;
+    console.log("On change", files);
+    if (files.length > 0) {
+      this.setState({ files });
+    }
+  };
   render() {
+    const { files } = this.state;
     return (
       <div>
         <div id="statusElement" className="text-center text-large text-info">
           <h1>Click to connect to WS</h1>
         </div>
+        <DisplayFiles files={files} />
         <button
           type="button"
-          className="btn btn-dark"
+          className="btn btn-dark m-2"
           onClick={this.handleWebRtcConnection}
         >
           Connect with webrtc
+        </button>
+        <button
+          type="button"
+          className="btn btn-dark m-2"
+          onClick={this.handleWebRtcConnection}
+        >
+          Send Files Metadata
         </button>
         <button
           type="button"
