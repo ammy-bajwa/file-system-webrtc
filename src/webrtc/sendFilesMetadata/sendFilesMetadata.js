@@ -10,6 +10,7 @@ export const sendFilesMetadata = function (idbFiles, alivaWebRTC) {
           name,
           size,
           batchesMetaData,
+          isReceived: true
         })
       );
     }
