@@ -30,9 +30,27 @@ export const sendFilesMetadata = function (idbFiles, alivaWebRTC) {
               isReceived: true,
             })
           );
+          await awaitConfirmation(dataChannel);
         }
       }
     }
     resolve(true);
+  });
+};
+
+const awaitConfirmation = (dc) => {
+  return new Promise((resolve, reject) => {
+    dc.onmessage = (event) => {
+      const message = event.data;
+      try {
+        const { received } = JSON.parse(message);
+        console.log("Confirm: ", message);
+        if (received) {
+          resolve(true);
+        }
+      } catch (error) {
+        reject(error);
+      }
+    };
   });
 };

@@ -5,8 +5,13 @@ import { setStatus } from "../../status/status";
 export const createDataChannel = function (dataChannelName) {
   console.log("createDataChannel: ", this);
   return new Promise(async (resolve, reject) => {
+    const dcOptions = {
+      ordered: true,
+      maxRetransmits: 10,
+    };
     const dataChannel = await this.peerConnection.createDataChannel(
-      dataChannelName
+      dataChannelName,
+      dcOptions
     );
     const webrtcObj = this;
     dataChannel.onopen = () => {
@@ -15,7 +20,7 @@ export const createDataChannel = function (dataChannelName) {
         id: uuidv4(),
         dataChannel,
       };
-      setStatus(`<h2>Webrtc connected</h2>`)
+      setStatus(`<h2>Webrtc connected</h2>`);
       webrtcObj.dataChannels[dataChannelName] = dataChannelObj;
       resolve(dataChannel);
     };

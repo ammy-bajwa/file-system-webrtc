@@ -1,6 +1,6 @@
 import { checkIfAlreadyExist } from "../../idbUtils/checkIfAlreadyExist/checkIfAlreadyExist";
 
-import { saveReceivedMetadataInNewDB } from "../../idbUtils/saveReceivedMetadataInNewDB/saveReceivedMetadataInNewDB";
+import { saveReceivedMetadata } from "../../idbUtils/saveReceivedMetadata/saveReceivedMetadata";
 
 export const handleMetadataChannel = function (dataChannel) {
   dataChannel.onopen = () => {
@@ -16,15 +16,14 @@ export const handleMetadataChannel = function (dataChannel) {
     try {
       const parsedMessage = JSON.parse(message);
       const { name, size, batchesMetaData, isReceived } = parsedMessage;
-      const isAlreadyExist = await checkIfAlreadyExist(name);
-      console.log("parsedMessage: ", parsedMessage);
-      console.log("isAlreadyExist: ", isAlreadyExist);
-      if (isAlreadyExist) {
-        // Save metadata info to already existed db
-      } else {
-        // Save metadata info to new db
-        await saveReceivedMetadataInNewDB(name, size, batchesMetaData);
-      }
+      console.log("Start");
+      await saveReceivedMetadata(name, size, batchesMetaData);
+      dataChannel.send(
+        JSON.stringify({
+          received: true,
+        })
+      );
+      console.log("End");
       //   saveReceivedFileMetadata();
     } catch (error) {}
     // We will parse the received message
