@@ -5,14 +5,33 @@ export const sendFilesMetadata = function (idbFiles, alivaWebRTC) {
     );
     for (let index = 0; index < idbFiles.length; index++) {
       const { name, size, batchesMetaData } = idbFiles[index];
-      dataChannel.send(
-        JSON.stringify({
-          name,
-          size,
-          batchesMetaData,
-          isReceived: true
-        })
-      );
+
+      if (size < 20000000) {
+        dataChannel.send(
+          JSON.stringify({
+            name,
+            size,
+            batchesMetaData,
+            isReceived: true,
+          })
+        );
+      } else {
+        const batchKeys = Object.keys(batchesMetaData);
+        for (let index = 0; index < batchKeys.length; index++) {
+          const batchKey = batchKeys[index];
+          const batchInfo = {};
+          batchInfo[batchKey] = batchesMetaData[batchKey];
+
+          dataChannel.send(
+            JSON.stringify({
+              name,
+              size,
+              batchesMetaData: batchInfo,
+              isReceived: true,
+            })
+          );
+        }
+      }
     }
     resolve(true);
   });
