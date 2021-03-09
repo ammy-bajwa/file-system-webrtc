@@ -57,13 +57,16 @@ class App extends Component {
 
   handleSyncMetadata = async () => {
     const { idbFiles } = this.state;
-    debugger;
+    const webRTCConnState = alivaWebRTC.peerConnection.connectionState;
     if (idbFiles.length <= 0) {
       alert("Please upload a file first");
-    } else if (!alivaWebRTC.dataChannels) {
+      return;
+    } else if (webRTCConnState !== "connected") {
       alert("Please connect webrtc first");
+      return;
     } else {
       await sendFilesMetadata(idbFiles, alivaWebRTC);
+      return;
     }
   };
   render() {
@@ -74,22 +77,9 @@ class App extends Component {
           <h1>Click to connect to WS</h1>
         </div>
         <div>
-          <h2>Files Present In IDB</h2>
-          <DisplayFiles files={idbFiles} />
           <button
             type="button"
-            className="btn btn-outline-dark m-2"
-            onClick={this.handleSyncMetadata}
-          >
-            Sync Metadata
-          </button>
-        </div>
-        <div>
-          <h2>Uploaded Files Will Be Here</h2>
-          <DisplayFiles files={files} />
-          <button
-            type="button"
-            className="btn btn-dark m-2"
+            className="btn btn-dark mr-2"
             onClick={this.handleWebRtcConnection}
           >
             Connect with webrtc
@@ -108,6 +98,21 @@ class App extends Component {
           >
             Clean All DBs
           </button>
+        </div>
+        <div>
+          <h2>Files Present In IDB</h2>
+          <DisplayFiles files={idbFiles} />
+          <button
+            type="button"
+            className="btn btn-outline-dark m-2"
+            onClick={this.handleSyncMetadata}
+          >
+            Sync Metadata
+          </button>
+        </div>
+        <div>
+          <h2>Uploaded Files Will Be Here</h2>
+          <DisplayFiles files={files} />
         </div>
         <form className="row mt-2" onSubmit={onSubmit}>
           <div className="col-auto">
