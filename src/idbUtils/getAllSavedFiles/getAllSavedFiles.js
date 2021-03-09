@@ -16,6 +16,7 @@ export const getAllSavedFiles = async function () {
         name: fileMetadata.fileName,
         size: fileMetadata.fileSize,
         batchesMetaData: fileMetadata.batchesMetaData,
+        isReceived: fileMetadata.isReceived,
       });
     }
   }
