@@ -1,5 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 
+import { setStatus } from "../../status/status";
+
 const iceServers = [
   {
     urls: ["stun:avm4962.com:3478", "stun:avm4962.com:5349"],
@@ -48,6 +50,7 @@ export const initializeWebRTC = function (channel, machineId) {
 
       peerConnection.ondatachannel = (event) => {
         const dataChannel = event.channel;
+        const { label } = dataChannel;
         dataChannel.onopen = () => {
           console.log("On datachannel open");
           const dataChannelObj = {
@@ -55,11 +58,13 @@ export const initializeWebRTC = function (channel, machineId) {
             dataChannel,
           };
           console.log("webrtcObj: ", webrtcObj);
-          webrtcObj.dataChannels.push(dataChannelObj);
+          setStatus("<h2>Webrtc connected</h2>");
+          webrtcObj.dataChannels[label] = dataChannelObj;
         };
 
         dataChannel.onerror = function (error) {
           console.log("Error:", error);
+          setStatus("<h2>Webrtc disconnected</h2>");
         };
 
         dataChannel.onmessage = async (event) => {
