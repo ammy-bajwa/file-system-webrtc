@@ -44,7 +44,6 @@ const awaitConfirmation = (dc) => {
       const message = event.data;
       try {
         const { received } = JSON.parse(message);
-        console.log("Confirm: ", message);
         if (received) {
           resolve(true);
         }
