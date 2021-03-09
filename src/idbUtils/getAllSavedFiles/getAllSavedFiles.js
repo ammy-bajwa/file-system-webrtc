@@ -12,7 +12,11 @@ export const getAllSavedFiles = async function () {
       const db = await openDB(dbName);
       const store = db.transaction("fileMetadata").objectStore("fileMetadata");
       const fileMetadata = await store.get("metadata");
-      files.push({ name: fileMetadata.fileName, size: fileMetadata.fileSize });
+      files.push({
+        name: fileMetadata.fileName,
+        size: fileMetadata.fileSize,
+        batchesMetaData: fileMetadata.batchesMetaData,
+      });
     }
   }
   return files;
