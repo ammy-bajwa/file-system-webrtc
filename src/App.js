@@ -17,16 +17,16 @@ class App extends Component {
     const machineId = uuidv4();
     this.setState({ machineId });
     await alivaWS.initializeSocket("ws://localhost:5000/socket");
-  }
-
-  handleWebRtcConnection = async () => {
-    const { machineId } = this.state;
     await alivaWebRTC.initializeWebRTC(alivaWS.channel, machineId);
     await alivaWebRTC.addWebrtcListener(
       alivaWS.channel,
       machineId,
       alivaWebRTC.peerConnection
     );
+  }
+
+  handleWebRtcConnection = async () => {
+    const { machineId } = this.state;
     await alivaWebRTC.createDataChannel("dc");
   };
 
