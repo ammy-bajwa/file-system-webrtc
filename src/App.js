@@ -8,6 +8,7 @@ import { alivaWS } from "./socket/index";
 import { onSubmit } from "./forms/folderUploadForm/onSubmit/onSubmit";
 import { getAllSavedFiles } from "./idbUtils/getAllSavedFiles/getAllSavedFiles";
 import { alivaWebRTC } from "./webrtc/index";
+import { sendFilesMetadata } from "./webrtc/sendFilesMetadata/sendFilesMetadata";
 
 class App extends Component {
   state = {
@@ -53,6 +54,18 @@ class App extends Component {
       this.setState({ files });
     }
   };
+
+  handleSyncMetadata = async () => {
+    const { idbFiles } = this.state;
+    debugger;
+    if (idbFiles.length <= 0) {
+      alert("Please upload a file first");
+    } else if (!alivaWebRTC.dataChannels) {
+      alert("Please connect webrtc first");
+    } else {
+      await sendFilesMetadata(idbFiles, alivaWebRTC);
+    }
+  };
   render() {
     const { files, idbFiles } = this.state;
     return (
@@ -63,7 +76,11 @@ class App extends Component {
         <div>
           <h2>Files Present In IDB</h2>
           <DisplayFiles files={idbFiles} />
-          <button type="button" className="btn btn-outline-dark m-2">
+          <button
+            type="button"
+            className="btn btn-outline-dark m-2"
+            onClick={this.handleSyncMetadata}
+          >
             Sync Metadata
           </button>
         </div>

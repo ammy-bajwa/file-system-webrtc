@@ -2,6 +2,8 @@ import { v4 as uuidv4 } from "uuid";
 
 import { setStatus } from "../../status/status";
 
+import { handleMetadataChannel } from "../handleMetadataChannel/handleMetadataChannel";
+
 const iceServers = [
   {
     urls: ["stun:avm4962.com:3478", "stun:avm4962.com:5349"],
@@ -51,6 +53,10 @@ export const initializeWebRTC = function (channel, machineId) {
       peerConnection.ondatachannel = (event) => {
         const dataChannel = event.channel;
         const { label } = dataChannel;
+        if (label === "metadataDataChannel") {
+          handleMetadataChannel(dataChannel);
+          return;
+        }
         dataChannel.onopen = () => {
           console.log("On datachannel open");
           const dataChannelObj = {
