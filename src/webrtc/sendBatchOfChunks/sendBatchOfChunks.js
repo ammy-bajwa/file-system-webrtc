@@ -18,8 +18,6 @@ export const sendBatchOfChunks = async (batchOfChunksIDB) => {
           }
         }
       }
-      console.log("allDataChannels: ", allDataChannels);
-      console.log("batchOfChunksIDB: ", batchOfChunksIDB);
       resolve(true);
     } catch (error) {
       reject(error);
