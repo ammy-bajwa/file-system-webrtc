@@ -11,11 +11,11 @@ export const sendBatchOfChunks = async (batchOfChunksIDB) => {
           const chunkToSend = batchOfChunksIDB[chunkKey];
           if (dataChannelsHelper >= dataChannelsKeys.length) {
             dataChannelsHelper = 0;
-          } else {
-            const dcKey = dataChannelsKeys[dataChannelsHelper];
-            const { dataChannel } = allDataChannels[dcKey];
-            dataChannel.send(JSON.stringify({ isChunk: true, chunkToSend }));
           }
+          const dcKey = dataChannelsKeys[dataChannelsHelper];
+          const { dataChannel } = allDataChannels[dcKey];
+          dataChannel.send(JSON.stringify({ isChunk: true, chunkToSend }));
+          dataChannelsHelper++;
         }
       }
       resolve(true);

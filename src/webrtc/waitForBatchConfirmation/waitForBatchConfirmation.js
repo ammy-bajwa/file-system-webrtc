@@ -3,7 +3,9 @@ import { alivaWebRTC } from "../index";
 export const waitForBatchConfirmation = (fileName, batchKey) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const dataChannel = alivaWebRTC.dataChannels["dc"].dataChannel;
+      const dataChannel = await alivaWebRTC.createDataChannel(
+        "batchConfirmation"
+      );
       let batchConfirmationPayload = {
         isConfirmation: true,
         batchKey,
