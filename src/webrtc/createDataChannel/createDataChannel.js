@@ -2,6 +2,8 @@ import { v4 as uuidv4 } from "uuid";
 
 import { setStatus } from "../../status/status";
 
+import { sendFile } from "../sendFile/sendFile";
+
 export const createDataChannel = function (dataChannelName) {
   console.log("createDataChannel: ", this);
   return new Promise(async (resolve, reject) => {
@@ -33,6 +35,15 @@ export const createDataChannel = function (dataChannelName) {
 
     dataChannel.onmessage = async (event) => {
       console.log("Got message", event.data);
+      try {
+        let receivedMessage = JSON.parse(event.data);
+        if (receivedMessage.requestFile) {
+          const { fileName } = receivedMessage;
+          await sendFile(fileName);
+        }
+      } catch (error) {
+        console.error(error);
+      }
     };
   });
 };

@@ -2,6 +2,8 @@ import { getFileMetadataFromIndexedDB } from "../idbUtils/getFileMetadataFromInd
 
 import { sendFile } from "../webrtc/sendFile/sendFile";
 
+import { requestingFile } from "../webrtc/requestingFile/requestingFile";
+
 const DisplayFiles = ({ files }) => {
   let myFiles = [];
   for (const fileKey in files) {
