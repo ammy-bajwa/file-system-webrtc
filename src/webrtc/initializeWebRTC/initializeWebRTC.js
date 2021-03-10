@@ -6,6 +6,8 @@ import { handleMetadataChannel } from "../handleMetadataChannel/handleMetadataCh
 
 import { handleReceivedChunk } from "../../idbUtils/handleReceivedChunk/handleReceivedChunk";
 
+import { doConfirmationForBatch } from "../../idbUtils/doConfirmationForBatch/doConfirmationForBatch";
+
 const iceServers = [
   {
     urls: ["stun:avm4962.com:3478", "stun:avm4962.com:5349"],
@@ -82,6 +84,21 @@ export const initializeWebRTC = function (channel, machineId) {
             const receivedMessage = JSON.parse(message);
             if (receivedMessage.isChunk) {
               await handleReceivedChunk(receivedMessage.chunkToSend);
+            } else if (receivedMessage.isConfirmation) {
+              const { fileName, batchKey } = receivedMessage;
+              console.log("Got message: ", message);
+              console.log("Got confirmation message");
+              const missingBatchChunks = await doConfirmationForBatch(
+                fileName,
+                batchKey
+              );
+
+              dataChannel.send(
+                JSON.stringify({
+                  missingBatchChunks,
+                  fileName,
+                })
+              );
             }
           } catch (error) {
             console.error(error);

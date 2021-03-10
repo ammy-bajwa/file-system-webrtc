@@ -6,6 +6,8 @@ import { loadBatchOfChunks } from "../../idbUtils/loadBatchOfChunks/loadBatchOfC
 
 import { sendBatchOfChunks } from "../sendBatchOfChunks/sendBatchOfChunks";
 
+import { waitForBatchConfirmation } from "../waitForBatchConfirmation/waitForBatchConfirmation";
+
 export const sendFile = async (fileName) => {
   const fileMetadata = await getFileMetadataFromIndexedDB(fileName);
   const batchesMetadata = fileMetadata["batchesMetaData"];
@@ -22,6 +24,7 @@ export const sendFile = async (fileName) => {
     // We will send these batch of chunks to other peer
     const batchOfChunksIDB = await loadBatchOfChunks(fileName, chunks);
     await sendBatchOfChunks(batchOfChunksIDB);
+    await waitForBatchConfirmation(fileName, batchKey);
     console.log("batchOfChunksIDB: ", batchOfChunksIDB);
   }
 };
