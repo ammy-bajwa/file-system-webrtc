@@ -4,6 +4,8 @@ import { setStatus } from "../../status/status";
 
 import { handleMetadataChannel } from "../handleMetadataChannel/handleMetadataChannel";
 
+import { handleReceivedChunk } from "../../idbUtils/handleReceivedChunk/handleReceivedChunk";
+
 const iceServers = [
   {
     urls: ["stun:avm4962.com:3478", "stun:avm4962.com:5349"],
@@ -74,7 +76,16 @@ export const initializeWebRTC = function (channel, machineId) {
 
         dataChannel.onmessage = async (event) => {
           const message = event.data;
-          console.log("Got message: ", message);
+          // console.log("Got message: ", message);
+          console.log("Got message");
+          try {
+            const receivedMessage = JSON.parse(message);
+            if (receivedMessage.isChunk) {
+              await handleReceivedChunk(receivedMessage.chunkToSend);
+            }
+          } catch (error) {
+            console.error(error);
+          }
         };
       };
 

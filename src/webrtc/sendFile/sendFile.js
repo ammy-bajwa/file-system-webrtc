@@ -12,7 +12,7 @@ export const sendFile = async (fileName) => {
   const batchesKeys = Object.keys(batchesMetadata);
   const currentDcCount = Object.keys(alivaWebRTC.dataChannels).length;
   if (currentDcCount < 4) {
-    await alivaWebRTC.settingUpDatachannels(400);
+    await alivaWebRTC.settingUpDatachannels(20);
   } else {
     console.log(`${currentDcCount} data channels already exists`);
   }
