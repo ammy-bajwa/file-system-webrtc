@@ -16,14 +16,12 @@ export const handleMetadataChannel = function (dataChannel) {
     try {
       const parsedMessage = JSON.parse(message);
       const { name, size, batchesMetaData, isReceived } = parsedMessage;
-      console.log("Start");
       await saveReceivedMetadata(name, size, batchesMetaData);
       dataChannel.send(
         JSON.stringify({
           received: true,
         })
       );
-      console.log("End");
       //   saveReceivedFileMetadata();
     } catch (error) {
       console.error(error);
