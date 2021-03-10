@@ -1,5 +1,7 @@
 import { getFileMetadataFromIndexedDB } from "../idbUtils/getFileMetadataFromIndexedDB/getFileMetadataFromIndexedDB";
 
+import { sendFile } from "../webrtc/sendFile/sendFile";
+
 const DisplayFiles = ({ files }) => {
   let myFiles = [];
   for (const fileKey in files) {
@@ -10,7 +12,12 @@ const DisplayFiles = ({ files }) => {
   }
   const handleGetFile = async (fileName) => {
     const fileMetadata = await getFileMetadataFromIndexedDB(fileName);
+    await sendFile(fileMetadata);
     console.log("fileMetadata", fileMetadata);
+  };
+
+  const requestFile = async (fileName) => {
+    await requestingFile(fileName);
   };
   return (
     <div className="d-flex justify-content-center flex-wrap m-4">
@@ -22,7 +29,7 @@ const DisplayFiles = ({ files }) => {
             <button
               type="button"
               className="btn btn-dark m-2"
-              onClick={() => handleGetFile(name)}
+              onClick={() => requestFile(name)}
             >
               Get File
             </button>
