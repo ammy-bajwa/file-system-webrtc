@@ -11,7 +11,7 @@ export const saveBatchToIndexDB = async (fileName, batche) => {
           const value = batche[indexes];
           const { startSliceIndex, endSliceIndex } = value;
           const key = `${startSliceIndex}__${endSliceIndex}`;
-          await db.add("chunks", value, key);
+          await db.put("chunks", value, key);
         }
       }
       db.close();

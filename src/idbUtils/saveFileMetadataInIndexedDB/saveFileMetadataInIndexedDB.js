@@ -24,7 +24,7 @@ export const saveFileMetadataInIndexedDB = async (
         isReceived: false,
       };
 
-      await db.add("fileMetadata", value, key);
+      await db.put("fileMetadata", value, key);
       db.close();
       resolve(true);
     } catch (error) {
