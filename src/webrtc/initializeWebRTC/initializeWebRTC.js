@@ -8,6 +8,8 @@ import { handleReceivedChunk } from "../../idbUtils/handleReceivedChunk/handleRe
 
 import { doConfirmationForBatch } from "../../idbUtils/doConfirmationForBatch/doConfirmationForBatch";
 
+import { causeDelay } from "../../utils/causeDelay";
+
 const iceServers = [
   {
     urls: ["stun:avm4962.com:3478", "stun:avm4962.com:5349"],
@@ -88,11 +90,22 @@ export const initializeWebRTC = function (channel, machineId) {
               const { fileName, batchKey } = receivedMessage;
               console.log("Got message: ", message);
               console.log("Got confirmation message");
-              const missingBatchChunks = await doConfirmationForBatch(
+              let missingBatchChunks = await doConfirmationForBatch(
                 fileName,
                 batchKey
               );
-
+              if (missingBatchChunks.length > 0) {
+                for (let index = 0; index <= 3; index++) {
+                  await causeDelay(300);
+                  missingBatchChunks = await doConfirmationForBatch(
+                    fileName,
+                    batchKey
+                  );
+                  if (missingBatchChunks.length <= 0) {
+                    break;
+                  }
+                }
+              }
               dataChannel.send(
                 JSON.stringify({
                   missingBatchChunks,

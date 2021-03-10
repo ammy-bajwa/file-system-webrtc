@@ -11,7 +11,12 @@ export const waitForBatchConfirmation = (fileName, batchKey) => {
       };
       batchConfirmationPayload = JSON.stringify(batchConfirmationPayload);
       dataChannel.onmessage = (event) => {
-        console.log("Batch confimation", event.data);
+        try {
+          const { fileName, missingBatchChunks } = JSON.parse(event.data);
+          console.log("Confirmation: ", { missingBatchChunks, fileName });
+        } catch (error) {
+          console.error(error);
+        }
       };
       dataChannel.send(batchConfirmationPayload);
       resolve(true);
