@@ -10,8 +10,12 @@ export const sendFile = async (fileName) => {
   const fileMetadata = await getFileMetadataFromIndexedDB(fileName);
   const batchesMetadata = fileMetadata["batchesMetaData"];
   const batchesKeys = Object.keys(batchesMetadata);
-  await alivaWebRTC.settingUpDatachannels(400);
-  console.log(Object.keys(alivaWebRTC.dataChannels).length);
+  const currentDcCount = Object.keys(alivaWebRTC.dataChannels).length;
+  if (currentDcCount < 4) {
+    await alivaWebRTC.settingUpDatachannels(400);
+  } else {
+    console.log(`${currentDcCount} data channels already exists`);
+  }
   for (let key = 0; key < batchesKeys.length; key++) {
     const batchKey = batchesKeys[key];
     const { chunks } = batchesMetadata[batchKey];

@@ -4,6 +4,7 @@ export const createFileDataChannels = function (dcName) {
   return new Promise(async (resolve, reject) => {
     try {
       const webrtcObj = this;
+      const channelId = uuidv4();
       const dcOptions = {
         ordered: true,
         maxRetransmits: 10,
@@ -16,7 +17,7 @@ export const createFileDataChannels = function (dcName) {
       dataChannel.onopen = () => {
         console.log("datachannel is open");
         const dataChannelObj = {
-          id: uuidv4(),
+          id: channelId,
           dataChannel,
         };
         webrtcObj.dataChannels[dcName] = dataChannelObj;
@@ -25,6 +26,7 @@ export const createFileDataChannels = function (dcName) {
 
       dataChannel.onerror = function (error) {
         console.log("Error:", error);
+        delete webrtcObj.dataChannels[dcName];
         reject(error);
       };
 

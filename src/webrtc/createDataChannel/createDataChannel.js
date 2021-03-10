@@ -30,6 +30,7 @@ export const createDataChannel = function (dataChannelName) {
     dataChannel.onerror = function (error) {
       console.log("Error:", error);
       reject(error);
+      delete webrtcObj.dataChannels[dataChannelName];
       setStatus("<h2>Webrtc disconnected</h2>");
     };
 
