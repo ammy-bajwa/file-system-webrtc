@@ -6,6 +6,10 @@ import { sendOffer } from "./sendOffer/sendOffer";
 
 import { createDataChannel } from "./createDataChannel/createDataChannel";
 
+import { settingUpDatachannels } from "./settingUpDatachannels/settingUpDatachannels";
+
+import { createFileDataChannels } from "./createFileDataChannels/createFileDataChannels";
+
 export const alivaWebRTC = {
   peerConnection: null,
   dataChannels: {},
@@ -13,4 +17,6 @@ export const alivaWebRTC = {
   initializeWebRTC,
   sendOffer,
   createDataChannel,
+  settingUpDatachannels,
+  createFileDataChannels,
 };

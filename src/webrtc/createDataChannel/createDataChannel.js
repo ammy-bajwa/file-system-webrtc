@@ -39,6 +39,7 @@ export const createDataChannel = function (dataChannelName) {
         let receivedMessage = JSON.parse(event.data);
         if (receivedMessage.requestFile) {
           const { fileName } = receivedMessage;
+          console.log("requestFile received", fileName);
           await sendFile(fileName);
         }
       } catch (error) {
