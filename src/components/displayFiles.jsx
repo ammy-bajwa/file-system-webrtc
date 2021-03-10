@@ -1,3 +1,5 @@
+import { getFileMetadataFromIndexedDB } from "../idbUtils/getFileMetadataFromIndexedDB/getFileMetadataFromIndexedDB";
+
 const DisplayFiles = ({ files }) => {
   let myFiles = [];
   for (const fileKey in files) {
@@ -6,6 +8,10 @@ const DisplayFiles = ({ files }) => {
       myFiles.push({ name, size, isReceived });
     }
   }
+  const handleGetFile = async (fileName) => {
+    const fileMetadata = await getFileMetadataFromIndexedDB(fileName);
+    console.log("fileMetadata", fileMetadata);
+  };
   return (
     <div className="d-flex justify-content-center flex-wrap m-4">
       {myFiles.length === 0 && <h3 className="text-info">No File</h3>}
@@ -13,7 +19,11 @@ const DisplayFiles = ({ files }) => {
         <span className="border border-dark rounded m-2 p-2" key={i}>
           {name}--<b>{(size / 1000 / 1000).toFixed(2)}_MB</b>
           {isReceived && (
-            <button type="button" className="btn btn-dark m-2">
+            <button
+              type="button"
+              className="btn btn-dark m-2"
+              onClick={() => handleGetFile(name)}
+            >
               Get File
             </button>
           )}
