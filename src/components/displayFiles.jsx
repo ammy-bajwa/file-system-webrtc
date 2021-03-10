@@ -1,5 +1,7 @@
 import { getFileMetadataFromIndexedDB } from "../idbUtils/getFileMetadataFromIndexedDB/getFileMetadataFromIndexedDB";
 
+import { alivaWebRTC } from "../webrtc/index";
+
 import { sendFile } from "../webrtc/sendFile/sendFile";
 
 import { requestingFile } from "../webrtc/requestingFile/requestingFile";
@@ -19,7 +21,13 @@ const DisplayFiles = ({ files }) => {
   };
 
   const requestFile = async (fileName) => {
-    await requestingFile(fileName);
+    const dataChannelsCount = Object.keys(alivaWebRTC.dataChannels).length;
+    if (dataChannelsCount <= 0) {
+      alert("Please connect webrtc");
+      return;
+    } else {
+      await requestingFile(fileName);
+    }
   };
   return (
     <div className="d-flex justify-content-center flex-wrap m-4">
