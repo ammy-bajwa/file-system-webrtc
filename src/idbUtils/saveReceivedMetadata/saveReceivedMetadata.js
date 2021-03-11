@@ -27,7 +27,6 @@ export const saveReceivedMetadata = (
       };
       if (isDbAlredyExists) {
         const existedValue = await db.get("fileMetadata", key);
-        // console.log("existedValue: ", existedValue);
         value.batchesMetaData = {
           ...existedValue.batchesMetaData,
           ...batchesMetaData,

@@ -2,6 +2,8 @@ import { openDB } from "idb";
 
 import { getConfirmationBatch } from "../getConfirmationBatch/getConfirmationBatch";
 
+import { getHashOfData } from "../../fileUtils/getHashOfData/getHashOfData";
+
 export const doConfirmationForBatch = (fileName, batchKey) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -11,7 +13,7 @@ export const doConfirmationForBatch = (fileName, batchKey) => {
       const batchHash = confirmationBatch["batchHash"];
       let batchChunks = {};
       let missingChunks = {};
-      // let isMissing = false;
+      let isMissing = false;
       const db = await openDB(dbName, 1);
       for (const chunkKey in confirmationChunks) {
         if (Object.hasOwnProperty.call(confirmationChunks, chunkKey)) {
@@ -23,10 +25,12 @@ export const doConfirmationForBatch = (fileName, batchKey) => {
           batchChunks[key] = chunkData;
           if (!chunkData) {
             missingChunks[key] = { key, fileName };
-            // isMissing = true;
+            isMissing = true;
           }
         }
       }
+      const receivedBatchHash = await getHashOfData(batchChunks);
+      debugger;
       db.close();
       resolve(missingChunks);
     } catch (error) {
