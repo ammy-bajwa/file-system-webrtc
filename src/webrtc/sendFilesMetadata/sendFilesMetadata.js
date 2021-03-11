@@ -4,8 +4,7 @@ export const sendFilesMetadata = function (idbFiles, alivaWebRTC) {
       "metadataDataChannel"
     );
     for (let index = 0; index < idbFiles.length; index++) {
-      const { name, size, batchesMetaData } = idbFiles[index];
-
+      const { name, size, batchesMetaData, fileHash } = idbFiles[index];
       if (size < 10000000) {
         dataChannel.send(
           JSON.stringify({
@@ -13,6 +12,7 @@ export const sendFilesMetadata = function (idbFiles, alivaWebRTC) {
             size,
             batchesMetaData,
             isReceived: true,
+            fileHash,
           })
         );
       } else {
@@ -28,6 +28,7 @@ export const sendFilesMetadata = function (idbFiles, alivaWebRTC) {
               size,
               batchesMetaData: batchInfo,
               isReceived: true,
+              fileHash,
             })
           );
           await awaitConfirmation(dataChannel);

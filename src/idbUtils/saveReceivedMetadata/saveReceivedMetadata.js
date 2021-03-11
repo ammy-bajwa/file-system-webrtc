@@ -1,6 +1,11 @@
 import { openDB } from "idb";
 
-export const saveReceivedMetadata = (fileName, fileSize, batchesMetaData) => {
+export const saveReceivedMetadata = (
+  fileName,
+  fileSize,
+  batchesMetaData,
+  fileHash
+) => {
   return new Promise(async (resolve, reject) => {
     try {
       let isDbAlredyExists = true;
@@ -18,6 +23,7 @@ export const saveReceivedMetadata = (fileName, fileSize, batchesMetaData) => {
         fileSize,
         batchesMetaData,
         isReceived: true,
+        fileHash,
       };
       if (isDbAlredyExists) {
         const existedValue = await db.get("fileMetadata", key);

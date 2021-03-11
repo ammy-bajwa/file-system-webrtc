@@ -15,14 +15,19 @@ export const handleMetadataChannel = function (dataChannel) {
     const message = event.data;
     try {
       const parsedMessage = JSON.parse(message);
-      const { name, size, batchesMetaData, isReceived } = parsedMessage;
-      await saveReceivedMetadata(name, size, batchesMetaData);
+      const {
+        name,
+        size,
+        batchesMetaData,
+        isReceived,
+        fileHash,
+      } = parsedMessage;
+      await saveReceivedMetadata(name, size, batchesMetaData, fileHash);
       dataChannel.send(
         JSON.stringify({
           received: true,
         })
       );
-      //   saveReceivedFileMetadata();
     } catch (error) {
       console.error(error);
     }
