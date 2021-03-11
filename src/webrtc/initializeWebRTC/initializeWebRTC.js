@@ -114,6 +114,7 @@ export const initializeWebRTC = function (channel, machineId) {
               );
             }
           } catch (error) {
+            console.log("Got message: ", message);
             console.error(error);
           }
         };
