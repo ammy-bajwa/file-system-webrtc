@@ -8,7 +8,10 @@ export const doConfirmationForBatch = (fileName, batchKey) => {
       const dbName = `file__${fileName}`;
       const confirmationBatch = await getConfirmationBatch(fileName, batchKey);
       const confirmationChunks = confirmationBatch["chunks"];
+      const batchHash = confirmationBatch["batchHash"];
+      let batchChunks = {};
       let missingChunks = {};
+      // let isMissing = false;
       const db = await openDB(dbName, 1);
       for (const chunkKey in confirmationChunks) {
         if (Object.hasOwnProperty.call(confirmationChunks, chunkKey)) {
@@ -17,8 +20,10 @@ export const doConfirmationForBatch = (fileName, batchKey) => {
           ];
           const key = `${startSliceIndex}__${endSliceIndex}`;
           const chunkData = await db.get("chunks", key);
+          batchChunks[key] = chunkData;
           if (!chunkData) {
             missingChunks[key] = { key, fileName };
+            // isMissing = true;
           }
         }
       }
