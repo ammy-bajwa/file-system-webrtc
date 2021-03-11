@@ -26,6 +26,9 @@ export const waitForBatchConfirmation = (fileName, batchKey) => {
                 startSliceIndex,
                 endSliceIndex
               );
+              console.log(
+                `Resending ${startSliceIndex}__${endSliceIndex} chunk`
+              );
               dataChannel.send(JSON.stringify(getSpecificFileChunk));
             }
           }
