@@ -1,7 +1,7 @@
-export const getHashOfBatch = (batch) => {
+export const getHashOfData = (receivedData) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const message = JSON.stringify(batch);
+      const message = JSON.stringify(receivedData);
       const encoder = new TextEncoder();
       const data = encoder.encode(message);
       const hashBuffer = await crypto.subtle.digest("SHA-256", data);
