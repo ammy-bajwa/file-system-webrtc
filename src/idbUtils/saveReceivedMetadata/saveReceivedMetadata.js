@@ -34,7 +34,6 @@ export const saveReceivedMetadata = (
         };
       }
 
-      console.log("should show");
       await db.put("fileMetadata", value, key);
       db.close();
       resolve(true);

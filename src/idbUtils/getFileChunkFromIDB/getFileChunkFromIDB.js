@@ -1,25 +1,18 @@
 import { openDB } from "idb";
 
-export const handleReceivedChunk = ({
+export const getFileChunkFromIDB = (
   fileName,
-  fileChunk,
   startSliceIndex,
-  endSliceIndex,
-}) => {
+  endSliceIndex
+) => {
   return new Promise(async (resolve, reject) => {
     try {
       const dbName = `file__${fileName}`;
       const db = await openDB(dbName, 1);
       const key = `${startSliceIndex}__${endSliceIndex}`;
-      const value = {
-        fileName,
-        fileChunk,
-        startSliceIndex,
-        endSliceIndex,
-      };
-      await db.put("chunks", value, key);
+      const fileChunk = await db.get("chunks", key);
       db.close();
-      resolve(true);
+      resolve(fileChunk);
     } catch (error) {
       reject(error);
     }
