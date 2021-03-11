@@ -12,10 +12,10 @@ export const handleReceivedChunk = ({
       const db = await openDB(dbName, 1);
       const key = `${startSliceIndex}__${endSliceIndex}`;
       const value = {
-        fileName,
         fileChunk,
         startSliceIndex,
         endSliceIndex,
+        fileName,
       };
       await db.put("chunks", value, key);
       db.close();

@@ -18,7 +18,7 @@ export const getSpecificFileChunk = async (
         resolve(fileChunk);
       });
       // Base64
-      fileReader.readAsBinaryString(slicedFilePart);
+      fileReader.readAsDataURL(slicedFilePart);
     } catch (error) {
       console.error(error);
       reject(error);

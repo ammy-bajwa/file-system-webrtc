@@ -30,7 +30,9 @@ export const doConfirmationForBatch = (fileName, batchKey) => {
         }
       }
       const receivedBatchHash = await getHashOfData(batchChunks);
-      debugger;
+      if (batchHash !== receivedBatchHash) {
+        reject(false);
+      }
       db.close();
       resolve(missingChunks);
     } catch (error) {
