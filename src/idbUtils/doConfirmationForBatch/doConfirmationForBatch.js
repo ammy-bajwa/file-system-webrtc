@@ -4,11 +4,19 @@ import { getConfirmationBatch } from "../getConfirmationBatch/getConfirmationBat
 
 import { getHashOfData } from "../../fileUtils/getHashOfData/getHashOfData";
 
-export const doConfirmationForBatch = (fileName, batchKey) => {
+export const doConfirmationForBatch = (
+  receivedBatchHash,
+  batchKey,
+  fileName
+) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const dbName = `file__${fileName}`;
-      const confirmationBatch = await getConfirmationBatch(fileName, batchKey);
+      const dbName = receivedBatchHash;
+      const confirmationBatch = await getConfirmationBatch(
+        receivedBatchHash,
+        batchKey,
+        fileName
+      );
       const confirmationChunks = confirmationBatch["chunks"];
       const batchHash = confirmationBatch["batchHash"];
       let batchChunks = {};
@@ -29,9 +37,9 @@ export const doConfirmationForBatch = (fileName, batchKey) => {
           }
         }
       }
-      const receivedBatchHash = await getHashOfData(batchChunks);
-      if (batchHash !== receivedBatchHash) {
-        reject(false);
+      const receivedChunksBatchHash = await getHashOfData(batchChunks);
+      if (batchHash !== receivedChunksBatchHash) {
+        reject(missingChunks);
       }
       db.close();
       resolve(missingChunks);

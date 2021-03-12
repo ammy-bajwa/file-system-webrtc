@@ -1,12 +1,12 @@
 import { openDB } from "idb";
 
-export const getConfirmationBatch = (fileName, batchKey) => {
+export const getConfirmationBatch = (batchHash, batchKey, fileName) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const dbName = `file__${fileName}`;
+      const dbName = "files";
       const db = await openDB(dbName, 1);
-      const key = `metadata`;
-      const fileMetadata = await db.get("fileMetadata", key);
+      const storeName = `filesMetadata`;
+      const fileMetadata = await db.get(storeName, fileName);
       const batchMetadata = fileMetadata["batchesMetaData"][batchKey];
       db.close();
       resolve(batchMetadata);

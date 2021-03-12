@@ -32,8 +32,8 @@ export const sendFile = async (fileName) => {
     const isBatchExists = await isBatchAlreadyExistOnReceiver(batchHash);
     if (!isBatchExists) {
       await sendBatchOfChunks(batchOfChunksIDB, batchHash);
-      await waitForBatchConfirmation(fileName, batchKey);
+      await waitForBatchConfirmation(fileName, batchKey, batchHash);
     }
-    console.log("batchOfChunksIDB: ", batchOfChunksIDB);
+    console.log("Batch is sended: ", batchKey);
   }
 };

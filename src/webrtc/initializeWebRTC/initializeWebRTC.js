@@ -92,19 +92,21 @@ export const initializeWebRTC = function (channel, machineId) {
                 receivedMessage.batchHash
               );
             } else if (receivedMessage.isConfirmation) {
-              const { fileName, batchKey } = receivedMessage;
+              const { batchHash, batchKey, fileName } = receivedMessage;
               console.log("Got message: ", message);
               console.log("Got confirmation message");
               let missingBatchChunks = await doConfirmationForBatch(
-                fileName,
-                batchKey
+                batchHash,
+                batchKey,
+                fileName
               );
               if (missingBatchChunks.length > 0) {
                 for (let index = 0; index <= 3; index++) {
                   await causeDelay(300);
                   missingBatchChunks = await doConfirmationForBatch(
-                    fileName,
-                    batchKey
+                    batchHash,
+                    batchKey,
+                    fileName
                   );
                   if (missingBatchChunks.length <= 0) {
                     break;
@@ -114,7 +116,7 @@ export const initializeWebRTC = function (channel, machineId) {
               dataChannel.send(
                 JSON.stringify({
                   missingBatchChunks,
-                  fileName,
+                  batchHash,
                 })
               );
             } else if (receivedMessage.isBatchExists) {
