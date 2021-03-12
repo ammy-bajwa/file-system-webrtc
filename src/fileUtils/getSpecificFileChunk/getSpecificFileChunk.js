@@ -5,7 +5,6 @@ export const getSpecificFileChunk = async (
 ) => {
   const fileChunkPromise = new Promise(async (resolve, reject) => {
     try {
-      const fileName = file["name"] || "";
       const slicedFilePart = file.slice(startSliceIndex, endSliceIndex);
       const fileReader = new FileReader();
       fileReader.addEventListener("load", async (event) => {
@@ -13,7 +12,6 @@ export const getSpecificFileChunk = async (
           fileChunk: event.target.result,
           startSliceIndex,
           endSliceIndex,
-          fileName,
         };
         resolve(fileChunk);
       });
