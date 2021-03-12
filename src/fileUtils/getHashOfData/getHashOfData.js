@@ -10,8 +10,6 @@ export const getHashOfData = (receivedData) => {
       const hashHex = hashArray
         .map((b) => b.toString(16).padStart(2, "0"))
         .join("");
-      console.log("receivedData: ", receivedData);
-      console.log("hashHex: ", hashHex);
       resolve(hashHex);
     } catch (error) {
       reject(error);

@@ -33,7 +33,7 @@ export const sendFile = async (fileName) => {
     if (!isBatchExists) {
       await sendBatchOfChunks(batchOfChunksIDB, batchHash);
       await waitForBatchConfirmation(fileName, batchKey, batchHash);
+      console.log("Batch is sended: ", batchKey);
     }
-    console.log("Batch is sended: ", batchKey);
   }
 };
