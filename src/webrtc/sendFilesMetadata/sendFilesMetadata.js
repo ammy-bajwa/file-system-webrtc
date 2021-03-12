@@ -21,7 +21,6 @@ export const sendFilesMetadata = function (idbFiles, alivaWebRTC) {
           const batchKey = batchKeys[index];
           const batchInfo = {};
           batchInfo[batchKey] = batchesMetaData[batchKey];
-
           dataChannel.send(
             JSON.stringify({
               name,
