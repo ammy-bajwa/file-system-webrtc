@@ -2,6 +2,8 @@ import { checkIfAlreadyExist } from "../../idbUtils/checkIfAlreadyExist/checkIfA
 
 import { saveReceivedMetadata } from "../../idbUtils/saveReceivedMetadata/saveReceivedMetadata";
 
+import { createBatchesDbs } from "../../idbUtils/createBatchesDbs/createBatchesDbs";
+
 export const handleMetadataChannel = function (dataChannel) {
   dataChannel.onopen = () => {
     console.log("On metadata datachannel open");
@@ -24,6 +26,7 @@ export const handleMetadataChannel = function (dataChannel) {
         fileHash,
       } = parsedMessage;
       await saveReceivedMetadata(name, size, batchesMetaData, fileHash);
+      await createBatchesDbs(batchesMetaData);
       dataChannel.send(
         JSON.stringify({
           received: true,

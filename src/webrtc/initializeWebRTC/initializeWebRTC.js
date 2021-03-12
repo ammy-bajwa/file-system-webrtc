@@ -87,7 +87,10 @@ export const initializeWebRTC = function (channel, machineId) {
           try {
             const receivedMessage = JSON.parse(message);
             if (receivedMessage.isChunk) {
-              await handleReceivedChunk(receivedMessage.chunkToSend);
+              await handleReceivedChunk(
+                receivedMessage.chunkToSend,
+                receivedMessage.batchHash
+              );
             } else if (receivedMessage.isConfirmation) {
               const { fileName, batchKey } = receivedMessage;
               console.log("Got message: ", message);

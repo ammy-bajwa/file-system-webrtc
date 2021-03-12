@@ -1,6 +1,6 @@
 import { alivaWebRTC } from "../index";
 
-export const sendBatchOfChunks = async (batchOfChunksIDB) => {
+export const sendBatchOfChunks = async (batchOfChunksIDB, batchHash) => {
   return new Promise(async (resolve, reject) => {
     try {
       const allDataChannels = alivaWebRTC.dataChannels;
@@ -14,7 +14,9 @@ export const sendBatchOfChunks = async (batchOfChunksIDB) => {
           }
           const dcKey = dataChannelsKeys[dataChannelsHelper];
           const { dataChannel } = allDataChannels[dcKey];
-          dataChannel.send(JSON.stringify({ isChunk: true, chunkToSend }));
+          dataChannel.send(
+            JSON.stringify({ isChunk: true, chunkToSend, batchHash })
+          );
           dataChannelsHelper++;
         }
       }
