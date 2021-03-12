@@ -20,11 +20,15 @@ export const sendFile = async (fileName) => {
   }
   for (let key = 0; key < batchesKeys.length; key++) {
     const batchKey = batchesKeys[key];
-    const { chunks } = batchesMetadata[batchKey];
+    const { chunks, batchHash } = batchesMetadata[batchKey];
     // We will send these batch of chunks to other peer
-    const batchOfChunksIDB = await loadBatchOfChunks(fileName, chunks);
-    await sendBatchOfChunks(batchOfChunksIDB);
-    await waitForBatchConfirmation(fileName, batchKey);
+    const batchOfChunksIDB = await loadBatchOfChunks(
+      batchHash,
+      fileName,
+      chunks
+    );
+    // await sendBatchOfChunks(batchOfChunksIDB);
+    // await waitForBatchConfirmation(fileName, batchKey);
     console.log("batchOfChunksIDB: ", batchOfChunksIDB);
   }
 };

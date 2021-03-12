@@ -1,15 +1,16 @@
 import { openDB } from "idb";
 
-export const loadBatchOfChunks = async (fileName, chunks) => {
+export const loadBatchOfChunks = async (batchHash, fileName, chunks) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const dbName = `file__${fileName}`;
+      const dbName = batchHash;
+      const storeName = "chunks";
       const db = await openDB(dbName, 1);
       const chunksKeys = Object.keys(chunks);
       let fileChunksFromIDB = {};
       for (let index = 0; index < chunksKeys.length; index++) {
         const chunkKey = chunksKeys[index];
-        const storedChunk = await db.get("chunks", chunkKey);
+        const storedChunk = await db.get(storeName, chunkKey);
         fileChunksFromIDB[chunkKey] = storedChunk;
       }
       db.close();
