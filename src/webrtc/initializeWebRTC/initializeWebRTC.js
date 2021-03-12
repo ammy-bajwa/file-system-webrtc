@@ -8,6 +8,8 @@ import { handleReceivedChunk } from "../../idbUtils/handleReceivedChunk/handleRe
 
 import { doConfirmationForBatch } from "../../idbUtils/doConfirmationForBatch/doConfirmationForBatch";
 
+import { checkIfAlreadyExist } from "../../idbUtils/checkIfAlreadyExist/checkIfAlreadyExist";
+
 import { causeDelay } from "../../utils/causeDelay";
 
 const iceServers = [
@@ -112,6 +114,10 @@ export const initializeWebRTC = function (channel, machineId) {
                   fileName,
                 })
               );
+            } else if (receivedMessage.isBatchExists) {
+              const { batchHash } = receivedMessage;
+              const isBatchExists = await checkIfAlreadyExist(batchHash);
+              dataChannel.send(JSON.stringify({ isBatchExists }));
             }
           } catch (error) {
             console.log("Got message: ", message);

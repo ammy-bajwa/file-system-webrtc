@@ -8,6 +8,8 @@ import { sendBatchOfChunks } from "../sendBatchOfChunks/sendBatchOfChunks";
 
 import { waitForBatchConfirmation } from "../waitForBatchConfirmation/waitForBatchConfirmation";
 
+import { isBatchAlreadyExistOnReceiver } from "../isBatchAlreadyExistOnReceiver/isBatchAlreadyExistOnReceiver";
+
 export const sendFile = async (fileName) => {
   const fileMetadata = await getFileMetadataFromIndexedDB(fileName);
   const batchesMetadata = fileMetadata["batchesMetaData"];
@@ -27,8 +29,11 @@ export const sendFile = async (fileName) => {
       fileName,
       chunks
     );
-    // await sendBatchOfChunks(batchOfChunksIDB);
-    // await waitForBatchConfirmation(fileName, batchKey);
+    const isBatchExists = await isBatchAlreadyExistOnReceiver(batchHash);
+    if (!isBatchExists) {
+      await sendBatchOfChunks(batchOfChunksIDB);
+      await waitForBatchConfirmation(fileName, batchKey);
+    }
     console.log("batchOfChunksIDB: ", batchOfChunksIDB);
   }
 };

@@ -1,9 +1,8 @@
 import { openDB, deleteDB } from "idb";
 
-export const checkIfAlreadyExist = (fileName) => {
+export const checkIfAlreadyExist = (dbName) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const dbName = `file__${fileName}`;
       let isAlreadyExist = true;
       const db = await openDB(dbName, 1, {
         upgrade() {
