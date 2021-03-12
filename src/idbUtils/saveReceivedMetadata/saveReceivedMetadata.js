@@ -8,16 +8,14 @@ export const saveReceivedMetadata = (
 ) => {
   return new Promise(async (resolve, reject) => {
     try {
-      let isDbAlredyExists = true;
-      const dbName = `file__${fileName}`;
+      const dbName = "files";
+      const storeName = "filesMetadata";
+      const key = fileName;
       const db = await openDB(dbName, 1, {
         upgrade(db) {
-          db.createObjectStore("fileMetadata");
-          db.createObjectStore("chunks");
-          isDbAlredyExists = false;
+          db.createObjectStore(storeName);
         },
       });
-      const key = "metadata";
       let value = {
         fileName,
         fileSize,
@@ -25,15 +23,14 @@ export const saveReceivedMetadata = (
         isReceived: true,
         fileHash,
       };
-      if (isDbAlredyExists) {
-        const existedValue = await db.get("fileMetadata", key);
+      const existedValue = await db.get(storeName, key);
+      if (existedValue) {
         value.batchesMetaData = {
           ...existedValue.batchesMetaData,
           ...batchesMetaData,
         };
       }
-
-      await db.put("fileMetadata", value, key);
+      await db.put(storeName, value, key);
       db.close();
       resolve(true);
     } catch (error) {

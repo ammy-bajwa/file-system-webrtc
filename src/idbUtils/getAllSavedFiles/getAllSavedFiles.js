@@ -11,14 +11,17 @@ export const getAllSavedFiles = function () {
         },
       });
       let files = await db.getAll(storeName);
-      files = files.map(({ fileHash, fileName, fileSize, isReceived }) => {
-        return {
-          name: fileName,
-          size: fileSize,
-          fileHash,
-          isReceived,
-        };
-      });
+      files = files.map(
+        ({ fileHash, fileName, fileSize, isReceived, batchesMetaData }) => {
+          return {
+            name: fileName,
+            size: fileSize,
+            fileHash,
+            isReceived,
+            batchesMetaData,
+          };
+        }
+      );
       resolve(files);
     } catch (error) {
       reject(error);

@@ -13,6 +13,7 @@ export const handleMetadataChannel = function (dataChannel) {
 
   dataChannel.onmessage = async (event) => {
     const message = event.data;
+    console.log("metadata message: ", message);
     try {
       const parsedMessage = JSON.parse(message);
       const {
