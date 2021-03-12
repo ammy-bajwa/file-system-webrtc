@@ -27,7 +27,7 @@ export const getBatchesMetadata = async (
       batchObj.totalChunksCount = Object.keys(batchChunksObj).length;
       batchObj.fileName = fileName;
 
-      batchesMetadata[`${startBatchCounter}__${endBatchCounter}`] = batchObj;
+      batchesMetadata[`batch__${index}`] = batchObj;
 
       startBatchCounter = endBatchCounter;
       endBatchCounter = endBatchCounter + numberOfChunksInSingleBatch;

@@ -1,10 +1,15 @@
 import { openDB } from "idb";
 
-export const saveBatchToIndexDB = async (fileName, batche) => {
+export const saveBatchToIndexDB = async (batchHash, batche) => {
   const saveBatchToIndexDBPromise = new Promise(async (resolve, reject) => {
     try {
-      const dbName = `file__${fileName}`;
-      const db = await openDB(dbName, 1);
+      const dbName = batchHash;
+      const db = await openDB(dbName, 1, {
+        upgrade(db) {
+          db.createObjectStore("batchMetadata");
+          db.createObjectStore("chunks");
+        },
+      });
 
       for (const indexes in batche) {
         if (Object.hasOwnProperty.call(batche, indexes)) {
