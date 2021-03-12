@@ -3,10 +3,10 @@ import { openDB } from "idb";
 export const addHashToBatchMetadata = (fileName, batchKey, batchHash) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const dbName = `file__${fileName}`;
+      const dbName = "files";
       const db = await openDB(dbName, 1);
-      const key = "metadata";
-      const fileMetadata = await db.get("fileMetadata", key);
+      const key = fileName;
+      const fileMetadata = await db.get("filesMetadata", key);
       const { batchesMetaData } = fileMetadata;
       batchesMetaData[batchKey] = {
         ...batchesMetaData[batchKey],
@@ -17,7 +17,7 @@ export const addHashToBatchMetadata = (fileName, batchKey, batchHash) => {
         ...fileMetadata,
         batchesMetaData,
       };
-      await db.put("fileMetadata", value, key);
+      await db.put("filesMetadata", value, key);
       db.close();
       resolve(true);
     } catch (error) {

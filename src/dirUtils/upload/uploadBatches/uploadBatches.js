@@ -25,7 +25,6 @@ export const uploadBatches = async (
       numberOfChunksInSingleBatch
     );
     // Here we will save files metadata to indexed db
-
     await saveFileMetadataInIndexedDB(
       file,
       fileName,

@@ -8,14 +8,13 @@ export const saveFileMetadataInIndexedDB = async (
 ) => {
   const saveFileMetadataToIDBPromise = new Promise(async (resolve, reject) => {
     try {
-      const dbName = `file__${fileName}`;
+      const dbName = "files";
       const db = await openDB(dbName, 1, {
         upgrade(db) {
-          db.createObjectStore("fileMetadata");
-          db.createObjectStore("chunks");
+          db.createObjectStore("filesMetadata");
         },
       });
-      const key = "metadata";
+      const key = fileName;
       const value = {
         file,
         fileName,
@@ -24,7 +23,7 @@ export const saveFileMetadataInIndexedDB = async (
         isReceived: false,
       };
 
-      await db.put("fileMetadata", value, key);
+      await db.put("filesMetadata", value, key);
       db.close();
       resolve(true);
     } catch (error) {
