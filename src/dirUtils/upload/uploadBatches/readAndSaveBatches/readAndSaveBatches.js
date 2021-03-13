@@ -46,7 +46,7 @@ export const readAndSaveBatches = async (file, batchesMetaData) => {
             </h2>`
       );
       // save batch to index db
-      await saveBatchToIndexDB(batchHash, batchWithFileData);
+      await saveBatchToIndexDB(batchHash, batchWithFileData, chunks);
     }
   }
   setStatus(`<h2>Adding hash to ${file["name"]} file</h2>`);
