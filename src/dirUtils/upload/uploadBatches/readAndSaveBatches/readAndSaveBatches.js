@@ -4,7 +4,7 @@ import { saveBatchToIndexDB } from "../../../../idbUtils/saveBatchToIndexDB/save
 
 import { setStatus } from "../../../../status/status";
 
-import { getHashOfData } from "../../../../fileUtils/getHashOfData/getHashOfData";
+import { getHashOfArraybuffer } from "../../../../fileUtils/getHashOfArraybuffer/getHashOfArraybuffer";
 
 import { addHashToBatchMetadata } from "../../../../idbUtils/addHashToBatchMetadata/addHashToBatchMetadata";
 
@@ -16,11 +16,23 @@ export const readAndSaveBatches = async (file, batchesMetaData) => {
   let batchesHashes = [];
   for (const batchKey in batchesMetaData) {
     if (Object.hasOwnProperty.call(batchesMetaData, batchKey)) {
-      const { chunks, endBatchCounter, fileName } = batchesMetaData[batchKey];
-      const batchWithFileChunks = await addFileDataToChunks(file, chunks);
-      const batchHash = await getHashOfData(batchWithFileChunks);
-      console.log("batchWithFileChunks: ", batchWithFileChunks);
+      const {
+        startBatchIndex,
+        endBatchIndex,
+        chunks,
+        // endBatchCounter,
+        fileName,
+      } = batchesMetaData[batchKey];
+      const batchWithFileData = await addFileDataToChunks(
+        file,
+        startBatchIndex,
+        endBatchIndex
+      );
+      const batchArr = await batchWithFileData.arrayBuffer();
+      const batchHash = await getHashOfArraybuffer(batchArr);
       batchesHashes.push(batchHash);
+
+      console.log("batchHash: ", batchHash);
 
       await addHashToBatchMetadata(fileName, batchKey, batchHash);
       const startSliceIndex = getLastChunkStartIndex(chunks);
@@ -34,7 +46,7 @@ export const readAndSaveBatches = async (file, batchesMetaData) => {
             </h2>`
       );
       // save batch to index db
-      await saveBatchToIndexDB(batchHash, batchWithFileChunks);
+      await saveBatchToIndexDB(batchHash, batchWithFileData);
     }
   }
   setStatus(`<h2>Adding hash to ${file["name"]} file</h2>`);
