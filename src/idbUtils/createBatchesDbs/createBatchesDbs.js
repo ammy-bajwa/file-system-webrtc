@@ -10,7 +10,7 @@ export const createBatchesDbs = function (batchesMetadata) {
           const batchDb = await openDB(dbName, 1, {
             upgrade(db) {
               db.createObjectStore("batchMetadata");
-              db.createObjectStore("chunks");
+              db.createObjectStore("blob");
             },
           });
           for (const chunkKey in chunks) {
