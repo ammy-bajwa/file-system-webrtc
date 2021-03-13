@@ -15,7 +15,6 @@ export const saveBatchToIndexDB = async (
         },
       });
       console.log("batcheBlob: ", batcheBlob);
-      debugger;
       for (const indexes in chunksMetadata) {
         if (Object.hasOwnProperty.call(chunksMetadata, indexes)) {
           const value = chunksMetadata[indexes];
