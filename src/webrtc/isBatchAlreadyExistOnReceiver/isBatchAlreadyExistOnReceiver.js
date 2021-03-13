@@ -3,10 +3,15 @@ import { alivaWebRTC } from "../index";
 export const isBatchAlreadyExistOnReceiver = (batchHash) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const dataChannel = alivaWebRTC.dataChannels["dc"].dataChannel;
+      let dataChannel =
+        alivaWebRTC.dataChannels["batchConfirmation"]?.dataChannel;
+      if (!dataChannel) {
+        dataChannel = await alivaWebRTC.createDataChannel("batchConfirmation");
+      }
       dataChannel.onmessage = (event) => {
         const { isBatchExists } = JSON.parse(event.data);
         resolve(isBatchExists);
+        console.log("isBatchExists: ", isBatchExists);
       };
       let batchExistsRequest = {
         isBatchExists: true,
