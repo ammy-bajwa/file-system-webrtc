@@ -10,30 +10,38 @@ import { waitForBatchConfirmation } from "../waitForBatchConfirmation/waitForBat
 
 import { isBatchAlreadyExistOnReceiver } from "../isBatchAlreadyExistOnReceiver/isBatchAlreadyExistOnReceiver";
 
-export const sendFile = async (fileName) => {
-  const fileMetadata = await getFileMetadataFromIndexedDB(fileName);
-  const batchesMetadata = fileMetadata["batchesMetaData"];
-  const batchesKeys = Object.keys(batchesMetadata);
-  const currentDcCount = Object.keys(alivaWebRTC.dataChannels).length;
-  if (currentDcCount < 4) {
-    await alivaWebRTC.settingUpDatachannels(100);
-  } else {
-    console.log(`${currentDcCount} data channels already exists`);
-  }
-  for (let key = 0; key < batchesKeys.length; key++) {
-    const batchKey = batchesKeys[key];
-    const { chunks, batchHash } = batchesMetadata[batchKey];
-    // We will send these batch of chunks to other peer
-    const batchOfChunksIDB = await loadBatchOfChunks(
-      batchHash,
-      fileName,
-      chunks
-    );
-    const isBatchExists = await isBatchAlreadyExistOnReceiver(batchHash);
-    if (!isBatchExists) {
-      await sendBatchOfChunks(batchOfChunksIDB, batchHash);
-      await waitForBatchConfirmation(fileName, batchKey, batchHash);
-      console.log("Batch is sended: ", batchKey);
+export const sendFile = (fileName) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const fileMetadata = await getFileMetadataFromIndexedDB(fileName);
+      const batchesMetadata = fileMetadata["batchesMetaData"];
+      const batchesKeys = Object.keys(batchesMetadata);
+      const currentDcCount = Object.keys(alivaWebRTC.dataChannels).length;
+      console.log("batchesKeys: ", batchesKeys);
+      if (currentDcCount < 4) {
+        await alivaWebRTC.settingUpDatachannels(100);
+      } else {
+        console.log(`${currentDcCount} data channels already exists`);
+      }
+      for (let key = 0; key < batchesKeys.length; key++) {
+        const batchKey = batchesKeys[key];
+        const { chunks, batchHash } = batchesMetadata[batchKey];
+        // We will send these batch of chunks to other peer
+        const batchOfChunksIDB = await loadBatchOfChunks(
+          batchHash,
+          fileName,
+          chunks
+        );
+        const isBatchExists = await isBatchAlreadyExistOnReceiver(batchHash);
+        if (!isBatchExists) {
+          await sendBatchOfChunks(batchOfChunksIDB, batchHash);
+          await waitForBatchConfirmation(fileName, batchKey, batchHash);
+          console.log("Batch is sended: ", batchKey);
+        }
+      }
+      resolve(true);
+    } catch (error) {
+      reject(error);
     }
-  }
+  });
 };
