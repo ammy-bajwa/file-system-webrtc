@@ -8,5 +8,4 @@ export const requestingFile = async (fileName) => {
   };
   requestingFileObj = JSON.stringify(requestingFileObj);
   dataChannel.send(requestingFileObj);
-  dataChannel.send(JSON.stringify({ test: true }));
 };
