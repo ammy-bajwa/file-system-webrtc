@@ -10,9 +10,11 @@ import { handleReceivedChunk } from "../../idbUtils/handleReceivedChunk/handleRe
 
 import { doConfirmationForBatch } from "../../idbUtils/doConfirmationForBatch/doConfirmationForBatch";
 
-import { batchConfirmationMemory } from "../batchConfirmationMemory/batchConfirmationMemory";
-
 import { checkIfAlreadyExist } from "../../idbUtils/checkIfAlreadyExist/checkIfAlreadyExist";
+
+import { convertInMemoryBatchToBlob } from "../../fileUtils/convertInMemoryBatchToBlob/convertInMemoryBatchToBlob";
+
+import { batchConfirmationMemory } from "../batchConfirmationMemory/batchConfirmationMemory";
 
 import { causeDelay } from "../../utils/causeDelay";
 
@@ -112,7 +114,10 @@ export const initializeWebRTC = function (channel, machineId) {
                   }
                 }
               } else {
-                
+                const batchBlob = await convertInMemoryBatchToBlob(
+                  alivaWebRTC.chunks[batchHash]
+                );
+                debugger;
               }
               dataChannel.send(
                 JSON.stringify({
