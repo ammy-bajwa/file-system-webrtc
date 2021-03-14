@@ -140,13 +140,13 @@ export const initializeWebRTC = function (channel, machineId) {
                 const inMemoryBlobHash = await getHashOfArraybuffer(
                   inMemoryBlobArrayBuffer
                 );
-                debugger;
-                if (inMemoryBlobHash !== batchHash) {
-                  const batchKeys = await getAllBatchKeys(batchHash);
-                  missingBatchChunks = batchKeys;
-                } else {
-                  await saveBatchBlobToIdb(batchHash, batchBlob);
-                }
+                // debugger;
+                // if (inMemoryBlobHash !== batchHash) {
+                //   const batchKeys = await getAllBatchKeys(batchHash);
+                //   missingBatchChunks = batchKeys;
+                // } else {
+                // }
+                await saveBatchBlobToIdb(batchHash, batchBlob);
               }
               dataChannel.send(
                 JSON.stringify({

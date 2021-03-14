@@ -10,6 +10,9 @@ export const getHashOfArraybuffer = (arrayBufferOfBlob) => {
       const hashHex = hashArray
         .map((b) => b.toString(16).padStart(2, "0"))
         .join("");
+
+      console.log("arrayBufferOfBlob: ", arrayBufferOfBlob);
+      console.log("hashHex: ", hashHex);
       resolve(hashHex);
     } catch (error) {
       reject(error);
