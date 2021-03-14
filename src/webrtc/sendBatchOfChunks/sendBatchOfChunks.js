@@ -1,5 +1,7 @@
 import { alivaWebRTC } from "../index";
 
+import { convertBlobToBase64 } from "../../fileUtils/convertBlobToBase64/convertBlobToBase64";
+
 export const sendBatchOfChunks = async (batchOfChunksIDB, batchHash) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -12,8 +14,10 @@ export const sendBatchOfChunks = async (batchOfChunksIDB, batchHash) => {
         if (Object.hasOwnProperty.call(batchOfChunksIDB, chunkKey)) {
           const [startSliceIndex, endSliceIndex] = chunkKey.split("__");
           const blobChunk = batchOfChunksIDB[chunkKey];
+          const blobText = await convertBlobToBase64(blobChunk);
+          debugger;
           const chunkToSend = {
-            fileChunk: blobChunk,
+            fileChunk: blobText,
             startSliceIndex,
             endSliceIndex,
           };
