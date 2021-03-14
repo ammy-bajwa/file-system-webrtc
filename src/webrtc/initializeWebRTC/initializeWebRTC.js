@@ -1,5 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 
+import { alivaWebRTC } from "../index";
+
 import { setStatus } from "../../status/status";
 
 import { handleMetadataChannel } from "../handleMetadataChannel/handleMetadataChannel";
@@ -87,9 +89,13 @@ export const initializeWebRTC = function (channel, machineId) {
           try {
             const receivedMessage = JSON.parse(message);
             if (receivedMessage.isChunk) {
-              await handleReceivedChunk(
-                receivedMessage.chunkToSend,
-                receivedMessage.batchHash
+              // await handleReceivedChunk(
+              //   receivedMessage.chunkToSend,
+              //   receivedMessage.batchHash
+              // );
+              await alivaWebRTC.saveChunkInMemory(
+                receivedMessage.batchHash,
+                receivedMessage.chunkToSend
               );
             } else if (receivedMessage.isConfirmation) {
               const { batchHash, batchKey, fileName } = receivedMessage;

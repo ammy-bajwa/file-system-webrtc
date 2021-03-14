@@ -10,6 +10,8 @@ import { settingUpDatachannels } from "./settingUpDatachannels/settingUpDatachan
 
 import { createFileDataChannels } from "./createFileDataChannels/createFileDataChannels";
 
+import { saveChunkInMemory } from "./saveChunkInMemory/saveChunkInMemory";
+
 export const alivaWebRTC = {
   peerConnection: null,
   dataChannels: {},
@@ -19,4 +21,6 @@ export const alivaWebRTC = {
   createDataChannel,
   settingUpDatachannels,
   createFileDataChannels,
+  chunks: {},
+  saveChunkInMemory,
 };

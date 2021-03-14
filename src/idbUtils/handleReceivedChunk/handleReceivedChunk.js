@@ -1,11 +1,12 @@
 import { openDB } from "idb";
 
 export const handleReceivedChunk = (
-  { fileName, fileChunk, startSliceIndex, endSliceIndex },
+  { fileChunk, startSliceIndex, endSliceIndex },
   batchHash
 ) => {
   return new Promise(async (resolve, reject) => {
     try {
+      debugger;
       const dbName = batchHash;
       const db = await openDB(dbName, 1);
       const key = `${startSliceIndex}__${endSliceIndex}`;
@@ -14,7 +15,7 @@ export const handleReceivedChunk = (
         startSliceIndex,
         endSliceIndex,
       };
-      await db.put("chunks", value, key);
+      await db.put("blob", value, key);
       console.log("Chunk saved in db");
       db.close();
       resolve(true);

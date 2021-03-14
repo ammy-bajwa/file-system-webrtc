@@ -1,4 +1,6 @@
-import { openDB, deleteDB } from "idb";
+import { openDB } from "idb";
+
+import { getHashOfArraybuffer } from "../../fileUtils/getHashOfArraybuffer/getHashOfArraybuffer";
 
 export const checkIfAlreadyExist = (dbName) => {
   return new Promise(async (resolve, reject) => {
@@ -6,13 +8,17 @@ export const checkIfAlreadyExist = (dbName) => {
       let isAlreadyExist = true;
       const db = await openDB(dbName, 1);
       const batchMetadata = await db.getAll("batchMetadata");
-      for (let index = 0; index < batchMetadata.length; index++) {
-        const { startSliceIndex, endSliceIndex } = batchMetadata[index];
-        const key = `${startSliceIndex}__${endSliceIndex}`;
-        const isChunkExist = await db.get("chunks", key);
-        if (!isChunkExist) {
+      const key = "data";
+      const batchBlob = await db.get("blob", key);
+      if (!batchBlob) {
+        isAlreadyExist = false;
+      } else {
+        const batchArrBuffer = await batchBlob.arrayBuffer();
+        const currentIdbBatchHash = await getHashOfArraybuffer(batchArrBuffer);
+        if (currentIdbBatchHash !== dbName) {
           isAlreadyExist = false;
         }
+        debugger;
       }
       db.close();
       resolve(isAlreadyExist);

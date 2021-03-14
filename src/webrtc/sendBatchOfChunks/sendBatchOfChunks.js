@@ -6,9 +6,17 @@ export const sendBatchOfChunks = async (batchOfChunksIDB, batchHash) => {
       const allDataChannels = alivaWebRTC.dataChannels;
       const dataChannelsKeys = Object.keys(alivaWebRTC.dataChannels);
       let dataChannelsHelper = 0;
+      console.log("batchOfChunksIDB: ", batchOfChunksIDB);
+      console.log("batchHash: ", batchHash);
       for (const chunkKey in batchOfChunksIDB) {
         if (Object.hasOwnProperty.call(batchOfChunksIDB, chunkKey)) {
-          const chunkToSend = batchOfChunksIDB[chunkKey];
+          const [startSliceIndex, endSliceIndex] = chunkKey.split("__");
+          const blobChunk = batchOfChunksIDB[chunkKey];
+          const chunkToSend = {
+            fileChunk: blobChunk,
+            startSliceIndex,
+            endSliceIndex,
+          };
           if (dataChannelsHelper >= dataChannelsKeys.length) {
             dataChannelsHelper = 0;
           }
