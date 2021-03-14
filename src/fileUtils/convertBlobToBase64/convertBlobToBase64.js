@@ -7,7 +7,6 @@ export const convertBlobToBase64 = function (myBlob) {
         resolve(fileChunk);
       });
       // Base64
-      console.log("myBlob: ",myBlob)
       fileReader.readAsDataURL(myBlob);
     } catch (error) {
       console.error(error);

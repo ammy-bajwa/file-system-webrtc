@@ -17,7 +17,6 @@ export const saveChunkInMemory = function (batchHash, chunk) {
       this.chunks[`${batchHash}`][
         `${startSliceIndex}__${endSliceIndex}`
       ] = chunk;
-      console.log("This: ", this);
       resolve(true);
     } catch (error) {
       reject(error);

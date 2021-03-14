@@ -6,9 +6,9 @@ import { setStatus } from "../../status/status";
 
 import { handleMetadataChannel } from "../handleMetadataChannel/handleMetadataChannel";
 
-import { handleReceivedChunk } from "../../idbUtils/handleReceivedChunk/handleReceivedChunk";
+// import { handleReceivedChunk } from "../../idbUtils/handleReceivedChunk/handleReceivedChunk";
 
-import { doConfirmationForBatch } from "../../idbUtils/doConfirmationForBatch/doConfirmationForBatch";
+// import { doConfirmationForBatch } from "../../idbUtils/doConfirmationForBatch/doConfirmationForBatch";
 
 import { checkIfAlreadyExist } from "../../idbUtils/checkIfAlreadyExist/checkIfAlreadyExist";
 
