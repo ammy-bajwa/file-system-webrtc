@@ -10,6 +10,8 @@ import { handleReceivedChunk } from "../../idbUtils/handleReceivedChunk/handleRe
 
 import { doConfirmationForBatch } from "../../idbUtils/doConfirmationForBatch/doConfirmationForBatch";
 
+import { batchConfirmationMemory } from "../batchConfirmationMemory/batchConfirmationMemory";
+
 import { checkIfAlreadyExist } from "../../idbUtils/checkIfAlreadyExist/checkIfAlreadyExist";
 
 import { causeDelay } from "../../utils/causeDelay";
@@ -98,26 +100,19 @@ export const initializeWebRTC = function (channel, machineId) {
                 receivedMessage.chunkToSend
               );
             } else if (receivedMessage.isConfirmation) {
-              const { batchHash, batchKey, fileName } = receivedMessage;
-              console.log("Got message: ", message);
-              console.log("Got confirmation message");
-              let missingBatchChunks = await doConfirmationForBatch(
-                batchHash,
-                batchKey,
-                fileName
-              );
+              const { batchHash } = receivedMessage;
+              console.log("Got confirmation message: ", message);
+              let missingBatchChunks = await batchConfirmationMemory(batchHash);
               if (missingBatchChunks.length > 0) {
                 for (let index = 0; index <= 3; index++) {
                   await causeDelay(300);
-                  missingBatchChunks = await doConfirmationForBatch(
-                    batchHash,
-                    batchKey,
-                    fileName
-                  );
+                  missingBatchChunks = await batchConfirmationMemory(batchHash);
                   if (missingBatchChunks.length <= 0) {
                     break;
                   }
                 }
+              } else {
+                
               }
               dataChannel.send(
                 JSON.stringify({

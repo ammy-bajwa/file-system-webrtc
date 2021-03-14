@@ -18,7 +18,6 @@ export const checkIfAlreadyExist = (dbName) => {
         if (currentIdbBatchHash !== dbName) {
           isAlreadyExist = false;
         }
-        debugger;
       }
       db.close();
       resolve(isAlreadyExist);
