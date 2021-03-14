@@ -31,9 +31,6 @@ export const readAndSaveBatches = async (file, batchesMetaData) => {
       const batchArr = await batchWithFileData.arrayBuffer();
       const batchHash = await getHashOfArraybuffer(batchArr);
       batchesHashes.push(batchHash);
-
-      console.log("batchHash: ", batchHash);
-
       await addHashToBatchMetadata(fileName, batchKey, batchHash);
       const startSliceIndex = getLastChunkStartIndex(chunks);
       setStatus(

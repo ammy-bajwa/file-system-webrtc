@@ -3,9 +3,16 @@ export const convertInMemoryBatchToBlob = function (inMemoryBatch) {
     try {
       const base64Type = "data:application/octet-stream;base64,";
       let chunkBlobArr = [];
+      let startChunkKey = 0;
+      let endChunkKey = 0;
       for (const chunkKey in inMemoryBatch) {
         if (Object.hasOwnProperty.call(inMemoryBatch, chunkKey)) {
-          const { fileChunk } = inMemoryBatch[chunkKey];
+          const { startSliceIndex, endSliceIndex } = inMemoryBatch[chunkKey];
+          const difference = endSliceIndex - startSliceIndex;
+          endChunkKey = endChunkKey + difference;
+          startChunkKey = endChunkKey - difference;
+          const customChunkKey = `${startChunkKey}__${endChunkKey}`;
+          const { fileChunk } = inMemoryBatch[customChunkKey];
           let chunkBase64 = fileChunk.split(base64Type)[1];
           const byteCharacters = atob(chunkBase64);
           const byteNumbers = new Array(byteCharacters.length);
