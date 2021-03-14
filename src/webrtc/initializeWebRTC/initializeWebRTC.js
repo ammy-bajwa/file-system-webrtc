@@ -98,14 +98,11 @@ export const initializeWebRTC = function (channel, machineId) {
           try {
             const receivedMessage = JSON.parse(message);
             if (receivedMessage.isChunk) {
-              // await handleReceivedChunk(
-              //   receivedMessage.chunkToSend,
-              //   receivedMessage.batchHash
-              // );
               await alivaWebRTC.saveChunkInMemory(
                 receivedMessage.batchHash,
                 receivedMessage.chunkToSend
               );
+              return;
             } else if (receivedMessage.isConfirmation) {
               const { batchHash } = receivedMessage;
               console.log("Got confirmation message: ", message);
@@ -118,14 +115,32 @@ export const initializeWebRTC = function (channel, machineId) {
                     break;
                   }
                 }
+                debugger;
               } else {
-                const batchBlob = await convertInMemoryBatchToBlob(
-                  alivaWebRTC.chunks[batchHash]
+                const inMemoryBatchChunks = alivaWebRTC.chunks[batchHash];
+                const inMemoryBatchChunksKeys = Object.keys(
+                  inMemoryBatchChunks
                 );
+                let arrangedChunks = {};
+                for (
+                  let index = 0;
+                  index < inMemoryBatchChunksKeys.length;
+                  index++
+                ) {
+                  const chunkKey = inMemoryBatchChunksKeys[index];
+                  arrangedChunks[chunkKey] = inMemoryBatchChunks[chunkKey];
+                }
+                console.log(inMemoryBatchChunksKeys.length);
+                console.log(arrangedChunks);
+                const batchBlob = await convertInMemoryBatchToBlob(
+                  arrangedChunks
+                );
+                console.log(batchBlob);
                 const inMemoryBlobArrayBuffer = await batchBlob.arrayBuffer();
                 const inMemoryBlobHash = await getHashOfArraybuffer(
                   inMemoryBlobArrayBuffer
                 );
+                debugger;
                 if (inMemoryBlobHash !== batchHash) {
                   const batchKeys = await getAllBatchKeys(batchHash);
                   missingBatchChunks = batchKeys;
@@ -145,7 +160,7 @@ export const initializeWebRTC = function (channel, machineId) {
               dataChannel.send(JSON.stringify({ isBatchExists }));
             }
           } catch (error) {
-            console.log("Got message: ", message);
+            console.log("Got message on error: ", message);
             console.error(error);
           }
         };
