@@ -12,11 +12,16 @@ import { doConfirmationForBatch } from "../../idbUtils/doConfirmationForBatch/do
 
 import { checkIfAlreadyExist } from "../../idbUtils/checkIfAlreadyExist/checkIfAlreadyExist";
 
+import { getAllBatchKeys } from "../../idbUtils/getAllBatchKeys/getAllBatchKeys";
+
+import { saveBatchBlobToIdb } from "../../idbUtils/saveBatchBlobToIdb/saveBatchBlobToIdb";
+
 import { convertInMemoryBatchToBlob } from "../../fileUtils/convertInMemoryBatchToBlob/convertInMemoryBatchToBlob";
 
 import { batchConfirmationMemory } from "../batchConfirmationMemory/batchConfirmationMemory";
 
 import { causeDelay } from "../../utils/causeDelay";
+import { getHashOfArraybuffer } from "../../fileUtils/getHashOfArraybuffer/getHashOfArraybuffer";
 
 const iceServers = [
   {
@@ -117,7 +122,16 @@ export const initializeWebRTC = function (channel, machineId) {
                 const batchBlob = await convertInMemoryBatchToBlob(
                   alivaWebRTC.chunks[batchHash]
                 );
-                debugger;
+                const inMemoryBlobArrayBuffer = await batchBlob.arrayBuffer();
+                const inMemoryBlobHash = await getHashOfArraybuffer(
+                  inMemoryBlobArrayBuffer
+                );
+                if (inMemoryBlobHash !== batchHash) {
+                  const batchKeys = await getAllBatchKeys(batchHash);
+                  missingBatchChunks = batchKeys;
+                } else {
+                  await saveBatchBlobToIdb(batchHash, batchBlob);
+                }
               }
               dataChannel.send(
                 JSON.stringify({
