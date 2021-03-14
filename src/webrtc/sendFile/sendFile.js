@@ -33,11 +33,11 @@ export const sendFile = (fileName) => {
           chunks
         );
         const isBatchExists = await isBatchAlreadyExistOnReceiver(batchHash);
-        // if (!isBatchExists) {
-        //   await sendBatchOfChunks(batchOfChunksIDB, batchHash);
-        //   await waitForBatchConfirmation(fileName, batchKey, batchHash);
-        //   console.log("Batch is sended: ", batchKey);
-        // }
+        if (!isBatchExists) {
+          await sendBatchOfChunks(batchOfChunksIDB, batchHash);
+          await waitForBatchConfirmation(fileName, batchKey, batchHash);
+          console.log("Batch is sended: ", batchKey);
+        }
       }
       resolve(true);
     } catch (error) {

@@ -20,7 +20,6 @@ export const loadBatchOfChunks = async (batchHash, fileName, chunks) => {
         startBlobIndex = endBlobIndex;
         fileChunksFromIDB[chunkKey] = blockChunk;
       }
-      debugger;
       db.close();
       resolve(fileChunksFromIDB);
     } catch (error) {
