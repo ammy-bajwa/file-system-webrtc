@@ -141,8 +141,10 @@ export const initializeWebRTC = function (channel, machineId) {
                   const batchKeys = await getAllBatchKeys(batchHash);
                   missingBatchChunks = batchKeys;
                 } else {
+                  console.log("inMemoryBlobHash: ", inMemoryBlobHash);
+                  console.log("batchHash: ", batchHash);
+                  await saveBatchBlobToIdb(batchHash, batchBlob);
                 }
-                await saveBatchBlobToIdb(batchHash, batchBlob);
               }
               dataChannel.send(
                 JSON.stringify({
