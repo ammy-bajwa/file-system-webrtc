@@ -29,7 +29,6 @@ export const sendBatchOfChunks = async (batchOfChunksIDB, batchHash) => {
           dataChannelsHelper++;
         }
       }
-      debugger;
       resolve(true);
     } catch (error) {
       reject(error);
