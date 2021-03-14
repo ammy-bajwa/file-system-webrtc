@@ -15,7 +15,6 @@ export const sendBatchOfChunks = async (batchOfChunksIDB, batchHash) => {
           const [startSliceIndex, endSliceIndex] = chunkKey.split("__");
           const blobChunk = batchOfChunksIDB[chunkKey];
           const blobText = await convertBlobToBase64(blobChunk);
-          debugger;
           const chunkToSend = {
             fileChunk: blobText,
             startSliceIndex,
