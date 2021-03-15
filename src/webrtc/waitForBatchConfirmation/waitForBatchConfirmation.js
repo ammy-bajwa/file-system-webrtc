@@ -37,7 +37,6 @@ export const waitForBatchConfirmation = (
               await sendBatchOfChunks(missingChunksToResend, batchHash);
             }
             dataChannel.send(batchConfirmationPayload);
-            resolve(true);
           } else {
             resolve(true);
           }

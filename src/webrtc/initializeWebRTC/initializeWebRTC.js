@@ -105,10 +105,10 @@ export const initializeWebRTC = function (channel, machineId) {
               return;
             } else if (receivedMessage.isConfirmation) {
               const { batchHash } = receivedMessage;
-              console.log("Got confirmation message: ", message);
+              console.log("Confirmation message: ", message);
               let missingBatchChunks = await batchConfirmationMemory(batchHash);
               if (missingBatchChunks.length > 0) {
-                for (let index = 0; index <= 3; index++) {
+                for (let index = 0; index <= 5; index++) {
                   await causeDelay(300);
                   missingBatchChunks = await batchConfirmationMemory(batchHash);
                   if (missingBatchChunks.length <= 0) {
@@ -140,8 +140,6 @@ export const initializeWebRTC = function (channel, machineId) {
                   const batchKeys = await getAllBatchKeys(batchHash);
                   missingBatchChunks = batchKeys;
                 } else {
-                  console.log("inMemoryBlobHash: ", inMemoryBlobHash);
-                  console.log("batchHash: ", batchHash);
                   await saveBatchBlobToIdb(batchHash, batchBlob);
                   alivaWebRTC.chunks[batchHash] = {};
                 }
