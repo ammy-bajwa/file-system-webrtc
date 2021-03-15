@@ -27,7 +27,7 @@ export const saveBatchToIndexDB = async (
           await db.put("batchMetadata", valueOfChunkMetadata, key);
         }
       }
-      await db.put("blob", batcheBlob, "data");
+      // await db.put("blob", batcheBlob, "data");
       db.close();
       resolve(true);
     } catch (error) {
