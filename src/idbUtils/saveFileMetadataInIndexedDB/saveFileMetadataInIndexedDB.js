@@ -1,7 +1,6 @@
 import { openDB } from "idb";
 
 export const saveFileMetadataInIndexedDB = async (
-  file,
   fileName,
   fileSize,
   batchesMetaData
@@ -16,7 +15,6 @@ export const saveFileMetadataInIndexedDB = async (
       });
       const key = fileName;
       const value = {
-        file,
         fileName,
         fileSize,
         batchesMetaData,

@@ -115,7 +115,6 @@ export const initializeWebRTC = function (channel, machineId) {
                     break;
                   }
                 }
-                debugger;
               } else {
                 const inMemoryBatchChunks = alivaWebRTC.chunks[batchHash];
                 const inMemoryBatchChunksKeys = Object.keys(
