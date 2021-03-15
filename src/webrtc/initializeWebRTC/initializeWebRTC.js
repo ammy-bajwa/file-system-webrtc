@@ -143,6 +143,7 @@ export const initializeWebRTC = function (channel, machineId) {
                   console.log("inMemoryBlobHash: ", inMemoryBlobHash);
                   console.log("batchHash: ", batchHash);
                   await saveBatchBlobToIdb(batchHash, batchBlob);
+                  alivaWebRTC.chunks[batchHash] = {};
                 }
               }
               dataChannel.send(
