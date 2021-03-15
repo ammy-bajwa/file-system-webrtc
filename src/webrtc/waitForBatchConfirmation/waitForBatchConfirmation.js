@@ -1,8 +1,13 @@
 import { alivaWebRTC } from "../index";
 
-import { getFileChunkFromIDB } from "../../idbUtils/getFileChunkFromIDB/getFileChunkFromIDB";
+import { sendBatchOfChunks } from "../sendBatchOfChunks/sendBatchOfChunks";
 
-export const waitForBatchConfirmation = (fileName, batchKey, batchHash) => {
+export const waitForBatchConfirmation = (
+  fileName,
+  batchKey,
+  batchHash,
+  batchOfChunksIDB
+) => {
   return new Promise(async (resolve, reject) => {
     try {
       const dataChannel = await alivaWebRTC.createDataChannel(
@@ -19,19 +24,19 @@ export const waitForBatchConfirmation = (fileName, batchKey, batchHash) => {
         try {
           const { batchHash, missingBatchChunks } = JSON.parse(event.data);
           console.log("Confirmation: ", { missingBatchChunks, batchHash });
-          for (const chunkKey in missingBatchChunks) {
-            if (Object.hasOwnProperty.call(missingBatchChunks, chunkKey)) {
+          if (missingBatchChunks.length > 0) {
+            let missingChunksToResend = {};
+            for (let index = 0; index < missingBatchChunks.length; index++) {
+              const chunkKey = missingBatchChunks[index];
               const [startSliceIndex, endSliceIndex] = chunkKey.split("__");
-              const getSpecificFileChunk = await getFileChunkFromIDB(
-                batchHash,
-                startSliceIndex,
-                endSliceIndex
-              );
+              missingChunksToResend[chunkKey] = batchOfChunksIDB[chunkKey];
               console.log(
                 `Resending ${startSliceIndex}__${endSliceIndex} chunk`
               );
-              dataChannel.send(JSON.stringify(getSpecificFileChunk));
+              console.log(`missingChunksToResend: ${missingChunksToResend}`);
+              await sendBatchOfChunks(missingChunksToResend, batchHash);
             }
+            dataChannel.send(batchConfirmationPayload);
           }
         } catch (error) {
           console.error(error);
