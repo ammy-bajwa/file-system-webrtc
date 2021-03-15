@@ -115,26 +115,41 @@ export const initializeWebRTC = function (channel, machineId) {
                     break;
                   }
                 }
+                if (missingBatchChunks.length <= 0) {
+                  const inMemoryBatchChunks = alivaWebRTC.chunks[batchHash];
+                  const batchBlob = await convertInMemoryBatchToBlob(
+                    inMemoryBatchChunks
+                  );
+                  const inMemoryBlobArrayBuffer = await batchBlob.arrayBuffer();
+                  const inMemoryBlobHash = await getHashOfArraybuffer(
+                    inMemoryBlobArrayBuffer
+                  );
+                  console.log(
+                    "missingBatchChunks memory: ",
+                    inMemoryBatchChunks,
+                    inMemoryBlobHash
+                  );
+                  if (inMemoryBlobHash !== batchHash) {
+                    const batchKeys = await getAllBatchKeys(batchHash);
+                    missingBatchChunks = batchKeys;
+                  } else {
+                    await saveBatchBlobToIdb(batchHash, batchBlob);
+                    alivaWebRTC.chunks[batchHash] = {};
+                  }
+                }
               } else {
                 const inMemoryBatchChunks = alivaWebRTC.chunks[batchHash];
-                const inMemoryBatchChunksKeys = Object.keys(
-                  inMemoryBatchChunks
-                );
-                let arrangedChunks = {};
-                for (
-                  let index = 0;
-                  index < inMemoryBatchChunksKeys.length;
-                  index++
-                ) {
-                  const chunkKey = inMemoryBatchChunksKeys[index];
-                  arrangedChunks[chunkKey] = inMemoryBatchChunks[chunkKey];
-                }
                 const batchBlob = await convertInMemoryBatchToBlob(
-                  arrangedChunks
+                  inMemoryBatchChunks
                 );
                 const inMemoryBlobArrayBuffer = await batchBlob.arrayBuffer();
                 const inMemoryBlobHash = await getHashOfArraybuffer(
                   inMemoryBlobArrayBuffer
+                );
+                console.log(
+                  "missingBatchChunks memory: ",
+                  inMemoryBatchChunks,
+                  inMemoryBlobHash
                 );
                 if (inMemoryBlobHash !== batchHash) {
                   const batchKeys = await getAllBatchKeys(batchHash);
@@ -144,6 +159,11 @@ export const initializeWebRTC = function (channel, machineId) {
                   alivaWebRTC.chunks[batchHash] = {};
                 }
               }
+              console.log(
+                "missingBatchChunks: actual",
+                missingBatchChunks,
+                batchHash
+              );
               dataChannel.send(
                 JSON.stringify({
                   missingBatchChunks,
