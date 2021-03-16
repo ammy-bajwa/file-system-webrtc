@@ -22,6 +22,7 @@ export const convertInMemoryBatchToBlob = function (inMemoryBatch) {
         });
         chunkBlobArr.push(chunkBlob);
       }
+      console.log("chunkBlobArr: ", chunkBlobArr);
       const batchBlob = new Blob(chunkBlobArr, {
         type: "application/octet-stream",
       });
