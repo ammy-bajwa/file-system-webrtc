@@ -25,18 +25,26 @@ export const sendFile = (fileName) => {
       }
       for (let key = 0; key < batchesKeys.length; key++) {
         const batchKey = batchesKeys[key];
-        const { chunks, batchHash } = batchesMetadata[batchKey];
+        const { batchHash, totalChunksCount, endBatchIndex } = batchesMetadata[
+          batchKey
+        ];
         // We will send these batch of chunks to other peer
         const batchOfChunksIDB = await loadBatchOfChunks(
           batchHash,
-          fileName,
-          chunks
+          endBatchIndex,
+          totalChunksCount
         );
+
         const isBatchExists = await isBatchAlreadyExistOnReceiver(batchHash);
-        
+
         if (!isBatchExists) {
           await sendBatchOfChunks(batchOfChunksIDB, batchHash);
-          await waitForBatchConfirmation(fileName, batchKey, batchHash, batchOfChunksIDB);
+          await waitForBatchConfirmation(
+            fileName,
+            batchKey,
+            batchHash,
+            batchOfChunksIDB
+          );
           console.log("Batch is sended: ", batchKey);
         }
       }
