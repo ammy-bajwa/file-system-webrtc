@@ -5,16 +5,18 @@ import { setStatus } from "../../status/status";
 import { sendFile } from "../sendFile/sendFile";
 
 export const createDataChannel = function (dataChannelName) {
-  console.log("createDataChannel: ", this);
   return new Promise(async (resolve, reject) => {
     const dcOptions = {
       ordered: true,
       maxRetransmits: 10,
     };
-    const dataChannel = await this.peerConnection.createDataChannel(
-      dataChannelName,
-      dcOptions
-    );
+    let dataChannel = this.dataChannels[dataChannelName];
+    if (!dataChannel) {
+      dataChannel = await this.peerConnection.createDataChannel(
+        dataChannelName,
+        dcOptions
+      );
+    }
     const webrtcObj = this;
     dataChannel.onopen = () => {
       console.log("datachannel is open");
