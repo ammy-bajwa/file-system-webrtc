@@ -24,6 +24,7 @@ export const readAndSaveBatches = async (file, batchesMetaData) => {
         startBatchIndex,
         endBatchIndex
       );
+      console.log(batchWithFileData);
       const batchArr = await batchWithFileData.arrayBuffer();
       const batchHash = await getHashOfArraybuffer(batchArr);
       batchesHashes.push(batchHash);

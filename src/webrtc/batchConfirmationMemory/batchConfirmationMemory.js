@@ -2,23 +2,25 @@ import { alivaWebRTC } from "../index";
 
 import { getBatchMetadata } from "../../idbUtils/getBatchMetadata/getBatchMetadata";
 
-export const batchConfirmationMemory = function (batchHash) {
+export const batchConfirmationMemory = function (
+  fileName,
+  batchHash,
+  batchKey
+) {
   return new Promise(async (resolve, reject) => {
     try {
       const inMemoryBatch = alivaWebRTC.chunks[batchHash];
-      const batchMetadata = await getBatchMetadata(batchHash);
-      let missingBatchChunks = [];
-      for (const chunkKey in batchMetadata) {
-        if (Object.hasOwnProperty.call(batchMetadata, chunkKey)) {
-          const { startSliceIndex, endSliceIndex } = batchMetadata[chunkKey];
-          const key = `${startSliceIndex}__${endSliceIndex}`;
-          const isReceived = inMemoryBatch[key];
-          if (!isReceived) {
-            missingBatchChunks.push(key);
-          }
-        }
+      const { totalChunksCount } = await getBatchMetadata(
+        fileName,
+        batchHash,
+        batchKey
+      );
+      const inMemoryBatchChunksCount = Object.keys(inMemoryBatch).length;
+      if (totalChunksCount === inMemoryBatchChunksCount) {
+        resolve(true);
+      } else {
+        resolve(false);
       }
-      resolve(missingBatchChunks);
     } catch (error) {
       reject(error);
     }

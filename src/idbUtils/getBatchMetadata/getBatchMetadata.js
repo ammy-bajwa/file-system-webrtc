@@ -1,20 +1,13 @@
 import { openDB } from "idb";
 
-export const getBatchMetadata = function (batchHash) {
+export const getBatchMetadata = function (fileName, batchHash, batchKey) {
   return new Promise(async (resolve, reject) => {
     try {
-      const dbName = batchHash;
-      const storeName = "batchMetadata";
+      const dbName = "files";
+      const storeName = "filesMetadata";
       const db = await openDB(dbName, 1);
-      const batchMetadata = await db.getAll(storeName);
-      const batchMetadataObj = {};
-      for (let index = 0; index < batchMetadata.length; index++) {
-        const { startSliceIndex, endSliceIndex } = batchMetadata[index];
-        batchMetadataObj[`${startSliceIndex}__${endSliceIndex}`] = {
-          startSliceIndex,
-          endSliceIndex,
-        };
-      }
+      const { batchesMetaData } = await db.get(storeName, fileName);
+      const batchMetadataObj = batchesMetaData[batchKey];
       db.close();
       resolve(batchMetadataObj);
     } catch (error) {

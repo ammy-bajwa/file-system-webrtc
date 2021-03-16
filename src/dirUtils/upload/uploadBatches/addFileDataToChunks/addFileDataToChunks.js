@@ -13,20 +13,6 @@ export const addFileDataToChunks = async (
         startBatchIndex,
         endBatchIndex
       );
-      // for (const chunkey in chunks) {
-      //   if (Object.hasOwnProperty.call(chunks, chunkey)) {
-      //     const { startSliceIndex, endSliceIndex } = chunks[chunkey];
-      //     const fileChunkObj = await getSpecificFileChunk(
-      //       file,
-      //       startSliceIndex,
-      //       endSliceIndex
-      //     );
-      //     batchWithFileChunks[
-      //       `${startSliceIndex}__${endSliceIndex}`
-      //     ] = fileChunkObj;
-      //   }
-      // }
-      // resolve(batchWithFileChunks);
       resolve(fileChunkObj);
     } catch (error) {
       reject(error);

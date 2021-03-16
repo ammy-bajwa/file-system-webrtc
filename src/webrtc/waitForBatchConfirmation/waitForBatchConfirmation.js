@@ -26,21 +26,11 @@ export const waitForBatchConfirmation = (
       console.log("waitForBatchConfirmation: ", waitForBatchConfirmation);
       dataChannel.onmessage = async (event) => {
         try {
-          const { batchHash, missingBatchChunks } = JSON.parse(event.data);
-          console.log("Confirmation: ", { missingBatchChunks, batchHash });
-          if (missingBatchChunks.length > 0) {
-            let missingChunksToResend = {};
-            for (let index = 0; index < missingBatchChunks.length; index++) {
-              const chunkKey = missingBatchChunks[index];
-              const [startSliceIndex, endSliceIndex] = chunkKey.split("__");
-              missingChunksToResend[chunkKey] = batchOfChunksIDB[chunkKey];
-              console.log(
-                `Resending ${startSliceIndex}__${endSliceIndex} chunk`
-              );
-              console.log(`missingChunksToResend: ${missingChunksToResend}`);
-              await sendBatchOfChunks(missingChunksToResend, batchHash);
-            }
-            dataChannel.send(batchConfirmationPayload);
+          const { batchHash, isTotalBatchReceived } = JSON.parse(event.data);
+          console.log("Confirmation: ", { isTotalBatchReceived, batchHash });
+          if (!isTotalBatchReceived) {
+            await sendBatchOfChunks(batchOfChunksIDB, batchHash);
+            // dataChannel.send(batchConfirmationPayload);
             resolve(true);
           } else {
             resolve(true);
