@@ -1,4 +1,5 @@
 import { openDB } from "idb";
+import { alivaWebRTC } from "../../webrtc/index";
 
 export const loadBatchOfChunks = async (
   batchHash,
@@ -14,7 +15,7 @@ export const loadBatchOfChunks = async (
       let fileChunksFromIDB = {};
       let startBlobIndex = 0;
       let endBlobIndex = 0;
-      const difference = 40000;
+      const difference = alivaWebRTC.chunkSize;
       for (let index = 0; index < totalChunksCount; index++) {
         endBlobIndex += difference;
         if (endBlobIndex >= endBatchIndex) {
