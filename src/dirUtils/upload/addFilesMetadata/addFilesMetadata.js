@@ -13,12 +13,13 @@ export const addFilesMetadata = async (files, chunkSize) => {
         const fileName = file["name"];
         const fileSize = file["size"];
         setStatus(`<h2>Adding metadata to ${fileName}</h2>`);
-        const chunksArr = await getChunksArr(fileSize, chunkSize);
+        const allFileChunksArr = await getChunksArr(fileSize, chunkSize);
         filesObj = {
           filePath,
           fileName,
           fileSize,
-          chunksArr,
+          chunksArr: allFileChunksArr,
+          totalFileChunksCount: allFileChunksArr.length,
           file,
         };
         filesWithChunskingInfo.push(filesObj);

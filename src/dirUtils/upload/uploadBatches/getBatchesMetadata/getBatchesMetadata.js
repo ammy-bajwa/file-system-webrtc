@@ -21,18 +21,18 @@ export const getBatchesMetadata = async (
         startBatchCounter,
         endBatchCounter
       );
-      batchObj.startBatchCounter = startBatchCounter;
-      batchObj.endBatchCounter = endBatchCounter;
-      batchObj.chunks = batchChunksObj;
+      // batchObj.startBatchCounter = startBatchCounter;
+      // batchObj.endBatchCounter = endBatchCounter;
+      // batchObj.chunks = batchChunksObj;
       const batchChunksKeys = Object.keys(batchChunksObj);
       batchObj.totalChunksCount = batchChunksKeys.length;
       batchObj.fileName = fileName;
       const startIndex = `${batchChunksKeys[0].split("__")[0]}`;
-      batchObj.startBatchIndex = startIndex;
+      batchObj.startBatchIndex = parseInt(startIndex);
       const lastIndexKey = `${
         batchChunksKeys[batchChunksKeys.length - 1].split("__")[1]
       }`;
-      batchObj.endBatchIndex = lastIndexKey;
+      batchObj.endBatchIndex = parseInt(lastIndexKey);
       batchesMetadata[`batch__${index}`] = batchObj;
 
       startBatchCounter = endBatchCounter;

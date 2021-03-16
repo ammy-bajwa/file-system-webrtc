@@ -16,13 +16,9 @@ export const readAndSaveBatches = async (file, batchesMetaData) => {
   let batchesHashes = [];
   for (const batchKey in batchesMetaData) {
     if (Object.hasOwnProperty.call(batchesMetaData, batchKey)) {
-      const {
-        startBatchIndex,
-        endBatchIndex,
-        chunks,
-        // endBatchCounter,
-        fileName,
-      } = batchesMetaData[batchKey];
+      const { startBatchIndex, endBatchIndex, fileName } = batchesMetaData[
+        batchKey
+      ];
       const batchWithFileData = await addFileDataToChunks(
         file,
         startBatchIndex,
@@ -32,18 +28,17 @@ export const readAndSaveBatches = async (file, batchesMetaData) => {
       const batchHash = await getHashOfArraybuffer(batchArr);
       batchesHashes.push(batchHash);
       await addHashToBatchMetadata(fileName, batchKey, batchHash);
-      const startSliceIndex = getLastChunkStartIndex(chunks);
       setStatus(
         `<h2>
-        ${(startSliceIndex / 1000 / 1000).toFixed(
-          2
-        )} MB has been saved out of ${(file["size"] / 1000 / 1000).toFixed(
-          2
-        )} MB ${file["name"]} file
+        ${(endBatchIndex / 1000 / 1000).toFixed(2)} MB has been saved out of ${(
+          file["size"] /
+          1000 /
+          1000
+        ).toFixed(2)} MB ${file["name"]} file
             </h2>`
       );
       // save batch to index db
-      await saveBatchToIndexDB(batchHash, batchWithFileData, chunks);
+      await saveBatchToIndexDB(batchHash, batchWithFileData);
     }
   }
   setStatus(`<h2>Adding hash to ${file["name"]} file</h2>`);
