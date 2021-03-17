@@ -23,7 +23,6 @@ export const waitForBatchConfirmation = (
         fileName,
       };
       batchConfirmationPayload = JSON.stringify(batchConfirmationPayload);
-      console.log("waitForBatchConfirmation: ", waitForBatchConfirmation);
       dataChannel.onmessage = async (event) => {
         try {
           const { batchHash, isTotalBatchReceived } = JSON.parse(event.data);
