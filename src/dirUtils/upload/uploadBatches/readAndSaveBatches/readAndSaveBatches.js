@@ -1,6 +1,6 @@
 import { addFileDataToChunks } from "../addFileDataToChunks/addFileDataToChunks";
 
-import { saveBatchToIndexDB } from "../../../../idbUtils/saveBatchToIndexDB/saveBatchToIndexDB";
+import { saveBatchesToIndexDB } from "../../../../idbUtils/saveBatchesToIndexDB/saveBatchesToIndexDB";
 
 import { setStatus } from "../../../../status/status";
 
@@ -10,40 +10,68 @@ import { addHashToBatchMetadata } from "../../../../idbUtils/addHashToBatchMetad
 
 import { addFileHashIDB } from "../../../../idbUtils/addFileHashIDB/addFileHashIDB";
 
+import { alivaWebRTC } from "../../../../webrtc/index";
+
 export const readAndSaveBatches = async (file, batchesMetaData) => {
   return new Promise(async (resolve, reject) => {
     try {
       // Here we will get two things
       // file and metadata of filechunks
+      const batchesInMemory = alivaWebRTC.numberOfBatchesInMemory;
+      const allBatchesKeys = Object.keys(batchesMetaData);
+      const allBatchesKeysCount = Object.keys(batchesMetaData).length;
+      const totalOuterLoopCounter = Math.ceil(
+        allBatchesKeysCount / batchesInMemory
+      );
       let batchesHashes = [];
-      for (const batchKey in batchesMetaData) {
-        if (Object.hasOwnProperty.call(batchesMetaData, batchKey)) {
-          const { startBatchIndex, endBatchIndex, fileName } = batchesMetaData[
-            batchKey
-          ];
-          const batchWithFileData = await addFileDataToChunks(
-            file,
-            startBatchIndex,
-            endBatchIndex
-          );
-          console.log(batchWithFileData);
-          const batchArr = await batchWithFileData.arrayBuffer();
-          const batchHash = await getHashOfArraybuffer(batchArr);
-          batchesHashes.push(batchHash);
-          await addHashToBatchMetadata(fileName, batchKey, batchHash);
-          setStatus(
-            `<h2>
-          ${(endBatchIndex / 1000 / 1000).toFixed(
-            2
-          )} MB has been saved out of ${(file["size"] / 1000 / 1000).toFixed(
-              2
-            )} MB ${file["name"]} file
-            </h2>`
-          );
-          // save batch to index db
-          await saveBatchToIndexDB(batchHash, batchWithFileData);
+      let inMemoryBatches = [];
+      let batchHelperCount = 0;
+      let statusHelper = 0;
+      for (let index = 0; index < totalOuterLoopCounter; index++) {
+        for (let index = 0; index < batchesInMemory; index++) {
+          const batchKey = allBatchesKeys[batchHelperCount];
+          const batchData = batchesMetaData[batchKey];
+          if (batchData) {
+            const { startBatchIndex, endBatchIndex, fileName } = batchData;
+            const batchWithFileData = await addFileDataToChunks(
+              file,
+              startBatchIndex,
+              endBatchIndex
+            );
+            const batchArr = await batchWithFileData.arrayBuffer();
+            const batchHash = await getHashOfArraybuffer(batchArr);
+            batchesHashes.push(batchHash);
+            await addHashToBatchMetadata(fileName, batchKey, batchHash);
+            inMemoryBatches.push({ batchHash, batchWithFileData });
+            statusHelper = endBatchIndex;
+          } else {
+            break;
+          }
+          batchHelperCount++;
+          console.log("batchKey: ", batchKey);
         }
+        setStatus(
+          `<h2>
+            Working to upload ${(statusHelper / 1000 / 1000).toFixed(
+              2
+            )} MB out of ${(file["size"] / 1000 / 1000).toFixed(
+            2
+          )} MB ${file["name"]} file
+              </h2>`
+        );
+        await saveBatchesToIndexDB(inMemoryBatches);
+        setStatus(
+          `<h2>
+            ${(statusHelper / 1000 / 1000).toFixed(
+              2
+            )} MB has been saved out of ${(file["size"] / 1000 / 1000).toFixed(
+            2
+          )} MB ${file["name"]} file
+              </h2>`
+        );
+        console.log("---------------");
       }
+
       setStatus(`<h2>Adding hash to ${file["name"]} file</h2>`);
       await addFileHashIDB(file["name"], batchesHashes);
       resolve(true);
