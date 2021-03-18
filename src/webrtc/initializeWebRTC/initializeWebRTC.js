@@ -12,7 +12,7 @@ import { handleMetadataChannel } from "../handleMetadataChannel/handleMetadataCh
 
 import { checkIfAlreadyExist } from "../../idbUtils/checkIfAlreadyExist/checkIfAlreadyExist";
 
-import { getAllBatchKeys } from "../../idbUtils/getAllBatchKeys/getAllBatchKeys";
+// import { getAllBatchKeys } from "../../idbUtils/getAllBatchKeys/getAllBatchKeys";
 
 import { saveBatchBlobToIdb } from "../../idbUtils/saveBatchBlobToIdb/saveBatchBlobToIdb";
 

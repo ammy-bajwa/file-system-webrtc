@@ -1,8 +1,8 @@
-import { getFileMetadataFromIndexedDB } from "../idbUtils/getFileMetadataFromIndexedDB/getFileMetadataFromIndexedDB";
+// import { getFileMetadataFromIndexedDB } from "../idbUtils/getFileMetadataFromIndexedDB/getFileMetadataFromIndexedDB";
 
 import { alivaWebRTC } from "../webrtc/index";
 
-import { sendFile } from "../webrtc/sendFile/sendFile";
+// import { sendFile } from "../webrtc/sendFile/sendFile";
 
 import { requestingFile } from "../webrtc/requestingFile/requestingFile";
 
@@ -14,11 +14,11 @@ const DisplayFiles = ({ files }) => {
       myFiles.push({ name, size, isReceived });
     }
   }
-  const handleGetFile = async (fileName) => {
-    const fileMetadata = await getFileMetadataFromIndexedDB(fileName);
-    await sendFile(fileMetadata);
-    console.log("fileMetadata", fileMetadata);
-  };
+  // const handleGetFile = async (fileName) => {
+  //   const fileMetadata = await getFileMetadataFromIndexedDB(fileName);
+  //   await sendFile(fileMetadata);
+  //   console.log("fileMetadata", fileMetadata);
+  // };
 
   const requestFile = async (fileName) => {
     const dataChannelsCount = Object.keys(alivaWebRTC.dataChannels).length;

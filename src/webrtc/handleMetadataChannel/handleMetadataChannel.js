@@ -1,4 +1,4 @@
-import { checkIfAlreadyExist } from "../../idbUtils/checkIfAlreadyExist/checkIfAlreadyExist";
+// import { checkIfAlreadyExist } from "../../idbUtils/checkIfAlreadyExist/checkIfAlreadyExist";
 
 import { saveReceivedMetadata } from "../../idbUtils/saveReceivedMetadata/saveReceivedMetadata";
 
@@ -22,7 +22,7 @@ export const handleMetadataChannel = function (dataChannel) {
         name,
         size,
         batchesMetaData,
-        isReceived,
+        // isReceived,
         fileHash,
       } = parsedMessage;
       await saveReceivedMetadata(name, size, batchesMetaData, fileHash);

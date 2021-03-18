@@ -31,7 +31,6 @@ class App extends Component {
   }
 
   handleWebRtcConnection = async () => {
-    const { machineId } = this.state;
     await alivaWebRTC.createDataChannel("dc");
   };
 

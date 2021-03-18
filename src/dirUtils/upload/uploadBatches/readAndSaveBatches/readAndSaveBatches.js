@@ -81,9 +81,9 @@ export const readAndSaveBatches = async (file, batchesMetaData) => {
   });
 };
 
-const getLastChunkStartIndex = (chunks) => {
-  const chunkKeys = Object.keys(chunks);
-  const lastKey = chunkKeys[chunkKeys.length - 1];
-  const { startSliceIndex } = chunks[lastKey];
-  return startSliceIndex;
-};
+// const getLastChunkStartIndex = (chunks) => {
+//   const chunkKeys = Object.keys(chunks);
+//   const lastKey = chunkKeys[chunkKeys.length - 1];
+//   const { startSliceIndex } = chunks[lastKey];
+//   return startSliceIndex;
+// };
