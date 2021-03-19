@@ -34,7 +34,6 @@ export const getBatchesMetadata = async (
 
       startBatchCounter = endBatchCounter;
       endBatchCounter = endBatchCounter + numberOfChunksInSingleBatch;
-      debugger;
     }
     resolve(batchesMetadata);
   });
