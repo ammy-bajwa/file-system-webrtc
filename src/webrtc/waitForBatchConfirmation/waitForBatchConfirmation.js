@@ -29,8 +29,10 @@ export const waitForBatchConfirmation = (
           console.log("Confirmation: ", { isTotalBatchReceived, batchHash });
           if (!isTotalBatchReceived) {
             await sendBatchOfChunks(batchOfChunksIDB, batchHash);
-            // dataChannel.send(batchConfirmationPayload);
-            resolve(true);
+            console.log("Resending batch: ", batchOfChunksIDB);
+            console.log("Resending batch hash: ", batchHash);
+            dataChannel.send(batchConfirmationPayload);
+            // resolve(true);
           } else {
             resolve(true);
           }
