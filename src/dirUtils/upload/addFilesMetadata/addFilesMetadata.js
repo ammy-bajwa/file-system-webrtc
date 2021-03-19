@@ -2,6 +2,8 @@ import { getChunksArr } from "../../../fileUtils/getChunksArr/getChunksArr";
 
 import { setStatus } from "../../../status/status";
 
+import { alivaWebRTC } from "../../../webrtc/index";
+
 export const addFilesMetadata = async (files, chunkSize) => {
   const filesMetadataPromise = new Promise(async (resolve, reject) => {
     try {
@@ -13,7 +15,10 @@ export const addFilesMetadata = async (files, chunkSize) => {
         const fileName = file["name"];
         const fileSize = file["size"];
         setStatus(`<h2>Adding metadata to ${fileName}</h2>`);
-        const allFileChunksArr = await getChunksArr(fileSize, chunkSize);
+        const allFileChunksArr = await getChunksArr(
+          fileSize,
+          alivaWebRTC.dcChunkSize
+        );
         filesObj = {
           filePath,
           fileName,
