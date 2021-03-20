@@ -110,7 +110,7 @@ export const initializeWebRTC = function (channel, machineId) {
               const { batchHash, fileName, batchKey } = receivedMessage;
               console.log("Confirmation message: ", message);
               const inMemoryBatchChunks = alivaWebRTC.chunks[batchHash];
-              if (!inMemoryBatchChunks.confirmation) {
+              if (inMemoryBatchChunks.confirmation) {
                 dataChannel.send(
                   JSON.stringify({
                     isTotalBatchReceived: true,
@@ -128,7 +128,7 @@ export const initializeWebRTC = function (channel, machineId) {
                   batchKey
                 );
                 if (!isTotalBatchReceived) {
-                  for (let index = 0; index <= 2; index++) {
+                  for (let index = 0; index <= 30; index++) {
                     await causeDelay(100);
                     isTotalBatchReceived = await batchConfirmationMemory(
                       fileName,
