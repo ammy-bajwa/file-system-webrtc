@@ -20,7 +20,6 @@ export const saveFileMetadataInIndexedDB = async (
         batchesMetaData,
         isReceived: false,
       };
-
       await db.put("filesMetadata", value, key);
       db.close();
       resolve(true);
