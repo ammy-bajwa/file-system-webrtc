@@ -12,9 +12,13 @@ export const handleDirUpload = async (
   const files = fileElement.files;
   const fileInfoHtml = getFilesInfoString(files);
   setStatus(fileInfoHtml);
+
+  // Here we are adding files metadata info to file objects
   const filesWithMetadata = await addFilesMetadata(files, chunkSize);
-  console.log("filesWithMetadata: ", filesWithMetadata);
+
   setStatus(`<h2>Metadata added to all files</h2>`);
+
+  // Here we will upload batches in 
   await uploadBatches(filesWithMetadata, numberOfChunksInSingleBatch);
 };
 

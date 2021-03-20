@@ -23,6 +23,7 @@ export const waitForBatchConfirmation = (
         fileName,
       };
       batchConfirmationPayload = JSON.stringify(batchConfirmationPayload);
+      let doesChange = false;
       dataChannel.onmessage = async (event) => {
         try {
           const { batchHash, isTotalBatchReceived, missingChunks } = JSON.parse(
@@ -33,18 +34,24 @@ export const waitForBatchConfirmation = (
             batchHash,
             missingChunks,
           });
-          const resendChunkObj = {};
-          for (let index = 0; index < missingChunks.length; index++) {
-            const chunkKey = missingChunks[index];
-            resendChunkObj[chunkKey] = batchOfChunksIDB[chunkKey];
-          }
           if (!isTotalBatchReceived) {
+            const resendChunkObj = {};
+            for (let index = 0; index < missingChunks.length; index++) {
+              const chunkKey = missingChunks[index];
+              resendChunkObj[chunkKey] = batchOfChunksIDB[chunkKey];
+            }
             await sendBatchOfChunks(resendChunkObj, batchHash);
             console.log("Resending batch: ", resendChunkObj);
             console.log("Resending batch hash: ", batchHash);
             dataChannel.send(batchConfirmationPayload);
+            setTimeout(() => {
+              if (!doesChange) {
+                dataChannel.send(batchConfirmationPayload);
+              }
+            }, 3000);
             // resolve(true);
           } else {
+            doesChange = true;
             resolve(true);
           }
         } catch (error) {

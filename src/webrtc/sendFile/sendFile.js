@@ -19,10 +19,11 @@ export const sendFile = (fileName) => {
       const currentDcCount = Object.keys(alivaWebRTC.dataChannels).length;
       console.log("batchesKeys: ", batchesKeys);
       if (currentDcCount < 4) {
-        await alivaWebRTC.settingUpDatachannels(100);
+        await alivaWebRTC.settingUpDatachannels(400);
       } else {
         console.log(`${currentDcCount} data channels already exists`);
       }
+      debugger;
       for (let key = 0; key < batchesKeys.length; key++) {
         const batchKey = batchesKeys[key];
         const { batchHash, totalChunksCount, endBatchIndex } = batchesMetadata[

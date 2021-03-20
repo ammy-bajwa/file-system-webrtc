@@ -109,43 +109,64 @@ export const initializeWebRTC = function (channel, machineId) {
             } else if (receivedMessage.isConfirmation) {
               const { batchHash, fileName, batchKey } = receivedMessage;
               console.log("Confirmation message: ", message);
-              let missingChunks = [];
-              let isTotalBatchReceived = await batchConfirmationMemory(
-                fileName,
-                batchHash,
-                batchKey
-              );
-              if (!isTotalBatchReceived) {
-                for (let index = 0; index <= 2; index++) {
-                  await causeDelay(100);
-                  isTotalBatchReceived = await batchConfirmationMemory(
-                    fileName,
+              const inMemoryBatchChunks = alivaWebRTC.chunks[batchHash];
+              if (!inMemoryBatchChunks.confirmation) {
+                dataChannel.send(
+                  JSON.stringify({
+                    isTotalBatchReceived: true,
                     batchHash,
-                    batchKey
-                  );
-                  if (isTotalBatchReceived) {
-                    break;
+                    batchKey,
+                    missingChunks: [],
+                  })
+                );
+                return;
+              } else {
+                let missingChunks = [];
+                let isTotalBatchReceived = await batchConfirmationMemory(
+                  fileName,
+                  batchHash,
+                  batchKey
+                );
+                if (!isTotalBatchReceived) {
+                  for (let index = 0; index <= 2; index++) {
+                    await causeDelay(100);
+                    isTotalBatchReceived = await batchConfirmationMemory(
+                      fileName,
+                      batchHash,
+                      batchKey
+                    );
+                    if (isTotalBatchReceived) {
+                      break;
+                    }
                   }
                 }
-              }
-              const inMemoryBatchChunks = alivaWebRTC.chunks[batchHash];
-              if (isTotalBatchReceived) {
-                const batchBlob = await convertInMemoryBatchToBlob(
-                  inMemoryBatchChunks
-                );
-                const inMemoryBlobArrayBuffer = await batchBlob.arrayBuffer();
-                const inMemoryBlobHash = await getHashOfArraybuffer(
-                  inMemoryBlobArrayBuffer
-                );
-                if (inMemoryBlobHash !== batchHash) {
-                  isTotalBatchReceived = false;
-                  // find missing chunks here
-                  missingChunks = await findInMemoryMissingBatchChunks(
-                    fileName,
-                    batchKey,
-                    batchHash,
+                if (isTotalBatchReceived) {
+                  const batchBlob = await convertInMemoryBatchToBlob(
                     inMemoryBatchChunks
                   );
+                  const inMemoryBlobArrayBuffer = await batchBlob.arrayBuffer();
+                  const inMemoryBlobHash = await getHashOfArraybuffer(
+                    inMemoryBlobArrayBuffer
+                  );
+                  if (inMemoryBlobHash !== batchHash) {
+                    isTotalBatchReceived = false;
+                    // find missing chunks here
+                    missingChunks = await findInMemoryMissingBatchChunks(
+                      fileName,
+                      batchKey,
+                      batchHash,
+                      inMemoryBatchChunks
+                    );
+                  } else {
+                    missingChunks = await findInMemoryMissingBatchChunks(
+                      fileName,
+                      batchKey,
+                      batchHash,
+                      inMemoryBatchChunks
+                    );
+                    await saveBatchBlobToIdb(batchHash, batchBlob);
+                    alivaWebRTC.chunks[batchHash] = { confirmation: true };
+                  }
                 } else {
                   missingChunks = await findInMemoryMissingBatchChunks(
                     fileName,
@@ -153,32 +174,20 @@ export const initializeWebRTC = function (channel, machineId) {
                     batchHash,
                     inMemoryBatchChunks
                   );
-                  debugger;
-                  await saveBatchBlobToIdb(batchHash, batchBlob);
-                  alivaWebRTC.chunks[batchHash] = {};
                 }
-              } else {
-                missingChunks = await findInMemoryMissingBatchChunks(
-                  fileName,
-                  batchKey,
-                  batchHash,
-                  inMemoryBatchChunks
+                console.log("missingBatchChunks: actual", missingChunks);
+                if (missingChunks.length > 0) {
+                  isTotalBatchReceived = false;
+                }
+                dataChannel.send(
+                  JSON.stringify({
+                    isTotalBatchReceived,
+                    batchHash,
+                    batchKey,
+                    missingChunks,
+                  })
                 );
-                debugger;
               }
-              console.log(
-                "missingBatchChunks: actual",
-                isTotalBatchReceived,
-                batchHash
-              );
-              dataChannel.send(
-                JSON.stringify({
-                  isTotalBatchReceived,
-                  batchHash,
-                  batchKey,
-                  missingChunks,
-                })
-              );
             } else if (receivedMessage.isBatchExists) {
               const { batchHash } = receivedMessage;
               const isBatchExists = await checkIfAlreadyExist(batchHash);
