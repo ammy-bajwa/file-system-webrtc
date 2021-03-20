@@ -23,7 +23,6 @@ export const alivaWebRTC = {
   createFileDataChannels,
   chunks: {},
   saveChunkInMemory,
-  chunkSize: 400000,
-  dcChunkSize: 40000,
-  numberOfBatchesInMemory: 5000,
+  chunkSize: 40000, // 40KB Batch Size
+  numberOfBatchesInMemory: 500,
 };

@@ -15,10 +15,7 @@ export const addFilesMetadata = async (files, chunkSize) => {
         const fileName = file["name"];
         const fileSize = file["size"];
         setStatus(`<h2>Adding metadata to ${fileName}</h2>`);
-        const allFileChunksArr = await getChunksArr(
-          fileSize,
-          alivaWebRTC.dcChunkSize
-        );
+        const allFileChunksArr = await getChunksArr(fileSize, chunkSize);
         filesObj = {
           filePath,
           fileName,
