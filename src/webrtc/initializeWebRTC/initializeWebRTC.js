@@ -177,7 +177,11 @@ export const initializeWebRTC = function (channel, machineId) {
                         ? `<h2>
       ${(endBatchIndex / 1000 / 1000).toFixed(
         2
-      )} MB has been saved ${fileName} file out of ${fileSize} MB 
+      )} MB has been saved ${fileName} file out of ${(
+                            fileSize /
+                            1000 /
+                            1000
+                          ).toFixed(2)} MB 
         </h2>`
                         : `<h2>
         All File Received Successfully ${fileName}</h2>`;
