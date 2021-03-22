@@ -9,6 +9,7 @@ import { sendBatchOfChunks } from "../sendBatchOfChunks/sendBatchOfChunks";
 import { waitForBatchConfirmation } from "../waitForBatchConfirmation/waitForBatchConfirmation";
 
 import { isBatchAlreadyExistOnReceiver } from "../isBatchAlreadyExistOnReceiver/isBatchAlreadyExistOnReceiver";
+import { setStatus } from "../../status/status";
 
 export const sendFile = (fileName) => {
   return new Promise(async (resolve, reject) => {
@@ -47,6 +48,15 @@ export const sendFile = (fileName) => {
             batchOfChunksIDB,
             endBatchIndex,
             fileSize
+          );
+          setStatus(
+            `<h2>
+               ${(endBatchIndex / 1000 / 1000).toFixed(
+                 2
+               )} MB Have Been Send out of ${(fileSize / 1000 / 1000).toFixed(
+              2
+            )} MB ${fileName} file
+                </h2>`
           );
           console.log("Batch is sended: ", batchKey);
         }
