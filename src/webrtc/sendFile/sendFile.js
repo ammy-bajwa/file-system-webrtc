@@ -38,12 +38,15 @@ export const sendFile = (fileName) => {
 
         const isBatchExists = await isBatchAlreadyExistOnReceiver(batchHash);
         if (!isBatchExists) {
+          const fileSize = fileMetadata["fileSize"];
           await sendBatchOfChunks(batchOfChunksIDB, batchHash);
           await waitForBatchConfirmation(
             fileName,
             batchKey,
             batchHash,
-            batchOfChunksIDB
+            batchOfChunksIDB,
+            endBatchIndex,
+            fileSize
           );
           console.log("Batch is sended: ", batchKey);
         }

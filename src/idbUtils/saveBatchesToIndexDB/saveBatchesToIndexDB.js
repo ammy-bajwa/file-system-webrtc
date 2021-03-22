@@ -20,11 +20,16 @@ export const saveBatchesToIndexDB = async (batchesDataArr) => {
           },
         });
         await db.put("blob", batcheBlob, "data");
-        setStatus(`<h2>
+        const status =
+          endBatchIndex !== fileSize
+            ? `<h2>
         ${(endBatchIndex / 1000 / 1000).toFixed(
           2
         )} MB has been saved ${fileName} file out of ${fileSize} MB 
-          </h2>`);
+          </h2>`
+            : `<h2>
+          All File Received Successfully ${fileName}</h2>`;
+        setStatus(status);
         db.close();
       }
       resolve(true);
