@@ -49,15 +49,17 @@ export const sendFile = (fileName) => {
             endBatchIndex,
             fileSize
           );
-          setStatus(
-            `<h2>
-               ${(endBatchIndex / 1000 / 1000).toFixed(
-                 2
-               )} MB Have Been Send out of ${(fileSize / 1000 / 1000).toFixed(
-              2
-            )} MB ${fileName} file
-                </h2>`
-          );
+          const status =
+            endBatchIndex !== fileSize
+              ? `<h2>
+              ${(endBatchIndex / 1000 / 1000).toFixed(
+                2
+              )} MB Have Been Send out of ${(fileSize / 1000 / 1000).toFixed(
+                  2
+                )} MB ${fileName} file
+               </h2>`
+              : `<h2>All File Sended Successfully ${fileName}</h2>`;
+          setStatus(status);
           console.log("Batch is sended: ", batchKey);
         }
       }
