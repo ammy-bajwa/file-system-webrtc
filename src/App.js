@@ -1,5 +1,6 @@
 import { Component } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { connect } from 'react-redux';
 
 import DisplayFiles from "./components/displayFiles";
 
@@ -9,6 +10,8 @@ import { onSubmit } from "./forms/folderUploadForm/onSubmit/onSubmit";
 import { getAllSavedFiles } from "./idbUtils/getAllSavedFiles/getAllSavedFiles";
 import { alivaWebRTC } from "./webrtc/index";
 import { sendFilesMetadata } from "./webrtc/sendFilesMetadata/sendFilesMetadata";
+import redux from "./utils/manageRedux";
+import { findByPlaceholderText } from "@testing-library/dom";
 
 class App extends Component {
   state = {
@@ -30,7 +33,7 @@ class App extends Component {
       alivaWebRTC.peerConnection
     );
     const files = await getAllSavedFiles();
-    this.setState({ machineId, idbFiles: files });
+    redux.storeState({ machineId, idbFiles: files });
     console.log("files: ", files);
   }
 
@@ -54,12 +57,12 @@ class App extends Component {
     const files = event.target.files;
     console.log("On change", files);
     if (files.length > 0) {
-      this.setState({ files });
+      redux.addFile({ files });
     }
   };
 
   handleSyncMetadata = async () => {
-    const { idbFiles } = this.state;
+    const { idbFiles } = this.props.fileState;
     const webRTCConnState = alivaWebRTC.peerConnection.connectionState;
     if (idbFiles.length <= 0) {
       alert("Please upload a file first");
@@ -73,7 +76,7 @@ class App extends Component {
     }
   };
   render() {
-    const { files, idbFiles } = this.state;
+    const { files, idbFiles } = this.props.fileState;
     return (
       <div>
         <div id="statusElement" className="text-center text-large text-info">
@@ -138,4 +141,10 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = function(state){
+  return {
+    fileState: state.fileReducer,
+  }
+}
+
+export default connect(mapStateToProps)(App);

@@ -12,8 +12,12 @@ const DisplayFiles = ({ files }) => {
     if (Object.hasOwnProperty.call(files, fileKey)) {
       const { name, size, isReceived } = files[fileKey];
       myFiles.push({ name, size, isReceived });
+      console.log("ag", fileKey);
     }
   }
+  const deleteFile = (name) => {
+    console.log("ag1", files);
+  };
   // const handleGetFile = async (fileName) => {
   //   const fileMetadata = await getFileMetadataFromIndexedDB(fileName);
   //   await sendFile(fileMetadata);
@@ -44,6 +48,13 @@ const DisplayFiles = ({ files }) => {
               Get File
             </button>
           )}
+          <button
+            type="button"
+            className="btn btn-danger m-2"
+            onClick={() => deleteFile(name)}
+          >
+            Delete
+          </button>
         </span>
       ))}
     </div>

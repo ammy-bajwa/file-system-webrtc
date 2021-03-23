@@ -6,6 +6,7 @@ import { setStatus } from "../../../status/status";
 
 import { saveFileMetadataInIndexedDB } from "../../../idbUtils/saveFileMetadataInIndexedDB/saveFileMetadataInIndexedDB";
 
+
 export const uploadBatches = async (
   filesWithMetadata,
   numberOfChunksInSingleBatch
@@ -35,7 +36,7 @@ export const uploadBatches = async (
         setStatus(
           `<h2>
             ${file["name"]} has been saved successfully
-      </h2>`
+          </h2>`
         );
       }
       resolve(true);
