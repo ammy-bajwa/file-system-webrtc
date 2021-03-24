@@ -43,7 +43,6 @@ export const waitForBatchConfirmation = (
               const chunkKey = missingChunks[index];
 
               const resendChunk = batchOfChunksIDB[chunkKey];
-              debugger;
               if (resendChunk) {
                 resendChunkObj[chunkKey] = resendChunk;
               }

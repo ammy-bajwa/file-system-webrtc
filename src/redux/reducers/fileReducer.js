@@ -45,7 +45,7 @@ export default function todos(state = initState, action) {
     case SAVE_RECEIVED_METADATA_IN_STATE:
       let isAlreadyPresend = false;
       const receivedMetadata = action.payload.data;
-      state.idbFiles = state.idbFiles.map((fileMetadata) => {
+      const updatedIdbFiles = state.idbFiles.map((fileMetadata) => {
         if (fileMetadata.fileName === receivedMetadata.fileName) {
           fileMetadata.batchesMetaData = {
             ...fileMetadata.batchesMetaData,
@@ -56,9 +56,16 @@ export default function todos(state = initState, action) {
         return fileMetadata;
       });
       if (!isAlreadyPresend) {
-        state.idbFiles.push(receivedMetadata);
+        return {
+          ...state,
+          idbFiles: [receivedMetadata],
+        };
+      } else {
+        return {
+          ...state,
+          idbFiles: updatedIdbFiles,
+        };
       }
-      return state;
     default:
       return state;
   }
