@@ -27,8 +27,10 @@ export default function todos(state = initState, action) {
     case MOVE_TO_IDB_STATE:
       return {
         machineId: state.machineId,
-        idbFiles: action.payload,
-        files: [],
+        idbFiles: action.payload.files,
+        files: state.files.filter((file) => {
+          return file.name !== action.payload.fileName;
+        }),
       };
     default:
       return state;

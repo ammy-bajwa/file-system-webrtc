@@ -9,8 +9,8 @@ export default {
     addFile: function(data){
         store.dispatch(storeFile(data))
     },
-    moveToidbState: async function(){
+    moveToidbState: async function(fileName){
         const files = await getAllSavedFiles();
-        store.dispatch(moveFileToidbState(files))
+        store.dispatch(moveFileToidbState({fileName,files}))
     },
 }

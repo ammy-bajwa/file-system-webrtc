@@ -10,6 +10,7 @@ export const handleDirUpload = async (
   numberOfChunksInSingleBatch
 ) => {
   const files = fileElement.files;
+  console.log("files:",files)
   const fileInfoHtml = getFilesInfoString(files);
   setStatus(fileInfoHtml);
 

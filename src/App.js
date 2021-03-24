@@ -21,17 +21,17 @@ class App extends Component {
   };
   async componentDidMount() {
     const machineId = uuidv4();
-    try {
-      await alivaWS.initializeSocket("ws://localhost:4000/socket");
-    } catch (error) {
-      await alivaWS.initializeSocket("ws://localhost:4000/socket");
-    }
-    await alivaWebRTC.initializeWebRTC(alivaWS.channel, machineId);
-    await alivaWebRTC.addWebrtcListener(
-      alivaWS.channel,
-      machineId,
-      alivaWebRTC.peerConnection
-    );
+    // try {
+    //   await alivaWS.initializeSocket("ws://localhost:4000/socket");
+    // } catch (error) {
+    //   await alivaWS.initializeSocket("ws://localhost:4000/socket");
+    // }
+    // await alivaWebRTC.initializeWebRTC(alivaWS.channel, machineId);
+    // await alivaWebRTC.addWebrtcListener(
+    //   alivaWS.channel,
+    //   machineId,
+    //   alivaWebRTC.peerConnection
+    // );
     const files = await getAllSavedFiles();
     redux.storeState({ machineId, idbFiles: files });
     console.log("files: ", files);
@@ -54,7 +54,7 @@ class App extends Component {
   };
 
   handleFileChange = (event) => {
-    const files = event.target.files;
+    const files = Array.from(event.target.files);
     console.log("On change", files);
     if (files.length > 0) {
       redux.addFile({ files });
@@ -107,7 +107,7 @@ class App extends Component {
         </div>
         <div>
           <h2>Files Present In IDB</h2>
-          <DisplayFiles files={idbFiles} />
+          <DisplayFiles files={idbFiles} isDelete={true} />
           <button
             type="button"
             className="btn btn-outline-dark m-2"
@@ -118,7 +118,7 @@ class App extends Component {
         </div>
         <div>
           <h2>Uploaded Files Will Be Here</h2>
-          <DisplayFiles files={files} />
+          <DisplayFiles files={files} isDelete={false} />
         </div>
         <form className="row mt-2" onSubmit={onSubmit}>
           <div className="col-auto">
