@@ -6,9 +6,7 @@ import { setStatus } from "../../status/status";
 
 import { handleMetadataChannel } from "../handleMetadataChannel/handleMetadataChannel";
 
-// import { handleReceivedChunk } from "../../idbUtils/handleReceivedChunk/handleReceivedChunk";
-
-// import { doConfirmationForBatch } from "../../idbUtils/doConfirmationForBatch/doConfirmationForBatch";
+import { sendFile } from "../sendFile/sendFile";
 
 import { checkIfAlreadyExist } from "../../idbUtils/checkIfAlreadyExist/checkIfAlreadyExist";
 
@@ -106,6 +104,10 @@ export const initializeWebRTC = function (channel, machineId) {
                 receivedMessage.chunkToSend
               );
               return;
+            } else if (receivedMessage.requestFile) {
+              const { fileName } = receivedMessage;
+              console.log("requestFile received", fileName);
+              await sendFile(fileName);
             } else if (receivedMessage.isConfirmation) {
               const {
                 batchHash,
