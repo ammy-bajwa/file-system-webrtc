@@ -104,10 +104,6 @@ export const initializeWebRTC = function (channel, machineId) {
                 receivedMessage.chunkToSend
               );
               return;
-            } else if (receivedMessage.requestFile) {
-              const { fileName } = receivedMessage;
-              console.log("requestFile received", fileName);
-              await sendFile(fileName);
             } else if (receivedMessage.isConfirmation) {
               const {
                 batchHash,
@@ -214,6 +210,12 @@ export const initializeWebRTC = function (channel, machineId) {
               const { batchHash } = receivedMessage;
               const isBatchExists = await checkIfAlreadyExist(batchHash);
               dataChannel.send(JSON.stringify({ isBatchExists }));
+            }
+
+            if (receivedMessage.requestFile) {
+              const { fileName } = receivedMessage;
+              console.log("requestFile received", fileName);
+              await sendFile(fileName);
             }
           } catch (error) {
             console.log("Got message on error: ", message);
