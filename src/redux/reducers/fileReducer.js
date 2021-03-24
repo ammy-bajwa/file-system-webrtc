@@ -4,6 +4,7 @@ const {
   ADD_FILE,
   MOVE_TO_IDB_STATE,
   REMOVE_FILE_FROM_IDB_STATE,
+  SAVE_RECEIVED_METADATA_IN_STATE,
 } = fileActionTypes;
 const initState = {
   machineId: "",
@@ -40,6 +41,12 @@ export default function todos(state = initState, action) {
         idbFiles: state.idbFiles.filter((file) => {
           return file.name !== action.payload.fileName;
         }),
+      };
+    case SAVE_RECEIVED_METADATA_IN_STATE:
+      return {
+        machineId: state.machineId,
+        files: state.files,
+        idbFiles: [...state.idbFiles,action.payload.data]
       };
     default:
       return state;
