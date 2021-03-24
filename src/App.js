@@ -1,6 +1,6 @@
 import { Component } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 
 import DisplayFiles from "./components/displayFiles";
 
@@ -20,25 +20,27 @@ class App extends Component {
     idbFiles: [],
   };
   async componentDidMount() {
+    console.log("datasycs", alivaWebRTC);
     const machineId = uuidv4();
-    // try {
-    //   await alivaWS.initializeSocket("ws://localhost:4000/socket");
-    // } catch (error) {
-    //   await alivaWS.initializeSocket("ws://localhost:4000/socket");
-    // }
-    // await alivaWebRTC.initializeWebRTC(alivaWS.channel, machineId);
-    // await alivaWebRTC.addWebrtcListener(
-    //   alivaWS.channel,
-    //   machineId,
-    //   alivaWebRTC.peerConnection
-    // );
+    try {
+      await alivaWS.initializeSocket("ws://localhost:4000/socket");
+    } catch (error) {
+      await alivaWS.initializeSocket("ws://localhost:4000/socket");
+    }
+    await alivaWebRTC.initializeWebRTC(alivaWS.channel, machineId);
+    await alivaWebRTC.addWebrtcListener(
+      alivaWS.channel,
+      machineId,
+      alivaWebRTC.peerConnection
+    );
     const files = await getAllSavedFiles();
     redux.storeState({ machineId, idbFiles: files });
     console.log("files: ", files);
   }
 
   handleWebRtcConnection = async () => {
-    await alivaWebRTC.createDataChannel("dc");
+ 
+    await alivaWebRTC.createDataChannel("dc")
   };
 
   cleanDBs = () => {
@@ -90,13 +92,15 @@ class App extends Component {
           >
             Connect with webrtc
           </button>
-          <button
+
+          {/* <button
             type="button"
             className="btn btn-dark m-2"
             onClick={this.handleWebRtcConnection}
           >
             Send Files Metadata
-          </button>
+          </button> */}
+
           <button
             type="button"
             className="btn btn-dark m-2"
@@ -141,10 +145,10 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = function(state){
+const mapStateToProps = function (state) {
   return {
     fileState: state.fileReducer,
-  }
-}
+  };
+};
 
 export default connect(mapStateToProps)(App);
