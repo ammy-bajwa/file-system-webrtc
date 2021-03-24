@@ -8,6 +8,8 @@ import { requestingFile } from "../webrtc/requestingFile/requestingFile";
 
 import redux from "../utils/manageRedux";
 
+import { setStatus } from "../status/status";
+
 const DisplayFiles = ({ files, isDelete }) => {
   let myFiles = [];
   for (const fileKey in files) {
@@ -19,7 +21,12 @@ const DisplayFiles = ({ files, isDelete }) => {
   const deleteFile = async (metaData,fileName) => {
     if(metaData){
       await deleteFileFromIDB(fileName, metaData);
-      redux.removeFileFromidbFiles(fileName);
+      await redux.removeFileFromidbFiles(fileName);
+      setStatus(
+        `<h2>
+          ${fileName} has been deleted successfully.
+        </h2>`
+      );
     }
   };
   // const handleGetFile = async (fileName) => {
