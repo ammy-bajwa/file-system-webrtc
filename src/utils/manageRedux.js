@@ -17,6 +17,6 @@ export default {
         store.dispatch(removeFileFromidbState({fileName}))
     },
     saveReceivedMetadataInState: function(data){
-        store.dispatch(this.saveMetadataInState({data}))
+        store.dispatch(saveMetadataInState({data}))
     },
 }
