@@ -24,7 +24,6 @@ export const sendFile = (fileName) => {
       } else {
         console.log(`${currentDcCount} data channels already exists`);
       }
-      debugger;
       for (let key = 0; key < batchesKeys.length; key++) {
         const batchKey = batchesKeys[key];
         const { batchHash, totalChunksCount, endBatchIndex } = batchesMetadata[
