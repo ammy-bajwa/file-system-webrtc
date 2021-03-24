@@ -1,7 +1,7 @@
 import store from '../redux/store';
 import { fileActions } from '../redux/actions/index';
 import { getAllSavedFiles } from "../idbUtils/getAllSavedFiles/getAllSavedFiles";
-const { storeMachineIDAndFiles, storeFile, moveFileToidbState, removeFileFromidbState } = fileActions;
+const { storeMachineIDAndFiles, storeFile, moveFileToidbState, removeFileFromidbState, saveMetadataInState } = fileActions;
 export default {
     storeState: function(data){
         store.dispatch(storeMachineIDAndFiles(data))
@@ -15,5 +15,8 @@ export default {
     },
     removeFileFromidbFiles: function(fileName){
         store.dispatch(removeFileFromidbState({fileName}))
+    },
+    saveReceivedMetadataInState: function(data){
+        store.dispatch(this.saveMetadataInState({data}))
     },
 }
