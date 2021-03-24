@@ -1,5 +1,5 @@
 import { fileActionTypes } from '../actionTypes/index';
-const { ADD_MACHINE_ID_AND_FILES, ADD_FILE, MOVE_TO_IDB_STATE } = fileActionTypes;
+const { ADD_MACHINE_ID_AND_FILES, ADD_FILE, MOVE_TO_IDB_STATE, REMOVE_FILE_FROM_IDB_STATE } = fileActionTypes;
 export const fileActions = {
     storeMachineIDAndFiles: function(payload) {
         return {
@@ -16,6 +16,12 @@ export const fileActions = {
     moveFileToidbState: function(payload) {
         return {
             type: MOVE_TO_IDB_STATE,
+            payload
+        }
+    },
+    removeFileFromidbState: function(payload) {
+        return {
+            type: REMOVE_FILE_FROM_IDB_STATE,
             payload
         }
     },
