@@ -43,11 +43,19 @@ export default function todos(state = initState, action) {
         }),
       };
     case SAVE_RECEIVED_METADATA_IN_STATE:
-      return {
-        machineId: state.machineId,
-        files: state.files,
-        idbFiles: [...state.idbFiles,action.payload.data]
-      };
+      const receivedMetadata = action.payload.data;
+
+      state.idbFiles = state.idbFiles.map((fileMetadata) => {
+        if (fileMetadata.fileName === receivedMetadata.fileName) {
+          fileMetadata.batchesMetaData = {
+            ...fileMetadata.batchesMetaData,
+            ...receivedMetadata.batchesMetaData,
+          };
+        }
+        return fileMetadata;
+      });
+      debugger;
+      return state;
     default:
       return state;
   }

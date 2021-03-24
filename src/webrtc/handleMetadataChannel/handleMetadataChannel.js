@@ -27,7 +27,13 @@ export const handleMetadataChannel = function (dataChannel) {
         isReceived,
         fileHash,
       } = parsedMessage;
-      redux.saveReceivedMetadataInState({name, size, batchesMetaData, fileHash, isReceived});
+      redux.saveReceivedMetadataInState({
+        name,
+        size,
+        batchesMetaData,
+        fileHash,
+        isReceived,
+      });
       await saveReceivedMetadata(name, size, batchesMetaData, fileHash);
       await createBatchesDbs(batchesMetaData);
       dataChannel.send(
