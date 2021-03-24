@@ -11,7 +11,7 @@ import { getAllSavedFiles } from "./idbUtils/getAllSavedFiles/getAllSavedFiles";
 import { alivaWebRTC } from "./webrtc/index";
 import { sendFilesMetadata } from "./webrtc/sendFilesMetadata/sendFilesMetadata";
 import redux from "./utils/manageRedux";
-import { findByPlaceholderText } from "@testing-library/dom";
+// import { findByPlaceholderText } from "@testing-library/dom";
 
 class App extends Component {
   state = {
