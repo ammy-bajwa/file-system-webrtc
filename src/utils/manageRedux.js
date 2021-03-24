@@ -1,7 +1,7 @@
 import store from '../redux/store';
 import { fileActions } from '../redux/actions/index';
 import { getAllSavedFiles } from "../idbUtils/getAllSavedFiles/getAllSavedFiles";
-const { storeMachineIDAndFiles, storeFile, moveFileToidbState } = fileActions;
+const { storeMachineIDAndFiles, storeFile, moveFileToidbState, removeFileFromidbState } = fileActions;
 export default {
     storeState: function(data){
         store.dispatch(storeMachineIDAndFiles(data))
@@ -12,5 +12,8 @@ export default {
     moveToidbState: async function(fileName){
         const files = await getAllSavedFiles();
         store.dispatch(moveFileToidbState({fileName,files}))
+    },
+    removeFileFromidbFiles: function(fileName){
+        store.dispatch(removeFileFromidbState({fileName}))
     },
 }

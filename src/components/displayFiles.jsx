@@ -1,22 +1,33 @@
 // import { getFileMetadataFromIndexedDB } from "../idbUtils/getFileMetadataFromIndexedDB/getFileMetadataFromIndexedDB";
 
 import { alivaWebRTC } from "../webrtc/index";
-
+import { deleteFileFromIDB } from '../idbUtils/deleteFileFromIDB/deleteFileFromIDB';
 // import { sendFile } from "../webrtc/sendFile/sendFile";
 
 import { requestingFile } from "../webrtc/requestingFile/requestingFile";
+
+import redux from "../utils/manageRedux";
+
+import { setStatus } from "../status/status";
 
 const DisplayFiles = ({ files, isDelete }) => {
   let myFiles = [];
   for (const fileKey in files) {
     if (Object.hasOwnProperty.call(files, fileKey)) {
-      const { name, size, isReceived } = files[fileKey];
-      myFiles.push({ name, size, isReceived });
-      console.log("ag", fileKey);
+      const { name, size, isReceived, batchesMetaData, fileHash } = files[fileKey];
+      myFiles.push({ name, size, isReceived, batchesMetaData, fileHash });
     }
   }
-  const deleteFile = (name) => {
-    console.log("ag1", files);
+  const deleteFile = async (metaData,fileName) => {
+    if(metaData){
+      await deleteFileFromIDB(fileName, metaData);
+      await redux.removeFileFromidbFiles(fileName);
+      setStatus(
+        `<h2>
+          ${fileName} has been deleted successfully.
+        </h2>`
+      );
+    }
   };
   // const handleGetFile = async (fileName) => {
   //   const fileMetadata = await getFileMetadataFromIndexedDB(fileName);
@@ -52,7 +63,7 @@ const DisplayFiles = ({ files, isDelete }) => {
           <button
             type="button"
             className="btn btn-danger m-2"
-            onClick={() => deleteFile(name)}
+            onClick={() => deleteFile(batchesMetaData, name)}
           >
             Delete
           </button>:null
