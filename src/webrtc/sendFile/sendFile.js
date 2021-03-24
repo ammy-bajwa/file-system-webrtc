@@ -19,6 +19,7 @@ export const sendFile = (fileName) => {
       const batchesKeys = Object.keys(batchesMetadata);
       const currentDcCount = Object.keys(alivaWebRTC.dataChannels).length;
       console.log("batchesKeys: ", batchesKeys);
+      setStatus("<h2>Setting up datachannels...</h2>");
       if (currentDcCount < 4) {
         await alivaWebRTC.settingUpDatachannels(400);
       } else {
@@ -39,6 +40,7 @@ export const sendFile = (fileName) => {
         const isBatchExists = await isBatchAlreadyExistOnReceiver(batchHash);
         if (!isBatchExists) {
           const fileSize = fileMetadata["fileSize"];
+          setStatus("<h2>File chunks loading in memory and sending...</h2>");
           await sendBatchOfChunks(batchOfChunksIDB, batchHash);
           await waitForBatchConfirmation(
             fileName,

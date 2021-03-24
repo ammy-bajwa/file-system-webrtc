@@ -145,6 +145,7 @@ export const initializeWebRTC = function (channel, machineId) {
                   }
                 }
                 if (isTotalBatchReceived) {
+                  setStatus(`<h2>Validating batch ${batchKey}</h2>`);
                   const batchBlob = await convertInMemoryBatchToBlob(
                     inMemoryBatchChunks
                   );
@@ -162,6 +163,7 @@ export const initializeWebRTC = function (channel, machineId) {
                       inMemoryBatchChunks
                     );
                   } else {
+                    setStatus(`<h2>Saving batch in idb<${batchKey}</h2>`);
                     missingChunks = await findInMemoryMissingBatchChunks(
                       fileName,
                       batchKey,
