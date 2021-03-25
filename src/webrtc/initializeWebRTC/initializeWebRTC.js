@@ -94,8 +94,8 @@ export const initializeWebRTC = function (channel, machineId) {
 
         dataChannel.onmessage = async (event) => {
           const message = event.data;
-          console.log("Got message: ", message);
-          // console.log("Got message");
+          // console.log("Got message: ", message);
+          console.log("Got message");
           try {
             const receivedMessage = JSON.parse(message);
             if (receivedMessage.isChunk) {
