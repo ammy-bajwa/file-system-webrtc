@@ -55,7 +55,6 @@ export default function todos(state = initState, action) {
         }
         return fileMetadata;
       });
-      debugger;
       if (!isAlreadyPresend) {
         return {
           ...state,
