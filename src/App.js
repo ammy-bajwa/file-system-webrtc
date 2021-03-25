@@ -95,15 +95,6 @@ class App extends Component {
           >
             Connect with webrtc
           </button>
-
-          {/* <button
-            type="button"
-            className="btn btn-dark m-2"
-            onClick={this.handleWebRtcConnection}
-          >
-            Send Files Metadata
-          </button> */}
-
           <button
             type="button"
             className="btn btn-dark m-2"
