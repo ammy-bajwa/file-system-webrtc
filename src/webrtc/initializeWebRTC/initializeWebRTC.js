@@ -32,7 +32,6 @@ import { getAllSavedFiles } from "../../idbUtils/getAllSavedFiles/getAllSavedFil
 
 import redux from "../../utils/manageRedux";
 
-
 const iceServers = [
   {
     urls: ["stun:avm4962.com:3478", "stun:avm4962.com:5349"],
@@ -181,19 +180,15 @@ export const initializeWebRTC = function (channel, machineId) {
                     );
                     await saveBatchBlobToIdb(batchHash, batchBlob);
                     alivaWebRTC.chunks[batchHash] = { confirmation: true };
-                    const status =
-                      endBatchIndex !== fileSize
-                        ? `<h2>
+                    const status = `<h2>
       ${(endBatchIndex / 1000 / 1000).toFixed(
         2
       )} MB has been saved ${fileName} file out of ${(
-                            fileSize /
-                            1000 /
-                            1000
-                          ).toFixed(2)} MB 
-        </h2>`
-                        : `<h2>
-        All File Received Successfully ${fileName}</h2>`;
+                      fileSize /
+                      1000 /
+                      1000
+                    ).toFixed(2)} MB 
+        </h2>`;
                     setStatus(status);
                   }
                 } else {
@@ -231,6 +226,7 @@ export const initializeWebRTC = function (channel, machineId) {
               await handleAllFileReceived(fileName);
               const files = await getAllSavedFiles();
               redux.storeState({ machineId, idbFiles: files });
+              setStatus(`<h2>All File Received Successfully ${fileName}</h2>`);
               console.log("allFileSend received", fileName);
             }
           } catch (error) {
