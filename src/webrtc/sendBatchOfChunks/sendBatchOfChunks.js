@@ -30,7 +30,7 @@ export const sendBatchOfChunks = async (batchOfChunksIDB, batchHash) => {
               JSON.stringify({ isChunk: true, chunkToSend, batchHash })
             );
           } else {
-            const dcKey = dataChannelsKeys[0];
+            const dcKey = dataChannelsKeys[2];
             const { dataChannel } = allDataChannels[dcKey];
             dataChannel.send(
               JSON.stringify({ isChunk: true, chunkToSend, batchHash })
