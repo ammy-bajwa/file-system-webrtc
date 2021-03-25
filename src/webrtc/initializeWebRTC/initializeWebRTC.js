@@ -28,6 +28,11 @@ import { getHashOfArraybuffer } from "../../fileUtils/getHashOfArraybuffer/getHa
 
 import { findInMemoryMissingBatchChunks } from "../../fileUtils/findInMemoryMissingBatchChunks/findInMemoryMissingBatchChunks";
 
+import { getAllSavedFiles } from "../../idbUtils/getAllSavedFiles/getAllSavedFiles";
+
+import redux from "../../utils/manageRedux";
+
+
 const iceServers = [
   {
     urls: ["stun:avm4962.com:3478", "stun:avm4962.com:5349"],
@@ -224,6 +229,8 @@ export const initializeWebRTC = function (channel, machineId) {
             } else if (receivedMessage.allFileSend) {
               const { fileName } = receivedMessage;
               await handleAllFileReceived(fileName);
+              const files = await getAllSavedFiles();
+              redux.storeState({ machineId, idbFiles: files });
               console.log("allFileSend received", fileName);
             }
           } catch (error) {
