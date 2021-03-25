@@ -1,5 +1,4 @@
 const DisplayIdbFiles = function ({ files }) {
-  console.log("files: ", files);
   return (
     <div className="d-flex justify-content-center flex-wrap m-4">
       {files.length === 0 && <h3 className="text-info">No File</h3>}

@@ -4,6 +4,8 @@ import { setStatus } from "../../status/status";
 
 import { sendFile } from "../sendFile/sendFile";
 
+import { allFileSendSignal } from "../allFileSendSignal/allFileSendSignal";
+
 export const createDataChannel = function (dataChannelName) {
   return new Promise(async (resolve, reject) => {
     const dcOptions = {
@@ -45,6 +47,7 @@ export const createDataChannel = function (dataChannelName) {
           const { fileName } = receivedMessage;
           console.log("requestFile received", fileName);
           await sendFile(fileName);
+          await allFileSendSignal(fileName, dataChannel);
         }
       } catch (error) {
         console.error(error);

@@ -12,6 +12,8 @@ import { checkIfAlreadyExist } from "../../idbUtils/checkIfAlreadyExist/checkIfA
 
 // import { getAllBatchKeys } from "../../idbUtils/getAllBatchKeys/getAllBatchKeys";
 
+import { allFileSendSignal } from "../allFileSendSignal/allFileSendSignal";
+
 import { saveBatchBlobToIdb } from "../../idbUtils/saveBatchBlobToIdb/saveBatchBlobToIdb";
 
 import { convertInMemoryBatchToBlob } from "../../fileUtils/convertInMemoryBatchToBlob/convertInMemoryBatchToBlob";
@@ -220,7 +222,6 @@ export const initializeWebRTC = function (channel, machineId) {
             } else if (receivedMessage.allFileSend) {
               const { fileName } = receivedMessage;
               console.log("allFileSend received", fileName);
-
             }
           } catch (error) {
             console.log("Got message on error: ", message);

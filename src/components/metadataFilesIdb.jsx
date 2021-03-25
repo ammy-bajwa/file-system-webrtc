@@ -1,4 +1,20 @@
+import { alivaWebRTC } from "../webrtc/index";
+
+import { requestingFile } from "../webrtc/requestingFile/requestingFile";
+
+import { setStatus } from "../status/status";
+
 const MetadataFilesIdb = function ({ files }) {
+  const requestFile = async (fileName) => {
+    const dataChannelsCount = Object.keys(alivaWebRTC.dataChannels).length;
+    setStatus("<h2>Setting up datachannels...</h2>");
+    if (dataChannelsCount <= 0) {
+      alert("Please connect webrtc");
+      return;
+    } else {
+      await requestingFile(fileName);
+    }
+  };
   return (
     <div className="d-flex justify-content-center flex-wrap m-4">
       {files.length === 0 && <h3 className="text-info">No File</h3>}
@@ -15,20 +31,11 @@ const MetadataFilesIdb = function ({ files }) {
                   <button
                     type="button"
                     className="btn btn-dark m-2"
-                    //   onClick={() => requestFile(name)}
+                    onClick={() => requestFile(name)}
                   >
                     Get File
                   </button>
                 )}
-                {/* {isDelete ? (
-                  <button
-                  type="button"
-                  className="btn btn-danger m-2"
-                  onClick={() => deleteFile(batchesMetaData, name)}
-                  >
-                  Delete
-                  </button>
-                ) : null} */}
               </div>
             )}
           </div>
