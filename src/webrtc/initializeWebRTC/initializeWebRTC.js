@@ -12,6 +12,8 @@ import { checkIfAlreadyExist } from "../../idbUtils/checkIfAlreadyExist/checkIfA
 
 // import { getAllBatchKeys } from "../../idbUtils/getAllBatchKeys/getAllBatchKeys";
 
+import { handleAllFileReceived } from "../../idbUtils/handleAllFileReceived/handleAllFileReceived";
+
 import { allFileSendSignal } from "../allFileSendSignal/allFileSendSignal";
 
 import { saveBatchBlobToIdb } from "../../idbUtils/saveBatchBlobToIdb/saveBatchBlobToIdb";
@@ -221,6 +223,7 @@ export const initializeWebRTC = function (channel, machineId) {
               await allFileSendSignal(fileName, dataChannel);
             } else if (receivedMessage.allFileSend) {
               const { fileName } = receivedMessage;
+              await handleAllFileReceived(fileName);
               console.log("allFileSend received", fileName);
             }
           } catch (error) {
