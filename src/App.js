@@ -110,7 +110,6 @@ class App extends Component {
           </div>
           <div>
             <h2>Files Present In IDB</h2>
-            {/* <DisplayFiles isDelete={true} /> */}
             <DisplayIdbFiles files={idbFiles} />
             <button
               type="button"

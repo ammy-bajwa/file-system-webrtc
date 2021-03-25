@@ -21,6 +21,7 @@ export const saveReceivedMetadata = (
         fileSize,
         batchesMetaData,
         isReceived: true,
+        isOnlyMetadata: true,
         fileHash,
       };
       const existedValue = await db.get(storeName, key);
