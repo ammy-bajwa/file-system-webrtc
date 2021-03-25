@@ -2,6 +2,8 @@ import { Component } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { connect } from "react-redux";
 
+import DisplayIdbFiles from "./components/displayIdbFiles";
+
 import DisplayFiles from "./components/displayFiles";
 
 import "./App.css";
@@ -39,8 +41,7 @@ class App extends Component {
   }
 
   handleWebRtcConnection = async () => {
- 
-    await alivaWebRTC.createDataChannel("dc")
+    await alivaWebRTC.createDataChannel("dc");
   };
 
   cleanDBs = () => {
@@ -110,8 +111,10 @@ class App extends Component {
           </button>
         </div>
         <div>
+          <h2>Files to receive</h2>
           <h2>Files Present In IDB</h2>
-          <DisplayFiles files={idbFiles} isDelete={true} />
+          {/* <DisplayFiles isDelete={true} /> */}
+          <DisplayIdbFiles files={idbFiles} />
           <button
             type="button"
             className="btn btn-outline-dark m-2"
