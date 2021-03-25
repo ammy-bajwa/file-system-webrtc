@@ -6,6 +6,8 @@ import DisplayIdbFiles from "./components/displayIdbFiles";
 
 import DisplayFiles from "./components/displayFiles";
 
+import MetadataFilesIdb from "./components/metadataFilesIdb";
+
 import "./App.css";
 import { alivaWS } from "./socket/index";
 import { onSubmit } from "./forms/folderUploadForm/onSubmit/onSubmit";
@@ -111,17 +113,22 @@ class App extends Component {
           </button>
         </div>
         <div>
-          <h2>Files to receive</h2>
-          <h2>Files Present In IDB</h2>
-          {/* <DisplayFiles isDelete={true} /> */}
-          <DisplayIdbFiles files={idbFiles} />
-          <button
-            type="button"
-            className="btn btn-outline-dark m-2"
-            onClick={this.handleSyncMetadata}
-          >
-            Sync Metadata
-          </button>
+          <div>
+            <h2>Files to receive</h2>
+            <MetadataFilesIdb files={idbFiles} />
+          </div>
+          <div>
+            <h2>Files Present In IDB</h2>
+            {/* <DisplayFiles isDelete={true} /> */}
+            <DisplayIdbFiles files={idbFiles} />
+            <button
+              type="button"
+              className="btn btn-outline-dark m-2"
+              onClick={this.handleSyncMetadata}
+            >
+              Sync Metadata
+            </button>
+          </div>
         </div>
         <div>
           <h2>Uploaded Files Will Be Here</h2>
