@@ -33,6 +33,7 @@ const DisplayFiles = ({ files, isDelete }) => {
   };
   const requestFile = async (fileName) => {
     const dataChannelsCount = Object.keys(alivaWebRTC.dataChannels).length;
+    debugger;
     setStatus("<h2>Setting up datachannels...</h2>");
     if (dataChannelsCount <= 0) {
       alert("Please connect webrtc");
