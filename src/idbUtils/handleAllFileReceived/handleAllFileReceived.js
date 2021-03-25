@@ -12,6 +12,7 @@ export const handleAllFileReceived = function (fileName) {
         isReceived: false,
       };
       await db.put(storeName, updatedFileMetadata, fileName);
+      db.close();
       resolve(true);
     } catch (error) {
       reject(error);
