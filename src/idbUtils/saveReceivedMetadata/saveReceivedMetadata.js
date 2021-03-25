@@ -26,6 +26,11 @@ export const saveReceivedMetadata = (
       };
       const existedValue = await db.get(storeName, key);
       if (existedValue) {
+        if (!existedValue?.isReceived) {
+          db.close();
+          resolve(true);
+          return;
+        }
         value.batchesMetaData = {
           ...existedValue.batchesMetaData,
           ...batchesMetaData,
