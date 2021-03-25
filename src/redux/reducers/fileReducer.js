@@ -59,7 +59,7 @@ export default function todos(state = initState, action) {
       if (!isAlreadyPresend) {
         return {
           ...state,
-          idbFiles: [...state.idbFiles, receivedMetadata],
+          idbFiles: state.idbFiles.concat([receivedMetadata]),
         };
       } else {
         return {
