@@ -54,6 +54,7 @@ class App extends Component {
           window.indexedDB.deleteDatabase(r[i].name);
       })
       .then(() => {
+        redux.cleanState();
         alert("All data cleared.");
       });
   };

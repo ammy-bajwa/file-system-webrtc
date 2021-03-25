@@ -5,6 +5,7 @@ const {
   MOVE_TO_IDB_STATE,
   REMOVE_FILE_FROM_IDB_STATE,
   SAVE_RECEIVED_METADATA_IN_STATE,
+  CLEAR_STATE,
 } = fileActionTypes;
 const initState = {
   machineId: "",
@@ -66,6 +67,12 @@ export default function todos(state = initState, action) {
           idbFiles: updatedIdbFiles,
         };
       }
+    case CLEAR_STATE:
+      return {
+        machineId: "",
+        idbFiles: [],
+        files: [],
+      };
     default:
       return state;
   }
