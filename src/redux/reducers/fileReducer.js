@@ -46,7 +46,7 @@ export default function todos(state = initState, action) {
       let isAlreadyPresend = false;
       const receivedMetadata = action.payload.data;
       const updatedIdbFiles = state.idbFiles.map((fileMetadata) => {
-        if (fileMetadata.fileName === receivedMetadata.fileName) {
+        if (fileMetadata.fileName === receivedMetadata.name) {
           fileMetadata.batchesMetaData = {
             ...fileMetadata.batchesMetaData,
             ...receivedMetadata.batchesMetaData,
