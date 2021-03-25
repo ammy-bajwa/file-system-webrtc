@@ -55,10 +55,11 @@ export default function todos(state = initState, action) {
         }
         return fileMetadata;
       });
+      debugger;
       if (!isAlreadyPresend) {
         return {
           ...state,
-          idbFiles: [receivedMetadata],
+          idbFiles: [...state.idbFiles, receivedMetadata],
         };
       } else {
         return {
