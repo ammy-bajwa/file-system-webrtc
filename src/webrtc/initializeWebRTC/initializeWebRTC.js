@@ -77,17 +77,10 @@ export const initializeWebRTC = function (channel, machineId) {
 
         dataChannel.onmessage = async (event) => {
           const message = event.data;
-          // console.log("Got message: ", message);
-          console.log("Got message");
+          console.log("Got message: ", JSON.parse(message));
+          // console.log("Got message");
           try {
             const receivedMessage = JSON.parse(message);
-            // if (receivedMessage.isChunk) {
-            //   await alivaWebRTC.saveChunkInMemory(
-            //     receivedMessage.batchHash,
-            //     receivedMessage.chunkToSend
-            //   );
-            //   return;
-            // } else
             if (receivedMessage.isConfirmation) {
               const {
                 batchHash,
@@ -175,7 +168,6 @@ export const initializeWebRTC = function (channel, machineId) {
                     inMemoryBatchChunks
                   );
                 }
-                console.log("missingBatchChunks: actual", missingChunks);
                 if (missingChunks.length > 0) {
                   isTotalBatchReceived = false;
                 }
@@ -204,6 +196,7 @@ export const initializeWebRTC = function (channel, machineId) {
               redux.storeState({ machineId, idbFiles: files });
               setStatus(`<h2>All File Received Successfully ${fileName}</h2>`);
               console.log("allFileSend received", fileName);
+              dataChannel.send(JSON.stringify({ isReceived: true }));
             } else if (receivedMessage.setupPcRequest) {
               const { fileName } = receivedMessage;
               console.log("setupPcRequest received", fileName);

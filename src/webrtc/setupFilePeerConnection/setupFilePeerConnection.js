@@ -42,7 +42,7 @@ export const setupFilePeerConnection = function (fileName) {
         };
 
         dataChannel.onerror = function (error) {
-          console.log("dc close");
+          // console.log("dc close");
           this.filesPeerConnections[fileName].dataChannels[label] = null;
         };
 
