@@ -20,6 +20,8 @@ import { isAlreadyConnected } from "../isAlreadyConnected/isAlreadyConnected.js"
 
 import { allFileSendSignal } from "../allFileSendSignal/allFileSendSignal.js";
 
+import { cleanFilePeerConnection } from "../cleanFilePeerConnection/cleanFilePeerConnection.js";
+
 export const sendFile = (fileName) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -87,6 +89,7 @@ export const sendFile = (fileName) => {
         }
       }
       await allFileSendSignal(fileName);
+      await cleanFilePeerConnection(fileName);
       resolve(true);
     } catch (error) {
       reject(error);

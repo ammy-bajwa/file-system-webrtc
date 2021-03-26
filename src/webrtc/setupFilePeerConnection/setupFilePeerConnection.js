@@ -43,7 +43,6 @@ export const setupFilePeerConnection = function (fileName) {
 
         dataChannel.onerror = function (error) {
           // console.log("dc close");
-          this.filesPeerConnections[fileName].dataChannels[label] = null;
         };
 
         dataChannel.onmessage = async (event) => {
