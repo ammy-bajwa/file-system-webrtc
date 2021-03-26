@@ -81,7 +81,7 @@ const DisplayIdbFiles = function ({ files }) {
           i
         ) => (
           <div key={i} className="m-3">
-            {!isReceived && !isOnlyMetadata && (
+          {!isReceived && !isOnlyMetadata && (
               <span className="border border-dark rounded m-2 p-3">
                 {name}--<b>{(size / 1000 / 1000).toFixed(2)}_MB</b>
                 <button
