@@ -34,6 +34,8 @@ import redux from "../../utils/manageRedux";
 
 import { iceServers } from "../iceServers/iceServers";
 
+import { setupFilePeerConnection } from "../setupFilePeerConnection/setupFilePeerConnection";
+
 export const initializeWebRTC = function (channel, machineId) {
   return new Promise((resolve, reject) => {
     try {
@@ -201,6 +203,13 @@ export const initializeWebRTC = function (channel, machineId) {
               redux.storeState({ machineId, idbFiles: files });
               setStatus(`<h2>All File Received Successfully ${fileName}</h2>`);
               console.log("allFileSend received", fileName);
+            } else if (receivedMessage.setupPcRequest) {
+              const { fileName } = receivedMessage;
+              console.log("setupPcRequest received", fileName);
+              await alivaWebRTC.setupFilePeerConnection(fileName);
+              dataChannel.send(
+                JSON.stringify({ setupPcRequest: true, fileName })
+              );
             }
           } catch (error) {
             console.log("Got message on error: ", message);

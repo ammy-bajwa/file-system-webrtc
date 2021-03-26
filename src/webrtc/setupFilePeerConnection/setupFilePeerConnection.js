@@ -14,6 +14,7 @@ export const setupFilePeerConnection = function (fileName) {
       } = store.getState();
 
       const peerConnection = new RTCPeerConnection(iceServers);
+      this.filesPeerConnections[fileName] = { peerConnection };
       const { channel } = alivaWS;
       await addWebrtcListenerForFile(
         channel,

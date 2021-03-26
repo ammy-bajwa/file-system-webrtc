@@ -12,12 +12,15 @@ import { createFileDataChannels } from "./createFileDataChannels/createFileDataC
 
 import { saveChunkInMemory } from "./saveChunkInMemory/saveChunkInMemory";
 
+import { setupFilePeerConnection } from "./setupFilePeerConnection/setupFilePeerConnection";
+
 export const alivaWebRTC = {
   peerConnection: null,
   dataChannels: {},
   filesPeerConnections: {},
   addWebrtcListener,
   initializeWebRTC,
+  setupFilePeerConnection,
   sendOffer,
   createDataChannel,
   settingUpDatachannels,
