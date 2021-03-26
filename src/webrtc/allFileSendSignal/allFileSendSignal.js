@@ -1,9 +1,13 @@
 import { alivaWebRTC } from "../index";
 
 export const allFileSendSignal = function (fileName) {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     try {
-      const dataChannel = alivaWebRTC.dataChannels["dc"].dataChannel;
+      let dataChannel =
+        alivaWebRTC.dataChannels["allFindSendSignal"]?.dataChannel;
+      if (!dataChannel) {
+        dataChannel = await alivaWebRTC.createDataChannel("allFindSendSignal");
+      }
       const allFileSendSignal = {
         allFileSend: true,
         fileName,
