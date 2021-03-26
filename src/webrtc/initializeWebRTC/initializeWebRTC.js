@@ -34,7 +34,7 @@ import redux from "../../utils/manageRedux";
 
 import { iceServers } from "../iceServers/iceServers";
 
-import { setupFilePeerConnection } from "../setupFilePeerConnection/setupFilePeerConnection";
+import { requestReceiverToSetupPC } from "../requestReceiverToSetupPC/requestReceiverToSetupPC";
 
 export const initializeWebRTC = function (channel, machineId) {
   return new Promise((resolve, reject) => {
