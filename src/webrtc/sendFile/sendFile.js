@@ -9,7 +9,10 @@ import { sendBatchOfChunks } from "../sendBatchOfChunks/sendBatchOfChunks";
 import { waitForBatchConfirmation } from "../waitForBatchConfirmation/waitForBatchConfirmation";
 
 import { isBatchAlreadyExistOnReceiver } from "../isBatchAlreadyExistOnReceiver/isBatchAlreadyExistOnReceiver";
+
 import { setStatus } from "../../status/status";
+
+import { setupFilePeerConnection } from "../setupFilePeerConnection/setupFilePeerConnection";
 
 export const sendFile = (fileName) => {
   return new Promise(async (resolve, reject) => {
@@ -17,6 +20,11 @@ export const sendFile = (fileName) => {
       const fileMetadata = await getFileMetadataFromIndexedDB(fileName);
       const batchesMetadata = fileMetadata["batchesMetaData"];
       const batchesKeys = Object.keys(batchesMetadata);
+      // Setup new peer connection for the transmission of file
+      await setupFilePeerConnection(fileName);
+      // Request other for to create peerconnection for file
+      // After successfully creating peerconnection on receiver create on in sender
+
       const currentDcCount = Object.keys(alivaWebRTC.dataChannels).length;
       console.log("batchesKeys: ", batchesKeys);
       setStatus("<h2>Setting up datachannels...</h2>");

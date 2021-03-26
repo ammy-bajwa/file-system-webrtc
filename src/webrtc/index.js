@@ -15,6 +15,7 @@ import { saveChunkInMemory } from "./saveChunkInMemory/saveChunkInMemory";
 export const alivaWebRTC = {
   peerConnection: null,
   dataChannels: {},
+  filesPeerConnections: {},
   addWebrtcListener,
   initializeWebRTC,
   sendOffer,
