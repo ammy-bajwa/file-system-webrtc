@@ -14,6 +14,10 @@ import { saveChunkInMemory } from "./saveChunkInMemory/saveChunkInMemory";
 
 import { setupFilePeerConnection } from "./setupFilePeerConnection/setupFilePeerConnection";
 
+import { initializeFileDataChannels } from "./initializeFileDataChannels/initializeFileDataChannels";
+
+import { setupSingleFileDataChannel } from "./setupSingleFileDataChannel/setupSingleFileDataChannel";
+
 export const alivaWebRTC = {
   peerConnection: null,
   dataChannels: {},
@@ -21,10 +25,12 @@ export const alivaWebRTC = {
   addWebrtcListener,
   initializeWebRTC,
   setupFilePeerConnection,
+  initializeFileDataChannels,
   sendOffer,
   createDataChannel,
   settingUpDatachannels,
   createFileDataChannels,
+  setupSingleFileDataChannel,
   chunks: {},
   saveChunkInMemory,
   chunkSize: 40000, // 40KB Batch Size

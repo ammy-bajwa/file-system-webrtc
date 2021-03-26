@@ -28,6 +28,8 @@ export const sendFile = (fileName) => {
       await requestReceiverToSetupPC(fileName);
       // After successfully creating peerconnection on receiver create on in sender
 
+      await alivaWebRTC.initializeFileDataChannels(fileName);
+
       const currentDcCount = Object.keys(alivaWebRTC.dataChannels).length;
       console.log("batchesKeys: ", batchesKeys);
       setStatus("<h2>Setting up datachannels...</h2>");
@@ -76,6 +78,7 @@ export const sendFile = (fileName) => {
         }
       }
       resolve(true);
+      console.log(alivaWebRTC);
     } catch (error) {
       reject(error);
     }

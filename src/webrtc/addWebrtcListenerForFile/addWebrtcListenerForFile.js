@@ -7,17 +7,18 @@ export const addWebrtcListenerForFile = function (
   return new Promise((resolve, reject) => {
     try {
       channel.on(`channel:onOfferFilePC`, async (data) => {
-        const { offer, sender } = data;
-        if (sender !== machineId) {
+        const { offer, sender, fileName: receiverFileName } = data;
+        if (sender !== machineId && fileName === receiverFileName) {
           console.log("SetRemote Offer");
           await peerConnection.setRemoteDescription(
             new RTCSessionDescription(offer)
           );
           const answer = await peerConnection.createAnswer();
           peerConnection.setLocalDescription(answer);
-          channel.push("channel:sendAnswer", {
+          channel.push("channel:sendAnswerFilePC", {
             sender: machineId,
             answer: answer,
+            fileName,
           });
           console.log("Offer received: ", offer);
         }
