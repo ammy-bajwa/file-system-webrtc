@@ -8,7 +8,7 @@ export const setupSingleFileDataChannel = function (dataChannel) {
       };
 
       dataChannel.onerror = function (error) {
-        console.log("Error:", error);
+        console.log("dc close");
       };
 
       dataChannel.onmessage = async (event) => {

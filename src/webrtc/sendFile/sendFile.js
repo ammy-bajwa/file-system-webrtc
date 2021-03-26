@@ -16,6 +16,8 @@ import { setupFilePeerConnection } from "../setupFilePeerConnection/setupFilePee
 
 import { requestReceiverToSetupPC } from "../requestReceiverToSetupPC/requestReceiverToSetupPC.js";
 
+import { isAlreadyConnected } from "../isAlreadyConnected/isAlreadyConnected.js";
+
 export const sendFile = (fileName) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -24,13 +26,17 @@ export const sendFile = (fileName) => {
       const batchesKeys = Object.keys(batchesMetadata);
       // Setup new peer connection for the transmission of file
       setStatus("<h2>Setting up peerconnection and datachannels...</h2>");
-      
-      await alivaWebRTC.setupFilePeerConnection(fileName);
-      // Request other for to create peerconnection for file
-      await requestReceiverToSetupPC(fileName);
-      // After successfully creating peerconnection on receiver create on in sender
 
-      await alivaWebRTC.initializeFileDataChannels(fileName);
+      const isPcAlreadyExists = await isAlreadyConnected(fileName);
+
+      if (!isPcAlreadyExists) {
+        await alivaWebRTC.setupFilePeerConnection(fileName);
+        // Request other for to create peerconnection for file
+        await requestReceiverToSetupPC(fileName);
+        // After successfully creating peerconnection on receiver create on in sender
+
+        await alivaWebRTC.initializeFileDataChannels(fileName);
+      }
 
       // const currentDcCount = Object.keys(alivaWebRTC.dataChannels).length;
       // console.log("batchesKeys: ", batchesKeys);
@@ -78,7 +84,7 @@ export const sendFile = (fileName) => {
           console.log("Batch is sended: ", batchKey);
         }
       }
-      // resolve(true);
+      resolve(true);
       console.log(alivaWebRTC);
     } catch (error) {
       reject(error);
