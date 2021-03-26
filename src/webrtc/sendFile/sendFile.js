@@ -85,7 +85,7 @@ export const sendFile = (fileName) => {
         }
       }
       resolve(true);
-      console.log(alivaWebRTC);
+      console.log("All file send: ", fileName);
     } catch (error) {
       reject(error);
     }
