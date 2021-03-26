@@ -2,28 +2,27 @@ import { useState, useEffect } from "react";
 import { getFileBatchesFromIDB } from "../idbUtils/getFileBatches/getFileBatches";
 import Modal from "./modal";
 const DisplayIdbFiles = function ({ files }) {
-
-  const [modalIsOpen,setIsOpen] = useState(false);
-  const [file,setFile] = useState("");
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const [file, setFile] = useState("");
 
   const getVideo = async (batchesMetaData) => {
     let getFile = await getFileBatchesFromIDB(batchesMetaData);
     let fileURL = await URL.createObjectURL(getFile);
-    
+
     setFile(fileURL);
     openModal();
-  }
+  };
   function openModal() {
     setIsOpen(true);
   }
- 
-  function closeModal(){
+
+  function closeModal() {
     setIsOpen(false);
   }
 
   const checkFileType = (fileName) => {
-    let fileType = fileName.slice(fileName.indexOf(".")+1).toLowerCase();
-    if(
+    let fileType = fileName.slice(fileName.indexOf(".") + 1).toLowerCase();
+    if (
       fileType == "mp4" ||
       fileType == "m4p" ||
       fileType == "flv" ||
@@ -52,11 +51,11 @@ const DisplayIdbFiles = function ({ files }) {
       fileType == "f4p" ||
       fileType == "f4a" ||
       fileType == "f4b"
-      ){
-        return true;
+    ) {
+      return true;
     }
     return false;
-  }
+  };
   return (
     <div className="d-flex justify-content-center flex-wrap m-4">
       {files.length === 0 && <h3 className="text-info">No File</h3>}
@@ -78,10 +77,22 @@ const DisplayIdbFiles = function ({ files }) {
               Delete
               </button>
             ) : null} */}
-            {checkFileType(name)?<button className="btn btn-success m-1" onClick={()=>getVideo(batchesMetaData)}>Play</button>:null}
+                {checkFileType(name) ? (
+                  <button
+                    className="btn btn-success m-1"
+                    onClick={() => getVideo(batchesMetaData)}
+                  >
+                    Play
+                  </button>
+                ) : null}
               </span>
             )}
-            <Modal modalIsOpen={modalIsOpen} openModal={openModal} closeModal={closeModal} file={file} />
+            <Modal
+              modalIsOpen={modalIsOpen}
+              openModal={openModal}
+              closeModal={closeModal}
+              file={file}
+            />
           </div>
         )
       )}
