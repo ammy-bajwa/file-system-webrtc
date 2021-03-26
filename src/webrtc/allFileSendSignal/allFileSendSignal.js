@@ -1,6 +1,9 @@
-export const allFileSendSignal = function (fileName, dataChannel) {
+import { alivaWebRTC } from "../index";
+
+export const allFileSendSignal = function (fileName) {
   return new Promise((resolve, reject) => {
     try {
+      const dataChannel = alivaWebRTC.dataChannels["dc"].dataChannel;
       const allFileSendSignal = {
         allFileSend: true,
         fileName,
