@@ -7,7 +7,7 @@ export const initializeFileDataChannels = function (fileName) {
       if (isDcAlreadyExists) {
         resolve(true);
       } else {
-        for (let index = 0; index <= 400; index++) {
+        for (let index = 0; index <= 100; index++) {
           const dataChannelName = `dc_${index}`;
           const dataChannel = await peerConnection.createDataChannel(
             dataChannelName
