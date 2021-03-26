@@ -83,12 +83,11 @@ export const sendFile = (fileName) => {
                </h2>`
               : `<h2>All File Sended Successfully ${fileName}</h2>`;
           setStatus(status);
-          console.log("Batch is sended: ", batchKey);
+          console.log("Batch is sended: ", batchKey, fileName);
         }
       }
       await allFileSendSignal(fileName);
       resolve(true);
-      console.log("All file send: ", fileName);
     } catch (error) {
       reject(error);
     }
