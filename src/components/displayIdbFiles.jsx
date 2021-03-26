@@ -2,9 +2,6 @@ import { useState, useEffect } from "react";
 import { getFileBatchesFromIDB } from "../idbUtils/getFileBatches/getFileBatches";
 import Modal from "./modal";
 import { deleteFileFromIDB } from "../idbUtils/deleteFileFromIDB/deleteFileFromIDB";
-// import { sendFile } from "../webrtc/sendFile/sendFile";
-
-import { requestingFile } from "../webrtc/requestingFile/requestingFile";
 
 import redux from "../utils/manageRedux";
 
