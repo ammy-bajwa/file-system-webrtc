@@ -20,6 +20,43 @@ const DisplayIdbFiles = function ({ files }) {
   function closeModal(){
     setIsOpen(false);
   }
+
+  const checkFileType = (fileName) => {
+    let fileType = fileName.slice(fileName.indexOf(".")+1).toLowerCase();
+    if(
+      fileType == "mp4" ||
+      fileType == "m4p" ||
+      fileType == "flv" ||
+      fileType == "mkv" ||
+      fileType == "webm" ||
+      fileType == "vob" ||
+      fileType == "ogv" ||
+      fileType == "ogg" ||
+      fileType == "avi" ||
+      fileType == "wmv" ||
+      fileType == "rm" ||
+      fileType == "amv" ||
+      fileType == "m4v" ||
+      fileType == "mpg" ||
+      fileType == "mp2" ||
+      fileType == "mpeg" ||
+      fileType == "mpe" ||
+      fileType == "mpv" ||
+      fileType == "m2v" ||
+      fileType == "svi" ||
+      fileType == "3gp" ||
+      fileType == "3g2" ||
+      fileType == "mxf" ||
+      fileType == "nsv" ||
+      fileType == "f4v" ||
+      fileType == "f4p" ||
+      fileType == "f4a" ||
+      fileType == "f4b"
+      ){
+        return true;
+    }
+    return false;
+  }
   return (
     <div className="d-flex justify-content-center flex-wrap m-4">
       {files.length === 0 && <h3 className="text-info">No File</h3>}
@@ -41,7 +78,7 @@ const DisplayIdbFiles = function ({ files }) {
               Delete
               </button>
             ) : null} */}
-            <button className="btn btn-success m-1" onClick={()=>getVideo(batchesMetaData)}>Play</button>
+            {checkFileType(name)?<button className="btn btn-success m-1" onClick={()=>getVideo(batchesMetaData)}>Play</button>:null}
               </span>
             )}
             <Modal modalIsOpen={modalIsOpen} openModal={openModal} closeModal={closeModal} file={file} />
