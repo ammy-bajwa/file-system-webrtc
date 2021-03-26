@@ -81,13 +81,14 @@ export const initializeWebRTC = function (channel, machineId) {
           console.log("Got message");
           try {
             const receivedMessage = JSON.parse(message);
-            if (receivedMessage.isChunk) {
-              await alivaWebRTC.saveChunkInMemory(
-                receivedMessage.batchHash,
-                receivedMessage.chunkToSend
-              );
-              return;
-            } else if (receivedMessage.isConfirmation) {
+            // if (receivedMessage.isChunk) {
+            //   await alivaWebRTC.saveChunkInMemory(
+            //     receivedMessage.batchHash,
+            //     receivedMessage.chunkToSend
+            //   );
+            //   return;
+            // } else
+            if (receivedMessage.isConfirmation) {
               const {
                 batchHash,
                 fileName,

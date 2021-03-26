@@ -2,6 +2,8 @@ import { alivaWS } from "../../socket/index";
 
 import { iceServers } from "../iceServers/iceServers";
 
+import { alivaWebRTC } from "../index";
+
 import store from "../../redux/store";
 
 import { addWebrtcListenerForFile } from "../addWebrtcListenerForFile/addWebrtcListenerForFile";
@@ -34,14 +36,31 @@ export const setupFilePeerConnection = function (fileName) {
           const dataChannelObj = {
             dataChannel,
           };
+          this.filesPeerConnections[fileName].dataChannels[
+            label
+          ] = dataChannelObj;
         };
 
         dataChannel.onerror = function (error) {
           console.log("Error:", error);
+
+          this.filesPeerConnections[fileName].dataChannels[label] = null;
         };
 
         dataChannel.onmessage = async (event) => {
           const message = event.data;
+          console.log("file chunk received");
+          try {
+            const receivedMessage = JSON.parse(message);
+            if (receivedMessage.isChunk) {
+              await alivaWebRTC.saveChunkInMemory(
+                receivedMessage.batchHash,
+                receivedMessage.chunkToSend
+              );
+            }
+          } catch (error) {
+            console.error(error);
+          }
         };
       };
       peerConnection.onnegotiationneeded = async () => {

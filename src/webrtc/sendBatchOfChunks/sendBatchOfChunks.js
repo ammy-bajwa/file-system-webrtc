@@ -2,11 +2,16 @@ import { alivaWebRTC } from "../index";
 
 import { convertBlobToBase64 } from "../../fileUtils/convertBlobToBase64/convertBlobToBase64";
 
-export const sendBatchOfChunks = async (batchOfChunksIDB, batchHash) => {
+export const sendBatchOfChunks = async (
+  fileName,
+  batchOfChunksIDB,
+  batchHash
+) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const allDataChannels = alivaWebRTC.dataChannels;
-      const dataChannelsKeys = Object.keys(alivaWebRTC.dataChannels);
+      const allDataChannels =
+        alivaWebRTC.filesPeerConnections[fileName].dataChannels;
+      const dataChannelsKeys = Object.keys(allDataChannels);
       let dataChannelsHelper = 0;
       for (const chunkKey in batchOfChunksIDB) {
         if (Object.hasOwnProperty.call(batchOfChunksIDB, chunkKey)) {
