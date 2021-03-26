@@ -194,7 +194,7 @@ export const initializeWebRTC = function (channel, machineId) {
               dataChannel.send(JSON.stringify({ isBatchExists }));
             } else if (receivedMessage.requestFile) {
               const { fileName } = receivedMessage;
-              console.log("requestFile received", fileName);
+              console.log("requestFile received second", fileName);
               await sendFile(fileName);
               await allFileSendSignal(fileName, dataChannel);
             } else if (receivedMessage.allFileSend) {
