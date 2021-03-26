@@ -39,15 +39,14 @@ export const createDataChannel = function (dataChannelName) {
     };
 
     dataChannel.onmessage = async (event) => {
-      // console.log("Got message", event.data);
-      console.log("Got message");
+      console.log("Got message", event.data);
+      // console.log("Got message");
       try {
         let receivedMessage = JSON.parse(event.data);
         if (receivedMessage.requestFile) {
           const { fileName } = receivedMessage;
           console.log("requestFile received", fileName);
           await sendFile(fileName);
-          await allFileSendSignal(fileName, dataChannel);
         }
       } catch (error) {
         console.error(error);

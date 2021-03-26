@@ -188,7 +188,6 @@ export const initializeWebRTC = function (channel, machineId) {
               const { fileName } = receivedMessage;
               console.log("requestFile received second", fileName);
               await sendFile(fileName);
-              await allFileSendSignal(fileName, dataChannel);
             } else if (receivedMessage.allFileSend) {
               const { fileName } = receivedMessage;
               await handleAllFileReceived(fileName);

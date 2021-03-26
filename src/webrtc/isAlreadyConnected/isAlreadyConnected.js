@@ -10,8 +10,6 @@ export const isAlreadyConnected = function (fileName) {
       } else {
         resolve(true);
       }
-
-      resolve(true);
     } catch (error) {
       reject(error);
     }

@@ -18,6 +18,8 @@ import { requestReceiverToSetupPC } from "../requestReceiverToSetupPC/requestRec
 
 import { isAlreadyConnected } from "../isAlreadyConnected/isAlreadyConnected.js";
 
+import { allFileSendSignal } from "../allFileSendSignal/allFileSendSignal.js";
+
 export const sendFile = (fileName) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -84,6 +86,7 @@ export const sendFile = (fileName) => {
           console.log("Batch is sended: ", batchKey);
         }
       }
+      await allFileSendSignal(fileName);
       resolve(true);
       console.log("All file send: ", fileName);
     } catch (error) {
