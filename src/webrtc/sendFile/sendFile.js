@@ -23,7 +23,8 @@ export const sendFile = (fileName) => {
       const batchesMetadata = fileMetadata["batchesMetaData"];
       const batchesKeys = Object.keys(batchesMetadata);
       // Setup new peer connection for the transmission of file
-      console.log("fileName: ", fileName);
+      setStatus("<h2>Setting up peerconnection and datachannels...</h2>");
+      
       await alivaWebRTC.setupFilePeerConnection(fileName);
       // Request other for to create peerconnection for file
       await requestReceiverToSetupPC(fileName);
@@ -33,7 +34,6 @@ export const sendFile = (fileName) => {
 
       // const currentDcCount = Object.keys(alivaWebRTC.dataChannels).length;
       // console.log("batchesKeys: ", batchesKeys);
-      // setStatus("<h2>Setting up datachannels...</h2>");
       // if (currentDcCount < 4) {
       //   await alivaWebRTC.settingUpDatachannels(400);
       // } else {
