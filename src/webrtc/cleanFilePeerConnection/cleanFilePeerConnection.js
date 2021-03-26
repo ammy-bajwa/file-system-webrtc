@@ -5,6 +5,7 @@ export const cleanFilePeerConnection = function (fileName) {
     try {
       const filePc = alivaWebRTC.filesPeerConnections[fileName].peerConnection;
       await filePc.close();
+      alivaWebRTC.filesPeerConnections[fileName] = null;
       resolve(true);
     } catch (error) {
       reject(error);
