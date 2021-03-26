@@ -1,6 +1,15 @@
 import { useState, useEffect } from "react";
 import { getFileBatchesFromIDB } from "../idbUtils/getFileBatches/getFileBatches";
 import Modal from "./modal";
+import { deleteFileFromIDB } from "../idbUtils/deleteFileFromIDB/deleteFileFromIDB";
+// import { sendFile } from "../webrtc/sendFile/sendFile";
+
+import { requestingFile } from "../webrtc/requestingFile/requestingFile";
+
+import redux from "../utils/manageRedux";
+
+import { setStatus } from "../status/status";
+
 const DisplayIdbFiles = function ({ files }) {
   const [modalIsOpen, setIsOpen] = useState(false);
   const [file, setFile] = useState("");
@@ -19,7 +28,17 @@ const DisplayIdbFiles = function ({ files }) {
   function closeModal() {
     setIsOpen(false);
   }
-
+  const deleteFile = async (metaData, fileName) => {
+    if (metaData) {
+      await deleteFileFromIDB(fileName, metaData);
+      redux.removeFileFromidbFiles(fileName);
+      setStatus(
+        `<h2>
+          ${fileName} has been deleted successfully.
+        </h2>`
+      );
+    }
+  };
   const checkFileType = (fileName) => {
     let fileType = fileName.slice(fileName.indexOf(".") + 1).toLowerCase();
     if (
@@ -68,15 +87,13 @@ const DisplayIdbFiles = function ({ files }) {
             {!isReceived && !isOnlyMetadata && (
               <span className="border border-dark rounded m-2 p-3">
                 {name}--<b>{(size / 1000 / 1000).toFixed(2)}_MB</b>
-                {/* {isDelete ? (
-              <button
-              type="button"
-              className="btn btn-danger m-2"
-              onClick={() => deleteFile(batchesMetaData, name)}
-              >
-              Delete
-              </button>
-            ) : null} */}
+                <button
+                  type="button"
+                  className="btn btn-danger m-2"
+                  onClick={() => deleteFile(batchesMetaData, name)}
+                >
+                  Delete
+                </button>
                 {checkFileType(name) ? (
                   <button
                     className="btn btn-success m-1"
