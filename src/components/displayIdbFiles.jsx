@@ -115,7 +115,7 @@ const DisplayIdbFiles = function ({ files, fileState }) {
                   className="btn btn-primary m-2"
                   onClick={() => handleFileSyncMetadata(fileHash)}
                 >
-                  Sync File MetaData
+                  Sync
                 </button>
                 <button
                   type="button"

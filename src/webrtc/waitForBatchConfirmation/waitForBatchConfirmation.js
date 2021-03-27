@@ -26,7 +26,6 @@ export const waitForBatchConfirmation = (
         fileSize,
       };
       batchConfirmationPayload = JSON.stringify(batchConfirmationPayload);
-      let doesChange = false;
       dataChannel.onmessage = async (event) => {
         try {
           const { batchHash, isTotalBatchReceived, missingChunks } = JSON.parse(
@@ -54,13 +53,8 @@ export const waitForBatchConfirmation = (
             console.log("Resending fileName: ", fileName);
             await sendBatchOfChunks(fileName, resendChunkObj, batchHash);
             dataChannel.send(batchConfirmationPayload);
-            // setTimeout(() => {
-            //   if (!doesChange) {
-            //     dataChannel.send(batchConfirmationPayload);
-            //   }
-            // }, 2000);
+            resolve(true);
           } else {
-            doesChange = true;
             resolve(true);
           }
         } catch (error) {

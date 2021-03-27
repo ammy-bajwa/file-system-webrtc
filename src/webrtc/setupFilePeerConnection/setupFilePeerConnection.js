@@ -15,7 +15,6 @@ export const setupFilePeerConnection = function (fileName) {
         fileReducer: { machineId },
       } = store.getState();
 
-      console.log("<<<<<<<<machineId>>>>>>>>>>>: ", machineId);
       const peerConnection = new RTCPeerConnection(iceServers);
       this.filesPeerConnections[fileName] = {
         peerConnection,
@@ -53,6 +52,7 @@ export const setupFilePeerConnection = function (fileName) {
             const receivedMessage = JSON.parse(message);
             if (receivedMessage.isChunk) {
               await alivaWebRTC.saveChunkInMemory(
+                fileName,
                 receivedMessage.batchHash,
                 receivedMessage.chunkToSend
               );
@@ -83,7 +83,7 @@ export const setupFilePeerConnection = function (fileName) {
           });
         }
       };
-      // resolve(true);
+      resolve(true);
     } catch (error) {
       reject(error);
     }

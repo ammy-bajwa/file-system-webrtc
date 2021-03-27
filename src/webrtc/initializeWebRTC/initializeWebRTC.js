@@ -90,7 +90,8 @@ export const initializeWebRTC = function (channel, machineId) {
                 fileSize,
               } = receivedMessage;
               console.log("Confirmation message: ", message);
-              const inMemoryBatchChunks = alivaWebRTC.chunks[batchHash];
+              const inMemoryBatchChunks =
+                alivaWebRTC.chunks[fileName][batchHash];
               if (inMemoryBatchChunks?.confirmation) {
                 dataChannel.send(
                   JSON.stringify({
@@ -109,8 +110,8 @@ export const initializeWebRTC = function (channel, machineId) {
                   batchKey
                 );
                 if (!isTotalBatchReceived) {
-                  for (let index = 0; index <= 30; index++) {
-                    await causeDelay(100);
+                  for (let index = 0; index <= 10; index++) {
+                    await causeDelay(500);
                     isTotalBatchReceived = await batchConfirmationMemory(
                       fileName,
                       batchHash,
@@ -148,7 +149,9 @@ export const initializeWebRTC = function (channel, machineId) {
                       inMemoryBatchChunks
                     );
                     await saveBatchBlobToIdb(batchHash, batchBlob);
-                    alivaWebRTC.chunks[batchHash] = { confirmation: true };
+                    alivaWebRTC.chunks[fileName][batchHash] = {
+                      confirmation: true,
+                    };
                     const status = `<h2>
       ${(endBatchIndex / 1000 / 1000).toFixed(
         2
@@ -166,6 +169,13 @@ export const initializeWebRTC = function (channel, machineId) {
                     batchKey,
                     batchHash,
                     inMemoryBatchChunks
+                  );
+                  console.log(
+                    "Missing chunks: ",
+                    fileName,
+                    batchKey,
+                    Object.keys(inMemoryBatchChunks).length,
+                    missingChunks.length
                   );
                 }
                 if (missingChunks.length > 0) {
@@ -202,7 +212,7 @@ export const initializeWebRTC = function (channel, machineId) {
               console.log("setupPcRequest received", fileName);
               await alivaWebRTC.setupFilePeerConnection(fileName);
               dataChannel.send(
-                JSON.stringify({ setupPcRequest: true, fileName })
+                JSON.stringify({ pcSetupConfirmation: true, fileName })
               );
             }
           } catch (error) {

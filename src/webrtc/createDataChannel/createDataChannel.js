@@ -4,8 +4,6 @@ import { setStatus } from "../../status/status";
 
 import { sendFile } from "../sendFile/sendFile";
 
-import { alivaWebRTC } from "../index";
-
 export const createDataChannel = function (dataChannelName) {
   return new Promise(async (resolve, reject) => {
     const dcOptions = {
@@ -47,9 +45,9 @@ export const createDataChannel = function (dataChannelName) {
           const { fileName } = receivedMessage;
           console.log("requestFile received 2->>>>>>:", fileName);
           await sendFile(fileName);
-        } else if (receivedMessage.setupPcRequest) {
+        } else if (receivedMessage.pcSetupConfirmation) {
           const { fileName } = receivedMessage;
-          console.log("setupPcRequest received", fileName);
+          console.log("pcSetupConfirmation received", fileName);
         }
       } catch (error) {
         console.error(error);

@@ -12,7 +12,8 @@ export const sendBatchOfChunks = async (
       console.log(
         "fileName chunks sending :",
         fileName,
-        alivaWebRTC.filesPeerConnections
+        alivaWebRTC.filesPeerConnections[fileName],
+        Object.keys(batchOfChunksIDB).length
       );
       const allDataChannels =
         alivaWebRTC.filesPeerConnections[fileName].dataChannels;
