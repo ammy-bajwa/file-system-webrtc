@@ -177,6 +177,7 @@ export const initializeWebRTC = function (channel, machineId) {
                     batchHash,
                     batchKey,
                     missingChunks,
+                    fileName,
                   })
                 );
               }
@@ -195,7 +196,7 @@ export const initializeWebRTC = function (channel, machineId) {
               redux.storeState({ machineId, idbFiles: files });
               setStatus(`<h2>All File Received Successfully ${fileName}</h2>`);
               console.log("allFileSend received", fileName);
-              dataChannel.send(JSON.stringify({ isReceived: true }));
+              dataChannel.send(JSON.stringify({ isReceived: true, fileName }));
             } else if (receivedMessage.setupPcRequest) {
               const { fileName } = receivedMessage;
               console.log("setupPcRequest received", fileName);

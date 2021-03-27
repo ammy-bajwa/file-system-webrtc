@@ -9,6 +9,11 @@ export const sendBatchOfChunks = async (
 ) => {
   return new Promise(async (resolve, reject) => {
     try {
+      console.log(
+        "fileName chunks sending :",
+        fileName,
+        alivaWebRTC.filesPeerConnections
+      );
       const allDataChannels =
         alivaWebRTC.filesPeerConnections[fileName].dataChannels;
       const dataChannelsKeys = Object.keys(allDataChannels);
@@ -36,6 +41,7 @@ export const sendBatchOfChunks = async (
       }
       resolve(true);
     } catch (error) {
+      debugger;
       reject(error);
     }
   });
