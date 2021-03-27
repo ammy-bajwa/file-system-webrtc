@@ -86,7 +86,7 @@ export const sendFile = (fileName) => {
         }
       }
       await allFileSendSignal(fileName);
-      await cleanFilePeerConnection(fileName);
+      // await cleanFilePeerConnection(fileName);
       resolve(true);
     } catch (error) {
       reject(error);
