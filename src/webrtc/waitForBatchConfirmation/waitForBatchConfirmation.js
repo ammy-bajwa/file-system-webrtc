@@ -54,11 +54,11 @@ export const waitForBatchConfirmation = (
             console.log("Resending fileName: ", fileName);
             await sendBatchOfChunks(fileName, resendChunkObj, batchHash);
             dataChannel.send(batchConfirmationPayload);
-            setTimeout(() => {
-              if (!doesChange) {
-                dataChannel.send(batchConfirmationPayload);
-              }
-            }, 2000);
+            // setTimeout(() => {
+            //   if (!doesChange) {
+            //     dataChannel.send(batchConfirmationPayload);
+            //   }
+            // }, 2000);
           } else {
             doesChange = true;
             resolve(true);
