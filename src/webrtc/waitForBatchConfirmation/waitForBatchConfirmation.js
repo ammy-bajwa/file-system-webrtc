@@ -53,7 +53,7 @@ export const waitForBatchConfirmation = (
             console.log("Resending fileName: ", fileName);
             await sendBatchOfChunks(fileName, resendChunkObj, batchHash);
             dataChannel.send(batchConfirmationPayload);
-            resolve(true);
+            // resolve(true);
           } else {
             resolve(true);
           }
