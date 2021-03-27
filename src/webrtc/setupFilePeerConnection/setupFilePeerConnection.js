@@ -15,6 +15,7 @@ export const setupFilePeerConnection = function (fileName) {
         fileReducer: { machineId },
       } = store.getState();
 
+      console.log("<<<<<<<<machineId>>>>>>>>>>>: ", machineId);
       const peerConnection = new RTCPeerConnection(iceServers);
       this.filesPeerConnections[fileName] = {
         peerConnection,
@@ -76,13 +77,13 @@ export const setupFilePeerConnection = function (fileName) {
       peerConnection.onicecandidate = function (event) {
         if (event.candidate) {
           channel.push(`channel:sendIceFilePC`, {
-            candidate: JSON.stringify(event.candidate), 
+            candidate: JSON.stringify(event.candidate),
             sender: machineId,
             fileName,
           });
         }
       };
-      resolve(true);
+      // resolve(true);
     } catch (error) {
       reject(error);
     }
