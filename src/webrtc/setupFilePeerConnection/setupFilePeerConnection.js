@@ -76,8 +76,9 @@ export const setupFilePeerConnection = function (fileName) {
       peerConnection.onicecandidate = function (event) {
         if (event.candidate) {
           channel.push(`channel:sendIceFilePC`, {
-            candidate: JSON.stringify(event.candidate),
+            candidate: JSON.stringify(event.candidate), 
             sender: machineId,
+            fileName,
           });
         }
       };
