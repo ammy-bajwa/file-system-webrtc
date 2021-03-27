@@ -69,6 +69,7 @@ class App extends Component {
 
   handleSyncMetadata = async () => {
     const { idbFiles } = this.props.fileState;
+    console.log("file sync", idbFiles)
     const webRTCConnState = alivaWebRTC.peerConnection.connectionState;
     if (idbFiles.length <= 0) {
       alert("Please upload a file first");
