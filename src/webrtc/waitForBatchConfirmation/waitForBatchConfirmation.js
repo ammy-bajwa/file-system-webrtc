@@ -12,7 +12,6 @@ export const waitForBatchConfirmation = (
 ) => {
   return new Promise(async (resolve, reject) => {
     try {
-      console.log("dc: ", alivaWebRTC.filesPeerConnections[fileName]);
       let dataChannel =
         alivaWebRTC.filesPeerConnections[fileName].dataChannels["shareInfo"]
           .dataChannel;
