@@ -4,7 +4,7 @@ export const allFileSendSignal = function (fileName) {
   return new Promise(async (resolve, reject) => {
     try {
       let dataChannel =
-        alivaWebRTC.filesPeerConnections[fileName].dataChannels["shareInfo"]
+        alivaWebRTC.filesPeerConnections[fileName].dataChannels["shareInfo_0"]
           .dataChannel;
       const allFileSendSignal = {
         allFileSend: true,

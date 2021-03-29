@@ -13,7 +13,7 @@ export const waitForBatchConfirmation = (
   return new Promise(async (resolve, reject) => {
     try {
       let dataChannel =
-        alivaWebRTC.filesPeerConnections[fileName].dataChannels["shareInfo"]
+        alivaWebRTC.filesPeerConnections[fileName].dataChannels["shareInfo_1"]
           .dataChannel;
       let batchConfirmationPayload = {
         isConfirmation: true,

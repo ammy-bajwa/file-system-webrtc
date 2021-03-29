@@ -17,7 +17,7 @@ export const initializeFileDataChannels = function (fileName) {
         }
 
         for (let index = 0; index <= 1; index++) {
-          const dataChannelName = `shareInfo`;
+          const dataChannelName = `shareInfo_${index}`;
           const dataChannel = await peerConnection.createDataChannel(
             dataChannelName
           );
