@@ -46,7 +46,7 @@ export const handleBatchConfirmation = (dataChannel, message) => {
         if (!isTotalBatchReceived) {
           for (let index = 0; index <= 10; index++) {
             console.log("waiting....", index);
-            await causeDelay(200);
+            await causeDelay(500);
             isTotalBatchReceived = await batchConfirmationMemory(
               fileName,
               batchHash,
