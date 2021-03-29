@@ -37,8 +37,8 @@ export const sendFile = (fileName) => {
         // Request other for to create peerconnection for file
         await requestReceiverToSetupPC(fileName);
         // After successfully creating peerconnection on receiver create on in sender
-
         await alivaWebRTC.initializeFileDataChannels(fileName);
+
       }
 
       for (let key = 0; key < batchesKeys.length; key++) {

@@ -30,6 +30,7 @@ export const setupFilePeerConnection = function (fileName) {
         peerConnection,
         dataChannels: {},
       };
+
       const { channel } = alivaWS;
       await addWebrtcListenerForFile(
         channel,
@@ -70,7 +71,6 @@ export const setupFilePeerConnection = function (fileName) {
               redux.storeState({ machineId, idbFiles: files });
               setStatus(`<h2>All File Received Successfully ${fileName}</h2>`);
               console.log("allFileSend received", fileName, dataChannel.label);
-              // dataChannel.send(JSON.stringify({ isReceived: true, fileName }));
             }
             if (receivedMessage.isChunk) {
               await alivaWebRTC.saveChunkInMemory(

@@ -14,7 +14,7 @@ export const waitForBatchConfirmation = (
     try {
       console.log("dc: ", alivaWebRTC.filesPeerConnections[fileName]);
       let dataChannel =
-        alivaWebRTC.filesPeerConnections[fileName].dataChannels["dc_0"]
+        alivaWebRTC.filesPeerConnections[fileName].dataChannels["shareInfo"]
           .dataChannel;
       let batchConfirmationPayload = {
         isConfirmation: true,
@@ -25,6 +25,7 @@ export const waitForBatchConfirmation = (
         fileSize,
       };
       batchConfirmationPayload = JSON.stringify(batchConfirmationPayload);
+      let isConfirmed = false;
       dataChannel.onmessage = async (event) => {
         try {
           const { batchHash, isTotalBatchReceived, missingChunks } = JSON.parse(
@@ -52,8 +53,14 @@ export const waitForBatchConfirmation = (
             console.log("Resending fileName: ", fileName);
             await sendBatchOfChunks(fileName, resendChunkObj, batchHash);
             dataChannel.send(batchConfirmationPayload);
+            setTimeout(() => {
+              if (!isConfirmed) {
+                dataChannel.send(batchConfirmationPayload);
+              }
+            }, 4000);
             // resolve(true);
           } else {
+            isConfirmed = true;
             resolve(true);
           }
         } catch (error) {
