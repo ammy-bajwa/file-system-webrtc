@@ -20,6 +20,7 @@ export const sendBatchOfChunks = async (
       const dataChannelsKeys = Object.keys(allDataChannels);
       let dataChannelsHelper = 0;
       for (const chunkKey in batchOfChunksIDB) {
+        console.log("*chunk send");
         if (Object.hasOwnProperty.call(batchOfChunksIDB, chunkKey)) {
           const [startSliceIndex, endSliceIndex] = chunkKey.split("__");
           const blobChunk = batchOfChunksIDB[chunkKey];

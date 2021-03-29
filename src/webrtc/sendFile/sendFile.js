@@ -38,7 +38,6 @@ export const sendFile = (fileName) => {
         await requestReceiverToSetupPC(fileName);
         // After successfully creating peerconnection on receiver create on in sender
         await alivaWebRTC.initializeFileDataChannels(fileName);
-
       }
 
       for (let key = 0; key < batchesKeys.length; key++) {
@@ -52,14 +51,8 @@ export const sendFile = (fileName) => {
           endBatchIndex,
           totalChunksCount
         );
-        const isBatchExists = await isBatchAlreadyExistOnReceiver(batchHash);
-        console.log(
-          "batchKey isBatchExists: ",
-          fileName,
-          batchKey,
-          isBatchExists
-        );
-        if (!isBatchExists) {
+        // const isBatchExists = await isBatchAlreadyExistOnReceiver(batchHash);
+        if (true) {
           const fileSize = fileMetadata["fileSize"];
           setStatus("<h2>File chunks loading in memory and sending...</h2>");
           await sendBatchOfChunks(fileName, batchOfChunksIDB, batchHash);
@@ -71,6 +64,7 @@ export const sendFile = (fileName) => {
             endBatchIndex,
             fileSize
           );
+          console.log("+++");
           const status =
             endBatchIndex !== fileSize
               ? `<h2>

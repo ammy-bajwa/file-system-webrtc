@@ -1,7 +1,7 @@
 import { alivaWebRTC } from "../index";
 
 export const requestingFile = async (fileName) => {
-  const { dataChannel } = alivaWebRTC["dataChannels"]["dc"];
+  const { dataChannel } = alivaWebRTC["dataChannels"]["request_file"];
   let requestingFileObj = {
     requestFile: true,
     fileName,

@@ -25,7 +25,6 @@ export const handleBatchConfirmation = (dataChannel, message) => {
         fileSize,
       } = message;
 
-      console.log("Confirmation message: ", message);
       const inMemoryBatchChunks = alivaWebRTC.chunks[fileName][batchHash];
       if (inMemoryBatchChunks?.confirmation) {
         dataChannel.send(
@@ -46,6 +45,7 @@ export const handleBatchConfirmation = (dataChannel, message) => {
         );
         if (!isTotalBatchReceived) {
           for (let index = 0; index <= 10; index++) {
+            console.log("waiting....", index);
             await causeDelay(200);
             isTotalBatchReceived = await batchConfirmationMemory(
               fileName,

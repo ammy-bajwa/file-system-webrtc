@@ -58,11 +58,11 @@ export const setupFilePeerConnection = function (fileName) {
 
         dataChannel.onmessage = async (event) => {
           const message = event.data;
-
-          console.log("file chunk received");
+          console.log("message received fileDC");
           try {
             const receivedMessage = JSON.parse(message);
             if (receivedMessage.isConfirmation) {
+              console.log("isConfirmation: ", receivedMessage);
               await handleBatchConfirmation(dataChannel, receivedMessage);
               return;
             } else if (receivedMessage.allFileSend) {
@@ -71,8 +71,7 @@ export const setupFilePeerConnection = function (fileName) {
               redux.storeState({ machineId, idbFiles: files });
               setStatus(`<h2>All File Received Successfully ${fileName}</h2>`);
               console.log("allFileSend received", fileName, dataChannel.label);
-            }
-            if (receivedMessage.isChunk) {
+            } else if (receivedMessage.isChunk) {
               await alivaWebRTC.saveChunkInMemory(
                 fileName,
                 receivedMessage.batchHash,

@@ -63,9 +63,7 @@ export const initializeWebRTC = function (channel, machineId) {
           // console.log("Got message");
           try {
             const receivedMessage = JSON.parse(message);
-            if (receivedMessage.isConfirmation) {
-              console.log("))((((Confirmation message: ", message);
-            } else if (receivedMessage.isBatchExists) {
+            if (receivedMessage.isBatchExists) {
               const { batchHash } = receivedMessage;
               const isBatchExists = await checkIfAlreadyExist(batchHash);
               dataChannel.send(JSON.stringify({ isBatchExists }));
@@ -73,14 +71,6 @@ export const initializeWebRTC = function (channel, machineId) {
               const { fileName } = receivedMessage;
               console.log("requestFile received second", fileName);
               await sendFile(fileName);
-            } else if (receivedMessage.allFileSend) {
-              const { fileName } = receivedMessage;
-              await handleAllFileReceived(fileName);
-              const files = await getAllSavedFiles();
-              redux.storeState({ machineId, idbFiles: files });
-              setStatus(`<h2>All File Received Successfully ${fileName}</h2>`);
-              console.log("allFileSend received", fileName);
-              dataChannel.send(JSON.stringify({ isReceived: true, fileName }));
             } else if (receivedMessage.setupPcRequest) {
               const { fileName } = receivedMessage;
               console.log("setupPcRequest received", fileName);
