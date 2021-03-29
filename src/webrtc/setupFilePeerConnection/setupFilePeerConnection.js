@@ -10,6 +10,14 @@ import { addWebrtcListenerForFile } from "../addWebrtcListenerForFile/addWebrtcL
 
 import { handleBatchConfirmation } from "../handleBatchConfirmation/handleBatchConfirmation";
 
+import { handleAllFileReceived } from "../../idbUtils/handleAllFileReceived/handleAllFileReceived";
+
+import { getAllSavedFiles } from "../../idbUtils/getAllSavedFiles/getAllSavedFiles";
+
+import { setStatus } from "../../status/status";
+
+import redux from "../../utils/manageRedux";
+
 export const setupFilePeerConnection = function (fileName) {
   return new Promise(async (resolve, reject) => {
     try {
@@ -56,6 +64,13 @@ export const setupFilePeerConnection = function (fileName) {
             if (receivedMessage.isConfirmation) {
               await handleBatchConfirmation(dataChannel, receivedMessage);
               return;
+            } else if (receivedMessage.allFileSend) {
+              await handleAllFileReceived(fileName);
+              const files = await getAllSavedFiles();
+              redux.storeState({ machineId, idbFiles: files });
+              setStatus(`<h2>All File Received Successfully ${fileName}</h2>`);
+              console.log("allFileSend received", fileName, dataChannel.label);
+              // dataChannel.send(JSON.stringify({ isReceived: true, fileName }));
             }
             if (receivedMessage.isChunk) {
               await alivaWebRTC.saveChunkInMemory(

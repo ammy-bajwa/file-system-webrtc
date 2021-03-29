@@ -10,31 +10,13 @@ import { sendFile } from "../sendFile/sendFile";
 
 import { checkIfAlreadyExist } from "../../idbUtils/checkIfAlreadyExist/checkIfAlreadyExist";
 
-// import { getAllBatchKeys } from "../../idbUtils/getAllBatchKeys/getAllBatchKeys";
-
 import { handleAllFileReceived } from "../../idbUtils/handleAllFileReceived/handleAllFileReceived";
-
-import { allFileSendSignal } from "../allFileSendSignal/allFileSendSignal";
-
-import { saveBatchBlobToIdb } from "../../idbUtils/saveBatchBlobToIdb/saveBatchBlobToIdb";
-
-import { convertInMemoryBatchToBlob } from "../../fileUtils/convertInMemoryBatchToBlob/convertInMemoryBatchToBlob";
-
-import { batchConfirmationMemory } from "../batchConfirmationMemory/batchConfirmationMemory";
-
-import { causeDelay } from "../../utils/causeDelay";
-
-import { getHashOfArraybuffer } from "../../fileUtils/getHashOfArraybuffer/getHashOfArraybuffer";
-
-import { findInMemoryMissingBatchChunks } from "../../fileUtils/findInMemoryMissingBatchChunks/findInMemoryMissingBatchChunks";
 
 import { getAllSavedFiles } from "../../idbUtils/getAllSavedFiles/getAllSavedFiles";
 
 import redux from "../../utils/manageRedux";
 
 import { iceServers } from "../iceServers/iceServers";
-
-import { requestReceiverToSetupPC } from "../requestReceiverToSetupPC/requestReceiverToSetupPC";
 
 export const initializeWebRTC = function (channel, machineId) {
   return new Promise((resolve, reject) => {
