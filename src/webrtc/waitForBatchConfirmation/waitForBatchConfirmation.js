@@ -66,6 +66,11 @@ export const waitForBatchConfirmation = (
           console.error(error);
         }
       };
+      setTimeout(() => {
+        if (!isConfirmed) {
+          dataChannel.send(batchConfirmationPayload);
+        }
+      }, 4000);
       dataChannel.send(batchConfirmationPayload);
     } catch (error) {
       reject(error);
