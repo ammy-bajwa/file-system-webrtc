@@ -8,6 +8,8 @@ import store from "../../redux/store";
 
 import { addWebrtcListenerForFile } from "../addWebrtcListenerForFile/addWebrtcListenerForFile";
 
+import { handleBatchConfirmation } from "../handleBatchConfirmation/handleBatchConfirmation";
+
 export const setupFilePeerConnection = function (fileName) {
   return new Promise(async (resolve, reject) => {
     try {
@@ -47,9 +49,14 @@ export const setupFilePeerConnection = function (fileName) {
 
         dataChannel.onmessage = async (event) => {
           const message = event.data;
+
           console.log("file chunk received");
           try {
             const receivedMessage = JSON.parse(message);
+            if (receivedMessage.isConfirmation) {
+              await handleBatchConfirmation(dataChannel, receivedMessage);
+              return;
+            }
             if (receivedMessage.isChunk) {
               await alivaWebRTC.saveChunkInMemory(
                 fileName,

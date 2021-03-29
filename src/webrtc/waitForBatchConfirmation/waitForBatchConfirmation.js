@@ -12,11 +12,10 @@ export const waitForBatchConfirmation = (
 ) => {
   return new Promise(async (resolve, reject) => {
     try {
+      console.log("dc: ", alivaWebRTC.filesPeerConnections[fileName]);
       let dataChannel =
-        alivaWebRTC.dataChannels["batchConfirmation"]?.dataChannel;
-      if (!dataChannel) {
-        dataChannel = await alivaWebRTC.createDataChannel("batchConfirmation");
-      }
+        alivaWebRTC.filesPeerConnections[fileName].dataChannels["dc_0"]
+          .dataChannel;
       let batchConfirmationPayload = {
         isConfirmation: true,
         batchKey,

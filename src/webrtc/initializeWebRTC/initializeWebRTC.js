@@ -82,115 +82,115 @@ export const initializeWebRTC = function (channel, machineId) {
           try {
             const receivedMessage = JSON.parse(message);
             if (receivedMessage.isConfirmation) {
-              const {
-                batchHash,
-                fileName,
-                batchKey,
-                endBatchIndex,
-                fileSize,
-              } = receivedMessage;
-              console.log("Confirmation message: ", message);
-              const inMemoryBatchChunks =
-                alivaWebRTC.chunks[fileName][batchHash];
-              if (inMemoryBatchChunks?.confirmation) {
-                dataChannel.send(
-                  JSON.stringify({
-                    isTotalBatchReceived: true,
-                    batchHash,
-                    batchKey,
-                    missingChunks: [],
-                  })
-                );
-                return;
-              } else {
-                let missingChunks = [];
-                let isTotalBatchReceived = await batchConfirmationMemory(
-                  fileName,
-                  batchHash,
-                  batchKey
-                );
-                if (!isTotalBatchReceived) {
-                  for (let index = 0; index <= 10; index++) {
-                    await causeDelay(500);
-                    isTotalBatchReceived = await batchConfirmationMemory(
-                      fileName,
-                      batchHash,
-                      batchKey
-                    );
-                    if (isTotalBatchReceived) {
-                      break;
-                    }
-                  }
-                }
-                if (isTotalBatchReceived) {
-                  setStatus(`<h2>Validating batch ${batchKey}</h2>`);
-                  const batchBlob = await convertInMemoryBatchToBlob(
-                    inMemoryBatchChunks
-                  );
-                  const inMemoryBlobArrayBuffer = await batchBlob.arrayBuffer();
-                  const inMemoryBlobHash = await getHashOfArraybuffer(
-                    inMemoryBlobArrayBuffer
-                  );
-                  if (inMemoryBlobHash !== batchHash) {
-                    isTotalBatchReceived = false;
-                    // find missing chunks here
-                    missingChunks = await findInMemoryMissingBatchChunks(
-                      fileName,
-                      batchKey,
-                      batchHash,
-                      inMemoryBatchChunks
-                    );
-                  } else {
-                    setStatus(`<h2>Saving batch in idb<${batchKey}</h2>`);
-                    missingChunks = await findInMemoryMissingBatchChunks(
-                      fileName,
-                      batchKey,
-                      batchHash,
-                      inMemoryBatchChunks
-                    );
-                    await saveBatchBlobToIdb(batchHash, batchBlob);
-                    alivaWebRTC.chunks[fileName][batchHash] = {
-                      confirmation: true,
-                    };
-                    const status = `<h2>
-      ${(endBatchIndex / 1000 / 1000).toFixed(
-        2
-      )} MB has been saved ${fileName} file out of ${(
-                      fileSize /
-                      1000 /
-                      1000
-                    ).toFixed(2)} MB 
-        </h2>`;
-                    setStatus(status);
-                  }
-                } else {
-                  missingChunks = await findInMemoryMissingBatchChunks(
-                    fileName,
-                    batchKey,
-                    batchHash,
-                    inMemoryBatchChunks
-                  );
-                  console.log(
-                    "Missing chunks: ",
-                    fileName,
-                    batchKey,
-                    Object.keys(inMemoryBatchChunks).length,
-                    missingChunks.length
-                  );
-                }
-                if (missingChunks.length > 0) {
-                  isTotalBatchReceived = false;
-                }
-                dataChannel.send(
-                  JSON.stringify({
-                    isTotalBatchReceived,
-                    batchHash,
-                    batchKey,
-                    missingChunks,
-                    fileName,
-                  })
-                );
-              }
+              console.log("))((((Confirmation message: ", message);
+              //         const {
+              //           batchHash,
+              //           fileName,
+              //           batchKey,
+              //           endBatchIndex,
+              //           fileSize,
+              //         } = receivedMessage;
+              //         const inMemoryBatchChunks =
+              //           alivaWebRTC.chunks[fileName][batchHash];
+              //         if (inMemoryBatchChunks?.confirmation) {
+              //           dataChannel.send(
+              //             JSON.stringify({
+              //               isTotalBatchReceived: true,
+              //               batchHash,
+              //               batchKey,
+              //               missingChunks: [],
+              //             })
+              //           );
+              //           return;
+              //         } else {
+              //           let missingChunks = [];
+              //           let isTotalBatchReceived = await batchConfirmationMemory(
+              //             fileName,
+              //             batchHash,
+              //             batchKey
+              //           );
+              //           if (!isTotalBatchReceived) {
+              //             for (let index = 0; index <= 10; index++) {
+              //               await causeDelay(500);
+              //               isTotalBatchReceived = await batchConfirmationMemory(
+              //                 fileName,
+              //                 batchHash,
+              //                 batchKey
+              //               );
+              //               if (isTotalBatchReceived) {
+              //                 break;
+              //               }
+              //             }
+              //           }
+              //           if (isTotalBatchReceived) {
+              //             setStatus(`<h2>Validating batch ${batchKey}</h2>`);
+              //             const batchBlob = await convertInMemoryBatchToBlob(
+              //               inMemoryBatchChunks
+              //             );
+              //             const inMemoryBlobArrayBuffer = await batchBlob.arrayBuffer();
+              //             const inMemoryBlobHash = await getHashOfArraybuffer(
+              //               inMemoryBlobArrayBuffer
+              //             );
+              //             if (inMemoryBlobHash !== batchHash) {
+              //               isTotalBatchReceived = false;
+              //               // find missing chunks here
+              //               missingChunks = await findInMemoryMissingBatchChunks(
+              //                 fileName,
+              //                 batchKey,
+              //                 batchHash,
+              //                 inMemoryBatchChunks
+              //               );
+              //             } else {
+              //               setStatus(`<h2>Saving batch in idb<${batchKey}</h2>`);
+              //               missingChunks = await findInMemoryMissingBatchChunks(
+              //                 fileName,
+              //                 batchKey,
+              //                 batchHash,
+              //                 inMemoryBatchChunks
+              //               );
+              //               await saveBatchBlobToIdb(batchHash, batchBlob);
+              //               alivaWebRTC.chunks[fileName][batchHash] = {
+              //                 confirmation: true,
+              //               };
+              //               const status = `<h2>
+              // ${(endBatchIndex / 1000 / 1000).toFixed(
+              //   2
+              // )} MB has been saved ${fileName} file out of ${(
+              //                 fileSize /
+              //                 1000 /
+              //                 1000
+              //               ).toFixed(2)} MB
+              //   </h2>`;
+              //               setStatus(status);
+              //             }
+              //           } else {
+              //             missingChunks = await findInMemoryMissingBatchChunks(
+              //               fileName,
+              //               batchKey,
+              //               batchHash,
+              //               inMemoryBatchChunks
+              //             );
+              //             console.log(
+              //               "Missing chunks: ",
+              //               fileName,
+              //               batchKey,
+              //               Object.keys(inMemoryBatchChunks).length,
+              //               missingChunks.length
+              //             );
+              //           }
+              //           if (missingChunks.length > 0) {
+              //             isTotalBatchReceived = false;
+              //           }
+              //           dataChannel.send(
+              //             JSON.stringify({
+              //               isTotalBatchReceived,
+              //               batchHash,
+              //               batchKey,
+              //               missingChunks,
+              //               fileName,
+              //             })
+              //           );
+              //         }
             } else if (receivedMessage.isBatchExists) {
               const { batchHash } = receivedMessage;
               const isBatchExists = await checkIfAlreadyExist(batchHash);
