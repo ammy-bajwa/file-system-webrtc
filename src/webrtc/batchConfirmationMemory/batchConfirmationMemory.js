@@ -20,7 +20,7 @@ export const batchConfirmationMemory = function (
         batchKey
       );
       const inMemoryBatchChunksCount = Object.keys(inMemoryBatch).length;
-      if (batchMetadata.totalChunksCount === inMemoryBatchChunksCount) {
+      if (batchMetadata?.totalChunksCount === inMemoryBatchChunksCount) {
         resolve(true);
       } else {
         resolve(false);
