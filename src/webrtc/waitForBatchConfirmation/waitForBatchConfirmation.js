@@ -12,9 +12,10 @@ export const waitForBatchConfirmation = (
 ) => {
   return new Promise(async (resolve, reject) => {
     try {
-      let dataChannel =
-        alivaWebRTC.filesPeerConnections[fileName].dataChannels["shareInfo_1"]
-          .dataChannel;
+      const peerConnection =
+        alivaWebRTC.filesPeerConnections[fileName].peerConnection;
+      const dataChannel = await peerConnection.createDataChannel(batchKey);
+      await alivaWebRTC.setupSingleFileDataChannel(dataChannel);
       let batchConfirmationPayload = {
         isConfirmation: true,
         batchKey,
@@ -56,8 +57,9 @@ export const waitForBatchConfirmation = (
               if (!isConfirmed) {
                 dataChannel.send(batchConfirmationPayload);
               }
+              console.log("settimeout called");
+              resolve(true);
             }, 4000);
-            // resolve(true);
           } else {
             isConfirmed = true;
             resolve(true);

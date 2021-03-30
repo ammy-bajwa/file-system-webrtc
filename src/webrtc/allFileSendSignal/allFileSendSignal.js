@@ -3,9 +3,10 @@ import { alivaWebRTC } from "../index";
 export const allFileSendSignal = function (fileName) {
   return new Promise(async (resolve, reject) => {
     try {
-      let dataChannel =
-        alivaWebRTC.filesPeerConnections[fileName].dataChannels["shareInfo_0"]
-          .dataChannel;
+      const peerConnection =
+        alivaWebRTC.filesPeerConnections[fileName].peerConnection;
+      const dataChannel = await peerConnection.createDataChannel("allFileSend");
+      await alivaWebRTC.setupSingleFileDataChannel(dataChannel);
       const allFileSendSignal = {
         allFileSend: true,
         fileName,
