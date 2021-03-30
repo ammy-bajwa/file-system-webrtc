@@ -47,9 +47,12 @@ export const waitForBatchConfirmation = (
                 resendChunkObj[chunkKey] = resendChunk;
               }
             }
-            console.log("Resending batch: ", resendChunkObj);
-            console.log("Resending batch hash: ", batchHash);
-            console.log("Resending fileName: ", fileName);
+            console.log(
+              "Resending batch: ",
+              fileName,
+              batchHash,
+              missingChunks
+            );
             await sendBatchOfChunks(fileName, resendChunkObj, batchHash);
             dataChannel.send(batchConfirmationPayload);
             console.log("Confirmation resend: ", fileName);
