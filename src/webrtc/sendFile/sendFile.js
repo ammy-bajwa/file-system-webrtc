@@ -56,6 +56,7 @@ export const sendFile = (fileName) => {
           const fileSize = fileMetadata["fileSize"];
           setStatus("<h2>File chunks loading in memory and sending...</h2>");
           await sendBatchOfChunks(fileName, batchOfChunksIDB, batchHash);
+          console.log("sending batch confirmation: ", fileName, batchKey);
           await waitForBatchConfirmation(
             fileName,
             batchKey,

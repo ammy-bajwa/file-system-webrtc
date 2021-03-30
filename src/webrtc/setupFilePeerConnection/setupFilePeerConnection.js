@@ -43,7 +43,7 @@ export const setupFilePeerConnection = function (fileName) {
         const dataChannel = event.channel;
         const { label } = dataChannel;
         dataChannel.onopen = () => {
-          console.log("File datachannel open: ", label);
+          // console.log("File datachannel open: ");
           const dataChannelObj = {
             dataChannel,
           };
@@ -53,7 +53,7 @@ export const setupFilePeerConnection = function (fileName) {
         };
 
         dataChannel.onerror = function (error) {
-          console.log("dc close");
+          // console.log("dc close");
         };
 
         dataChannel.onmessage = async (event) => {

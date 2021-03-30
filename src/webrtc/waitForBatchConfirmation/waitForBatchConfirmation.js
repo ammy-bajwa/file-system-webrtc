@@ -24,6 +24,7 @@ export const waitForBatchConfirmation = (
         fileSize,
       };
       batchConfirmationPayload = JSON.stringify(batchConfirmationPayload);
+      let isAllOk = false;
       dataChannel.onmessage = async (event) => {
         try {
           const { batchHash, isTotalBatchReceived, missingChunks } = JSON.parse(
@@ -57,6 +58,7 @@ export const waitForBatchConfirmation = (
               console.log("Confirmation resend: ", fileName);
             }
           } else {
+            isAllOk = true;
             resolve(true);
           }
         } catch (error) {
@@ -64,6 +66,13 @@ export const waitForBatchConfirmation = (
         }
       };
       dataChannel.onopen = () => {
+        setTimeout(() => {
+          if (!isAllOk) {
+            dataChannel.send(batchConfirmationPayload);
+            console.log("Confirmation resend timeout: ", fileName);
+          }
+        }, 8000);
+        console.log("Confirmation dc open: ", fileName);
         dataChannel.send(batchConfirmationPayload);
       };
     } catch (error) {
