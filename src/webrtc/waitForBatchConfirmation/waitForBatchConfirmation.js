@@ -14,8 +14,7 @@ export const waitForBatchConfirmation = (
     try {
       const peerConnection =
         alivaWebRTC.filesPeerConnections[fileName].peerConnection;
-      const dataChannel = await peerConnection.createDataChannel(batchKey);
-      await alivaWebRTC.setupSingleFileDataChannel(dataChannel);
+      const dataChannel = await peerConnection.createDataChannel(batchHash);
       let batchConfirmationPayload = {
         isConfirmation: true,
         batchKey,
@@ -25,7 +24,6 @@ export const waitForBatchConfirmation = (
         fileSize,
       };
       batchConfirmationPayload = JSON.stringify(batchConfirmationPayload);
-      let isConfirmed = false;
       dataChannel.onmessage = async (event) => {
         try {
           const { batchHash, isTotalBatchReceived, missingChunks } = JSON.parse(
@@ -53,23 +51,21 @@ export const waitForBatchConfirmation = (
               batchHash,
               missingChunks
             );
-            await sendBatchOfChunks(fileName, resendChunkObj, batchHash);
-            dataChannel.send(batchConfirmationPayload);
-            console.log("Confirmation resend: ", fileName);
+            if (missingChunks.length > 0) {
+              await sendBatchOfChunks(fileName, resendChunkObj, batchHash);
+              dataChannel.send(batchConfirmationPayload);
+              console.log("Confirmation resend: ", fileName);
+            }
           } else {
-            isConfirmed = true;
             resolve(true);
           }
         } catch (error) {
           console.error(error);
         }
       };
-      setTimeout(() => {
-        if (!isConfirmed) {
-          dataChannel.send(batchConfirmationPayload);
-        }
-      }, 4000);
-      dataChannel.send(batchConfirmationPayload);
+      dataChannel.onopen = () => {
+        dataChannel.send(batchConfirmationPayload);
+      };
     } catch (error) {
       reject(error);
     }

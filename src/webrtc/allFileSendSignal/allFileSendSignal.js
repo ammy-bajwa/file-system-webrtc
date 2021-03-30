@@ -6,13 +6,15 @@ export const allFileSendSignal = function (fileName) {
       const peerConnection =
         alivaWebRTC.filesPeerConnections[fileName].peerConnection;
       const dataChannel = await peerConnection.createDataChannel("allFileSend");
-      await alivaWebRTC.setupSingleFileDataChannel(dataChannel);
       const allFileSendSignal = {
         allFileSend: true,
         fileName,
       };
-      dataChannel.send(JSON.stringify(allFileSendSignal));
-      resolve(true);
+      dataChannel.onopen = () => {
+        console.log("allFile DC Open");
+        dataChannel.send(JSON.stringify(allFileSendSignal));
+        resolve(true);
+      };
     } catch (error) {
       reject(error);
     }
