@@ -53,13 +53,6 @@ export const waitForBatchConfirmation = (
             await sendBatchOfChunks(fileName, resendChunkObj, batchHash);
             dataChannel.send(batchConfirmationPayload);
             console.log("Confirmation resend: ", fileName);
-            setTimeout(() => {
-              if (!isConfirmed) {
-                dataChannel.send(batchConfirmationPayload);
-              }
-              console.log("settimeout called");
-              resolve(true);
-            }, 4000);
           } else {
             isConfirmed = true;
             resolve(true);
