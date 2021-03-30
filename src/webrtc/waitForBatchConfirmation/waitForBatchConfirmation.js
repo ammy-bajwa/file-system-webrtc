@@ -12,9 +12,10 @@ export const waitForBatchConfirmation = (
 ) => {
   return new Promise(async (resolve, reject) => {
     try {
-      let dataChannel =
-        alivaWebRTC.filesPeerConnections[fileName].dataChannels["shareInfo_1"]
-          .dataChannel;
+      const peerConnection =
+        alivaWebRTC.filesPeerConnections[fileName].peerConnection;
+      const dataChannel = await peerConnection.createDataChannel(batchKey);
+      await alivaWebRTC.setupSingleFileDataChannel(dataChannel);
       let batchConfirmationPayload = {
         isConfirmation: true,
         batchKey,
@@ -46,18 +47,15 @@ export const waitForBatchConfirmation = (
                 resendChunkObj[chunkKey] = resendChunk;
               }
             }
-            console.log("Resending batch: ", resendChunkObj);
-            console.log("Resending batch hash: ", batchHash);
-            console.log("Resending fileName: ", fileName);
+            console.log(
+              "Resending batch: ",
+              fileName,
+              batchHash,
+              missingChunks
+            );
             await sendBatchOfChunks(fileName, resendChunkObj, batchHash);
             dataChannel.send(batchConfirmationPayload);
             console.log("Confirmation resend: ", fileName);
-            setTimeout(() => {
-              if (!isConfirmed) {
-                dataChannel.send(batchConfirmationPayload);
-              }
-            }, 4000);
-            // resolve(true);
           } else {
             isConfirmed = true;
             resolve(true);
