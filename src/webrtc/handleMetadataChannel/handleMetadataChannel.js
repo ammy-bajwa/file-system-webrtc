@@ -45,10 +45,7 @@ export const handleMetadataChannel = function (dataChannel) {
           isReceived,
           isOnlyMetadata: true,
         });
-        await saveReceiveSubBatchdMetadata(
-          name,
-          parsedMessage.subBatchesMetaData
-        );
+        await saveReceiveSubBatchdMetadata(name, parsedMessage);
       } else if (parsedMessage.isAll) {
         // Save smallFile
         redux.saveReceivedMetadataInState({
@@ -61,8 +58,8 @@ export const handleMetadataChannel = function (dataChannel) {
           isOnlyMetadata: true,
         });
         await saveSmallFile(name, {
-          name,
-          size,
+          fileName: name,
+          fileSize: size,
           batchesMetaData,
           subBatchesMetaData: parsedMessage.subBatchesMetaData,
           fileHash,

@@ -58,10 +58,16 @@ export default function todos(state = initState, action) {
       const receivedSubBatchMetadata = action.payload.data;
       const updatedSubBatchIdbFiles = state.idbFiles.map((fileMetadata) => {
         if (fileMetadata.name === receivedSubBatchMetadata.name) {
-          fileMetadata.subBatchesMetaData = {
-            ...fileMetadata.subBatchesMetaData,
-            ...receivedSubBatchMetadata.subBatchesMetaData,
-          };
+          if (fileMetadata?.subBatchesMetaData) {
+            fileMetadata.subBatchesMetaData = {
+              ...fileMetadata.subBatchesMetaData,
+              ...receivedSubBatchMetadata.subBatchesMetaData,
+            };
+          } else {
+            fileMetadata.subBatchesMetaData = {
+              ...receivedSubBatchMetadata.subBatchesMetaData,
+            };
+          }
           isAlreadyPresent = true;
         }
         return fileMetadata;

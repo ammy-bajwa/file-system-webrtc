@@ -1,8 +1,9 @@
 import { openDB } from "idb";
 
-export const saveReceiveSubBatchdMetadata = (fileName, subBatchesMetaData) => {
+export const saveReceiveSubBatchdMetadata = (fileName, receivedData) => {
   return new Promise(async (resolve, reject) => {
     try {
+      console.log("receivedData: ", receivedData);
       const dbName = "files";
       const storeName = "filesMetadata";
       const key = fileName;
@@ -12,29 +13,41 @@ export const saveReceiveSubBatchdMetadata = (fileName, subBatchesMetaData) => {
         },
       });
       const existedValue = await db.get(storeName, key);
-      let value = {
-        ...existedValue,
-        subBatchesMetaData: {
-          ...existedValue.subBatchesMetaData,
-          subBatchesMetaData,
-        },
-      };
       if (existedValue) {
+        let value = {};
         if (!existedValue?.isReceived) {
           db.close();
           resolve(true);
           return;
         } else {
-          value.subBatchesMetaData = {
-            ...existedValue.subBatchesMetaData,
-            ...subBatchesMetaData,
-          };
+          if (existedValue.subBatchesMetaData) {
+            const subBatches = {
+              ...existedValue.subBatchesMetaData,
+              ...receivedData.subBatchesMetaData,
+            };
+            value = {
+              ...existedValue,
+              subBatchesMetaData: {
+                ...subBatches,
+              },
+            };
+          } else {
+            value = {
+              ...existedValue,
+              subBatchesMetaData: {
+                ...receivedData.subBatchesMetaData,
+              },
+            };
+          }
         }
+        console.log("value: ", value);
+        await db.put(storeName, value, key);
+        db.close();
+        resolve(true);
+      } else {
+        console.error("no value in setting sub batch: ", fileName);
+        reject(false);
       }
-      console.log("value: ", value);
-      await db.put(storeName, value, key);
-      db.close();
-      resolve(true);
     } catch (error) {
       reject(error);
     }

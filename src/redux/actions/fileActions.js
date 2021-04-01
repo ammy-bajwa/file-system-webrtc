@@ -48,7 +48,7 @@ export const fileActions = {
     };
   },
 
-  saveSubBatchMetadataInState: function (payload) {
+  saveSmallFile: function (payload) {
     return {
       type: SAVE_SMALL_FILE,
       payload,
