@@ -6,9 +6,10 @@ import { readAndSaveBatches } from "../readAndSaveBatches/readAndSaveBatches";
 
 import { setStatus } from "../../../../status/status";
 
-import { saveFileSunBatchesMetadataInIndexedDB } from "../../../../idbUtils/saveFileSunBatchesMetadataInIndexedDB/saveFileSunBatchesMetadataInIndexedDB";
+import { saveFileSubBatchesMetadataInIndexedDB } from "../../../../idbUtils/saveFileSubBatchesMetadataInIndexedDB/saveFileSubBatchesMetadataInIndexedDB";
 
 import { alivaWebRTC } from "../../../../webrtc";
+import { addFileDataToChunks } from "../addFileDataToChunks/addFileDataToChunks";
 
 export const uploadSubBatches = async (filesWithMetadata) => {
   return new Promise(async (resolve, reject) => {
@@ -21,23 +22,25 @@ export const uploadSubBatches = async (filesWithMetadata) => {
         const { fileName, fileSize, chunksArr, file } = filesWithMetadata[
           outerIndex
         ];
-        const batchesMetaData = await getBatchesMetadata(
+        const subBatchesMetaData = await getBatchesMetadata(
           fileName,
           fileSize,
           chunksArr,
           alivaWebRTC.chunkCountInSingleSubBatch
         );
         // Here we will save files metadata to indexed db
-        console.log("batchesMetaData: ", batchesMetaData);
+        console.log("subBatchesMetaData: ", subBatchesMetaData);
 
-        await saveFileSunBatchesMetadataInIndexedDB(fileName, batchesMetaData);
+        await saveFileSubBatchesMetadataInIndexedDB(
+          fileName,
+          subBatchesMetaData
+        );
 
         setStatus(
           `<h2>
             ${file["name"]} has been saved successfully
           </h2>`
         );
-        await redux.moveToidbState(file["name"]);
         console.log("uploadedfile:>>>>>>>>", file);
       }
       resolve(true);
