@@ -6,13 +6,21 @@ export const sendFilesMetadata = function (idbFiles, alivaWebRTC) {
       dataChannel = await alivaWebRTC.createDataChannel("metadataDataChannel");
     }
     for (let index = 0; index < idbFiles.length; index++) {
-      const { name, size, batchesMetaData, fileHash } = idbFiles[index];
-      if (size < 10000000) {
+      const {
+        name,
+        size,
+        batchesMetaData,
+        subBatchesMetaData,
+        fileHash,
+      } = idbFiles[index];
+      console.log("Idb Files: ", idbFiles[index]);
+      if (size < 5000000) {
         dataChannel.send(
           JSON.stringify({
             name,
             size,
             batchesMetaData,
+            subBatchesMetaData,
             isReceived: true,
             fileHash,
           })
@@ -28,6 +36,22 @@ export const sendFilesMetadata = function (idbFiles, alivaWebRTC) {
               name,
               size,
               batchesMetaData: batchInfo,
+              isReceived: true,
+              fileHash,
+            })
+          );
+          await awaitConfirmation(dataChannel);
+        }
+        const subBatchKeys = Object.keys(subBatchesMetaData);
+        for (let index = 0; index < subBatchKeys.length; index++) {
+          const batchKey = subBatchKeys[index];
+          const subBatchInfo = {};
+          subBatchInfo[batchKey] = subBatchesMetaData[batchKey];
+          dataChannel.send(
+            JSON.stringify({
+              name,
+              size,
+              subBatchesMetaData: subBatchInfo,
               isReceived: true,
               fileHash,
             })
