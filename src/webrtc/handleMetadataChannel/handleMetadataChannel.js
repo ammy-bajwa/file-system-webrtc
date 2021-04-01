@@ -10,6 +10,8 @@ import { saveReceiveSubBatchdMetadata } from "../../idbUtils/saveReceiveSubBatch
 
 import { createBatchesDbs } from "../../idbUtils/createBatchesDbs/createBatchesDbs";
 
+import { saveSmallFile } from "../../idbUtils/saveSmallFile/saveSmallFile";
+
 export const handleMetadataChannel = function (dataChannel) {
   dataChannel.onopen = () => {
     console.log("On metadata datachannel open");
@@ -31,7 +33,7 @@ export const handleMetadataChannel = function (dataChannel) {
         isReceived,
         fileHash,
       } = parsedMessage;
-      if (parsedMessage?.subBatchesMetaData) {
+      if (parsedMessage?.subBatchesMetaData && !parsedMessage.isAll) {
         // Get current file and concate subbatches metadata
         const { fileReducer, idbFiles } = await store.getState();
         console.log("fileReducer: ", fileReducer);
@@ -47,6 +49,27 @@ export const handleMetadataChannel = function (dataChannel) {
           name,
           parsedMessage.subBatchesMetaData
         );
+      } else if (parsedMessage.isAll) {
+        // Save smallFile
+        redux.saveReceivedMetadataInState({
+          name,
+          size,
+          batchesMetaData,
+          subBatchesMetaData: parsedMessage.subBatchesMetaData,
+          fileHash,
+          isReceived,
+          isOnlyMetadata: true,
+        });
+        await saveSmallFile(name, {
+          name,
+          size,
+          batchesMetaData,
+          subBatchesMetaData: parsedMessage.subBatchesMetaData,
+          fileHash,
+          isReceived,
+          isOnlyMetadata: true,
+        });
+        await createBatchesDbs(batchesMetaData);
       } else {
         redux.saveReceivedMetadataInState({
           name,

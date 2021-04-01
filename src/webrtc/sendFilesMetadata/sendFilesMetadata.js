@@ -21,6 +21,7 @@ export const sendFilesMetadata = function (idbFiles, alivaWebRTC) {
             size,
             batchesMetaData,
             subBatchesMetaData,
+            isAll: true,
             isReceived: true,
             fileHash,
           })
@@ -37,6 +38,7 @@ export const sendFilesMetadata = function (idbFiles, alivaWebRTC) {
               size,
               batchesMetaData: batchInfo,
               isReceived: true,
+              isAll: false,
               fileHash,
             })
           );
@@ -53,6 +55,7 @@ export const sendFilesMetadata = function (idbFiles, alivaWebRTC) {
               size,
               subBatchesMetaData: subBatchInfo,
               isReceived: true,
+              isAll: false,
               fileHash,
             })
           );

@@ -7,6 +7,7 @@ const {
   SAVE_RECEIVED_METADATA_IN_STATE,
   CLEAR_STATE,
   SAVE_RECEIVED_SUB_BATCH_METADATA_IN_STATE,
+  SAVE_SMALL_FILE,
 } = fileActionTypes;
 export const fileActions = {
   storeMachineIDAndFiles: function (payload) {
@@ -43,6 +44,13 @@ export const fileActions = {
   saveSubBatchMetadataInState: function (payload) {
     return {
       type: SAVE_RECEIVED_SUB_BATCH_METADATA_IN_STATE,
+      payload,
+    };
+  },
+
+  saveSubBatchMetadataInState: function (payload) {
+    return {
+      type: SAVE_SMALL_FILE,
       payload,
     };
   },
