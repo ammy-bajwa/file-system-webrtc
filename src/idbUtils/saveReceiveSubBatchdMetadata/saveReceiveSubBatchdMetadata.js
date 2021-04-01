@@ -14,7 +14,7 @@ export const saveReceiveSubBatchdMetadata = (fileName, subBatchesMetaData) => {
       const existedValue = await db.get(storeName, key);
       let value = {
         ...existedValue,
-        subBatchesMetaData: value?.subBatchesMetaData
+        subBatchesMetaData: existedValue?.subBatchesMetaData
           ? {
               ...existedValue.subBatchesMetaData,
               subBatchesMetaData,
