@@ -9,7 +9,7 @@ import { setStatus } from "../../../../status/status";
 import { saveFileSubBatchesMetadataInIndexedDB } from "../../../../idbUtils/saveFileSubBatchesMetadataInIndexedDB/saveFileSubBatchesMetadataInIndexedDB";
 
 import { alivaWebRTC } from "../../../../webrtc";
-import { addFileDataToChunks } from "../addFileDataToChunks/addFileDataToChunks";
+import { populateSubBatchesWithData } from "../populateSubBatchesWithData/populateSubBatchesWithData";
 
 export const uploadSubBatches = async (filesWithMetadata) => {
   return new Promise(async (resolve, reject) => {
@@ -33,6 +33,11 @@ export const uploadSubBatches = async (filesWithMetadata) => {
 
         await saveFileSubBatchesMetadataInIndexedDB(
           fileName,
+          subBatchesMetaData
+        );
+
+        const populatedSubBatches = await populateSubBatchesWithData(
+          file,
           subBatchesMetaData
         );
 
