@@ -36,17 +36,29 @@ export const sendBatchOfChunks = async (
           }
           const dcKey = dataChannelsKeys[dataChannelsHelper];
           const { dataChannel } = allDataChannels[dcKey];
-          dataChannel.send(
-            JSON.stringify({ isChunk: true, chunkToSend, batchHash })
-          );
-          const chunkConfirmationValue = await waitForChunkConfirmation(
-            dataChannel,
-            fileName,
-            batchHash,
-            startSliceIndex,
-            endSliceIndex
-          );
-          console.log("chunkConfirmationValue", chunkConfirmationValue)
+          let resendCount = 0;
+          while (true) {
+            dataChannel.send(
+              JSON.stringify({ isChunk: true, chunkToSend, batchHash })
+            );
+            const chunkConfirmationValue = await waitForChunkConfirmation(
+              dataChannel,
+              fileName,
+              batchHash,
+              startSliceIndex,
+              endSliceIndex
+            );
+            if (chunkConfirmationValue || resendCount > 5) {
+              console.error(
+                `Unbale to send chunk ${fileName}__batch__${batchHash}__${startSliceIndex}__${endSliceIndex}`
+              );
+              break;
+            } else {
+              continue;
+            }
+            resendCount++;
+          }
+          console.log("chunkConfirmationValue", chunkConfirmationValue);
           dataChannelsHelper++;
         }
       }
