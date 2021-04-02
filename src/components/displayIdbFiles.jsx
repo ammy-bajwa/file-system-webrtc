@@ -58,36 +58,36 @@ const DisplayIdbFiles = function ({ files, fileState }) {
     }
   };
   const checkFileType = (fileName,batchesMetaData) => {
-    let fileType = fileName.slice(fileName.indexOf(".") + 1).toLowerCase();
+    let fileType = fileName.slice(fileName.lastIndexOf(".") + 1).toLowerCase();
     if (
-      fileType == "mp4" ||
-      fileType == "m4p" ||
-      fileType == "flv" ||
-      fileType == "mkv" ||
-      fileType == "webm" ||
-      fileType == "vob" ||
-      fileType == "ogv" ||
-      fileType == "ogg" ||
-      fileType == "avi" ||
-      fileType == "wmv" ||
-      fileType == "rm" ||
-      fileType == "amv" ||
-      fileType == "m4v" ||
-      fileType == "mpg" ||
-      fileType == "mp2" ||
-      fileType == "mpeg" ||
-      fileType == "mpe" ||
-      fileType == "mpv" ||
-      fileType == "m2v" ||
-      fileType == "svi" ||
-      fileType == "3gp" ||
-      fileType == "3g2" ||
-      fileType == "mxf" ||
-      fileType == "nsv" ||
-      fileType == "f4v" ||
-      fileType == "f4p" ||
-      fileType == "f4a" ||
-      fileType == "f4b"
+      fileType === "mp4" ||
+      fileType === "m4p" ||
+      fileType === "flv" ||
+      fileType === "mkv" ||
+      fileType === "webm" ||
+      fileType === "vob" ||
+      fileType === "ogv" ||
+      fileType === "ogg" ||
+      fileType === "avi" ||
+      fileType === "wmv" ||
+      fileType === "rm" ||
+      fileType === "amv" ||
+      fileType === "m4v" ||
+      fileType === "mpg" ||
+      fileType === "mp2" ||
+      fileType === "mpeg" ||
+      fileType === "mpe" ||
+      fileType === "mpv" ||
+      fileType === "m2v" ||
+      fileType === "svi" ||
+      fileType === "3gp" ||
+      fileType === "3g2" ||
+      fileType === "mxf" ||
+      fileType === "nsv" ||
+      fileType === "f4v" ||
+      fileType === "f4p" ||
+      fileType === "f4a" ||
+      fileType === "f4b"
     ) {
       return (
         <button
@@ -99,22 +99,22 @@ const DisplayIdbFiles = function ({ files, fileState }) {
       );
     }
     else if (
-      fileType == "apng" ||
-      fileType == "avif" ||
-      fileType == "gif" ||
-      fileType == "jpg" ||
-      fileType == "jpeg" ||
-      fileType == "jfif" ||
-      fileType == "pjpeg" ||
-      fileType == "pjp" ||
-      fileType == "png" ||
-      fileType == "svg" ||
-      fileType == "webp" ||
-      fileType == "bmp" ||
-      fileType == "ico" ||
-      fileType == "cur" ||
-      fileType == "tif" ||
-      fileType == "tiff"
+      fileType === "apng" ||
+      fileType === "avif" ||
+      fileType === "gif" ||
+      fileType === "jpg" ||
+      fileType === "jpeg" ||
+      fileType === "jfif" ||
+      fileType === "pjpeg" ||
+      fileType === "pjp" ||
+      fileType === "png" ||
+      fileType === "svg" ||
+      fileType === "webp" ||
+      fileType === "bmp" ||
+      fileType === "ico" ||
+      fileType === "cur" ||
+      fileType === "tif" ||
+      fileType === "tiff"
     ) {
       return (
         <button
