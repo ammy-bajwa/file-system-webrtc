@@ -31,12 +31,12 @@ const DisplayIdbFiles = function ({ files, fileState }) {
     setFileType("image");
     openModal();
   };
-  const getFile = async (batchesMetaData, fileName) => {
+  const getFile = async (batchesMetaData,fileName) => {
     let getFile = await getFileBatchesFromIDB(batchesMetaData);
     let fileURL = await URL.createObjectURL(getFile);
     let a = document.createElement("a");
     a.href = fileURL;
-    a.setAttribute("download", fileName);
+    a.setAttribute("download",fileName);
     a.click();
   };
   function openModal() {
@@ -57,8 +57,8 @@ const DisplayIdbFiles = function ({ files, fileState }) {
       );
     }
   };
-  const checkFileType = (fileName, batchesMetaData) => {
-    let fileType = fileName.slice(fileName.lastIndexOf(".") + 1).toLowerCase();
+  const checkFileType = (fileName,batchesMetaData) => {
+    let fileType = fileName.slice(fileName.indexOf(".") + 1).toLowerCase();
     if (
       fileType == "mp4" ||
       fileType == "m4p" ||
@@ -90,22 +90,15 @@ const DisplayIdbFiles = function ({ files, fileState }) {
       fileType == "f4b"
     ) {
       return (
-        <>
-          <button
-            className="btn btn-success m-1"
-            onClick={() => getVideo(batchesMetaData)}
-          >
-            Play
-          </button>
-          <button
-            className="btn btn-success m-1"
-            onClick={() => getFile(batchesMetaData, fileName)}
-          >
-            Download
-          </button>
-        </>
+        <button
+          className="btn btn-success m-1"
+          onClick={() => getVideo(batchesMetaData)}
+        >
+          Play
+        </button>
       );
-    } else if (
+    }
+    else if (
       fileType == "apng" ||
       fileType == "avif" ||
       fileType == "gif" ||
@@ -124,26 +117,18 @@ const DisplayIdbFiles = function ({ files, fileState }) {
       fileType == "tiff"
     ) {
       return (
-        <>
-          <button
-            className="btn btn-success m-1"
-            onClick={() => getImage(batchesMetaData)}
-          >
-            View
-          </button>
-          <button
-            className="btn btn-success m-1"
-            onClick={() => getFile(batchesMetaData, fileName)}
-          >
-            Download
-          </button>
-        </>
+        <button
+          className="btn btn-success m-1"
+          onClick={() => getImage(batchesMetaData)}
+        >
+          View
+        </button>
       );
     }
     return (
       <button
         className="btn btn-success m-1"
-        onClick={() => getFile(batchesMetaData, fileName)}
+        onClick={() => getFile(batchesMetaData,fileName)}
       >
         Download
       </button>
@@ -198,7 +183,7 @@ const DisplayIdbFiles = function ({ files, fileState }) {
                 >
                   Delete
                 </button>
-                {checkFileType(name, batchesMetaData)}
+                {checkFileType(name,batchesMetaData)}
               </span>
             )}
             <Modal

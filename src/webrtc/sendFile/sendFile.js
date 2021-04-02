@@ -51,9 +51,8 @@ export const sendFile = (fileName) => {
           endBatchIndex,
           totalChunksCount
         );
-        const isBatchExists = await isBatchAlreadyExistOnReceiver(batchHash);
-        console.log(`${fileName}__${batchHash}__${isBatchExists}`);
-        if (!isBatchExists) {
+        // const isBatchExists = await isBatchAlreadyExistOnReceiver(batchHash);
+        if (true) {
           const fileSize = fileMetadata["fileSize"];
           setStatus("<h2>File chunks loading in memory and sending...</h2>");
           await sendBatchOfChunks(fileName, batchOfChunksIDB, batchHash);
