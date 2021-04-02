@@ -52,10 +52,11 @@ export const sendBatchOfChunks = async (
               endSliceIndex
             );
             console.log("chunkConfirmationValue", chunkConfirmationValue);
-            if (chunkConfirmationValue || resendCount > 5) {
+            if (!chunkConfirmationValue || resendCount > 5) {
               console.error(
                 `Unbale to send chunk ${fileName}__batch__${batchHash}__${startSliceIndex}__${endSliceIndex}`
               );
+              debugger;
               break;
             } else {
               continue;

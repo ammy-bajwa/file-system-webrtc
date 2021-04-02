@@ -44,23 +44,23 @@ export const sendFilesMetadata = function (idbFiles, alivaWebRTC) {
           );
           await awaitConfirmation(dataChannel);
         }
-        const subBatchKeys = Object.keys(subBatchesMetaData);
-        for (let index = 0; index < subBatchKeys.length; index++) {
-          const batchKey = subBatchKeys[index];
-          const subBatchInfo = {};
-          subBatchInfo[batchKey] = subBatchesMetaData[batchKey];
-          dataChannel.send(
-            JSON.stringify({
-              name,
-              size,
-              subBatchesMetaData: subBatchInfo,
-              isReceived: true,
-              isAll: false,
-              fileHash,
-            })
-          );
-          await awaitConfirmation(dataChannel);
-        }
+        // const subBatchKeys = Object.keys(subBatchesMetaData);
+        // for (let index = 0; index < subBatchKeys.length; index++) {
+        //   const batchKey = subBatchKeys[index];
+        //   const subBatchInfo = {};
+        //   subBatchInfo[batchKey] = subBatchesMetaData[batchKey];
+        //   dataChannel.send(
+        //     JSON.stringify({
+        //       name,
+        //       size,
+        //       subBatchesMetaData: subBatchInfo,
+        //       isReceived: true,
+        //       isAll: false,
+        //       fileHash,
+        //     })
+        //   );
+        //   await awaitConfirmation(dataChannel);
+        // }
       }
     }
     resolve(true);
