@@ -1,6 +1,6 @@
 import { openDB } from "idb";
 
-export const saveFileSunBatchesMetadataInIndexedDB = async (
+export const saveFileSubBatchesMetadataInIndexedDB = async (
   fileName,
   subBatchesMetaData
 ) => {
