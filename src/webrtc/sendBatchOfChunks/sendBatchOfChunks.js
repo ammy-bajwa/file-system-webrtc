@@ -2,6 +2,8 @@ import { alivaWebRTC } from "../index";
 
 import { convertBlobToBase64 } from "../../fileUtils/convertBlobToBase64/convertBlobToBase64";
 
+import { setStatus } from "../../status/status";
+
 import { waitForChunkConfirmation } from "../waitForChunkConfirmation/waitForChunkConfirmation";
 
 export const sendBatchOfChunks = async (
@@ -36,6 +38,7 @@ export const sendBatchOfChunks = async (
           }
           const dcKey = dataChannelsKeys[dataChannelsHelper];
           const { dataChannel } = allDataChannels[dcKey];
+          setStatus(`<h2>sending chunks....</h2>`);
           let resendCount = 0;
           while (true) {
             dataChannel.send(
@@ -48,6 +51,7 @@ export const sendBatchOfChunks = async (
               startSliceIndex,
               endSliceIndex
             );
+            console.log("chunkConfirmationValue", chunkConfirmationValue);
             if (chunkConfirmationValue || resendCount > 5) {
               console.error(
                 `Unbale to send chunk ${fileName}__batch__${batchHash}__${startSliceIndex}__${endSliceIndex}`
@@ -58,7 +62,6 @@ export const sendBatchOfChunks = async (
             }
             resendCount++;
           }
-          console.log("chunkConfirmationValue", chunkConfirmationValue);
           dataChannelsHelper++;
         }
       }
