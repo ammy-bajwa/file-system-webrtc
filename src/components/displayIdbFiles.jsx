@@ -173,7 +173,7 @@ const DisplayIdbFiles = function ({ files, fileState }) {
     }
   };
   return (
-    <div className="d-flex justify-content-center flex-wrap m-4">
+    <div style={{border: "5px gray dashed", height: 400, overflowY: "scroll",scrollBehavior: "smooth"}} className="d-flex justify-content-center flex-wrap m-4">
       {files.length === 0 && <h3 className="text-info">No File</h3>}
       {files.map(
         (
