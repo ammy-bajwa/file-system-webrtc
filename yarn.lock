@@ -2801,6 +2801,11 @@ bindings@^1.5.0:
   dependencies:
     file-uri-to-path "1.0.0"
 
+blob-to-hash@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/blob-to-hash/-/blob-to-hash-0.0.1.tgz#121d8738d40a77325ff47d22536702bc8559884d"
+  integrity sha512-V9N46n90/oa7U+GSYo1lZfPmn9DDVUP//eqy3jErzaTglI2o6SNsUtcNqfH79tBbUaVnx6XNJRGG8LTyb/hxCQ==
+
 bluebird@^3.5.5:
   version "3.7.2"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.7.2.tgz"
@@ -3913,6 +3918,11 @@ dashdash@^1.12.0:
   dependencies:
     assert-plus "^1.0.0"
 
+data-to-hash@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/data-to-hash/-/data-to-hash-0.0.1.tgz#aac80efbe845ed0f6f621fd5c904ebcf11da6fc9"
+  integrity sha512-SkiAFcTWEVMXdYDtn+b84uTftA+n2VEiTiBlAh8DYR4VK8NMEPmSwo3aGmB5QV64SrfMgq6DhQhu2gXYIe94Sw==
+
 data-urls@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/data-urls/-/data-urls-2.0.0.tgz"
@@ -4965,6 +4975,15 @@ file-loader@6.1.1:
   dependencies:
     loader-utils "^2.0.0"
     schema-utils "^3.0.0"
+
+file-to-hash@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/file-to-hash/-/file-to-hash-0.0.1.tgz#c51ee72cc95c431ae3eb3dd35c0280fca8e867d1"
+  integrity sha512-dnQAkZU2KNHVnfxSrIm4s7wXQBQYMQNHu2lma5TWc3UsCiZjUUDX5z1QbkQijXQsU4BcxlhYHF9N3NyHiAyIzw==
+  dependencies:
+    blob-to-hash "^0.0.1"
+    data-to-hash "^0.0.1"
+    path-to-hash "^0.0.1"
 
 file-uri-to-path@1.0.0:
   version "1.0.0"
@@ -8031,6 +8050,13 @@ path-parse@^1.0.6:
   version "1.0.6"
   resolved "https://registry.yarnpkg.com/path-parse/-/path-parse-1.0.6.tgz"
   integrity sha512-GSmOT2EbHrINBf9SR7CDELwlJ8AENk3Qn7OikK4nFYAu3Ote2+JYNVvkpAEQm3/TLNEJFD/xZJjzyxg3KBWOzw==
+
+path-to-hash@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/path-to-hash/-/path-to-hash-0.0.1.tgz#f577700ddbcc1e85192b1e945917b5eec50d7f02"
+  integrity sha512-0a2+G6iW9I2nIQzSIx2Gz0JSdcfmUWwbHvwhD8jvtoMVVN28+WwsHeawP8WkHfDSpT1beYbDrmPV0Cyquqx+0A==
+  dependencies:
+    data-to-hash "^0.0.1"
 
 path-to-regexp@0.1.7:
   version "0.1.7"

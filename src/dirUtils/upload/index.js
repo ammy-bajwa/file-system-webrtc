@@ -2,8 +2,13 @@ import { addFilesMetadata } from "./addFilesMetadata/addFilesMetadata";
 
 import { uploadBatches } from "./uploadBatches/uploadBatches";
 
+import { blobToHash } from "file-to-hash";
+
 import { setStatus } from "../../status/status";
 import { uploadSubBatches } from "./uploadBatches/uploadSubBatches/uploadSubBatches";
+import { uploadFullFile } from "../../idbUtils/uploadFullFile/uploadFullFile";
+import { getArrayBufferOfBlob } from "../../fileUtils/getArrayBufferOfBlob/getArrayBufferOfBlob";
+import { getHashOfArraybuffer } from "../../fileUtils/getHashOfArraybuffer/getHashOfArraybuffer";
 
 export const handleDirUpload = async (
   fileElement,
@@ -11,27 +16,47 @@ export const handleDirUpload = async (
   numberOfChunksInSingleBatch
 ) => {
   const files = fileElement.files;
-  console.log("files:", files);
+  // console.log("files:", files);
   const fileInfoHtml = getFilesInfoString(files);
   setStatus(fileInfoHtml);
 
   // Here we are adding files metadata info to file objects
-  const filesWithMetadata = await addFilesMetadata(files, chunkSize);
+  // const filesWithMetadata = await addFilesMetadata(files, chunkSize);
 
-  setStatus(`<h2>Generating files batches.....</h2>`);
+  // setStatus(`<h2>Generating files batches.....</h2>`);
 
   // Here we will upload batches in
-  await uploadBatches(filesWithMetadata, numberOfChunksInSingleBatch);
+  // await uploadBatches(filesWithMetadata, numberOfChunksInSingleBatch);
 
   // await uploadSubBatches(filesWithMetadata);
-
-  console.log("filesMEtadata:>>>>>>", filesWithMetadata);
+  let myPromise = [];
+  for (const fileKey in files) {
+    if (Object.hasOwnProperty.call(files, fileKey)) {
+      const fileBlob = files[fileKey];
+      const fileName = fileBlob["name"];
+      setStatus(`<h2>${fileName} Generating array buffer </h2>`);
+      // const blob = new Blob([fileBlob]);
+      const blob = new Blob([fileBlob]);
+      // const fileArrBuff = await getArrayBufferOfBlob(blob);
+      const fileArrBuff = await blob.arrayBuffer();
+      // setStatus(`<h2>${fileName} Generating hash </h2>`);
+      // const hash = await blobToHash("sha256", fileBlob);
+      const hash = await getHashOfArraybuffer(fileArrBuff);
+      // console.log("hash: ", hash);
+      setStatus(`<h2>${fileName} is completed</h2>`);
+      // await uploadFullFile(fileName, fileBlob);
+      myPromise.push(uploadFullFile(fileName, fileBlob));
+    }
+    await Promise.all(myPromise);
+  }
+  setStatus(`<h2>All files uploaded</h2>`);
 };
 
 const getFilesInfoString = (files) => {
   let fileInfoHtml = "";
   for (let index = 0; index < files.length; index++) {
     const { name } = files[index];
+
     fileInfoHtml += `<h2 class="m-2 p-2 border border-secondary">${name}</h2>`;
   }
   return fileInfoHtml;

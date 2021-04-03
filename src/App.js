@@ -133,10 +133,10 @@ class App extends Component {
             <input
               className="form-control-file form-control mb-1"
               type="file"
-              // webkitdirectory=""
-              // multiple=""
+              webkitdirectory=""
+              multiple=""
               onChange={this.handleFileChange}
-              multiple
+              // multiple
               required
             />
             <button className="btn btn-success" type="submit">
