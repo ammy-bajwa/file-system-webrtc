@@ -1,11 +1,11 @@
 import { openDB } from "idb";
 
-export const uploadFullFile = (fileName, fileBlob) => {
+export const uploadFullFile = (fileHash, fileBlob) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const dbName = "files";
-      const storeName = "filesMetadata";
-      const key = fileName;
+      const dbName = fileHash;
+      const storeName = "blob";
+      const key = "data";
       const db = await openDB(dbName, 1, {
         upgrade(db) {
           db.createObjectStore(storeName);
