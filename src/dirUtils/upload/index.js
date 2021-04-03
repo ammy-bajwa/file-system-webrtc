@@ -2,8 +2,6 @@ import { addFilesMetadata } from "./addFilesMetadata/addFilesMetadata";
 
 import { uploadBatches } from "./uploadBatches/uploadBatches";
 
-import { blobToHash } from "file-to-hash";
-
 import { setStatus } from "../../status/status";
 import { uploadSubBatches } from "./uploadBatches/uploadSubBatches/uploadSubBatches";
 import { uploadFullFile } from "../../idbUtils/uploadFullFile/uploadFullFile";
@@ -35,16 +33,10 @@ export const handleDirUpload = async (
       const fileBlob = files[fileKey];
       const fileName = fileBlob["name"];
       setStatus(`<h2>${fileName} Generating array buffer </h2>`);
-      // const blob = new Blob([fileBlob]);
       const blob = new Blob([fileBlob]);
-      // const fileArrBuff = await getArrayBufferOfBlob(blob);
       const fileArrBuff = await blob.arrayBuffer();
-      // setStatus(`<h2>${fileName} Generating hash </h2>`);
-      // const hash = await blobToHash("sha256", fileBlob);
       const hash = await getHashOfArraybuffer(fileArrBuff);
-      // console.log("hash: ", hash);
       setStatus(`<h2>${fileName} is completed</h2>`);
-      // await uploadFullFile(fileName, fileBlob);
       myPromise.push(uploadFullFile(fileName, fileBlob));
     }
     await Promise.all(myPromise);
