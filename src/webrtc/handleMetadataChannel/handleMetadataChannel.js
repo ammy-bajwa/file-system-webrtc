@@ -26,59 +26,17 @@ export const handleMetadataChannel = function (dataChannel) {
     console.log("metadata message: ", message);
     try {
       const parsedMessage = JSON.parse(message);
-      const {
+      const { name, size, isReceived, fileHash } = parsedMessage;
+      
+      redux.saveReceivedSubBatchMetadataInState({
         name,
         size,
-        batchesMetaData,
-        isReceived,
+        subBatchesMetaData: parsedMessage.subBatchesMetaData,
         fileHash,
-      } = parsedMessage;
-      if (parsedMessage?.subBatchesMetaData && !parsedMessage.isAll) {
-        // Get current file and concate subbatches metadata
-        const { fileReducer, idbFiles } = await store.getState();
-        console.log("fileReducer: ", fileReducer);
-        redux.saveReceivedSubBatchMetadataInState({
-          name,
-          size,
-          subBatchesMetaData: parsedMessage.subBatchesMetaData,
-          fileHash,
-          isReceived,
-          isOnlyMetadata: true,
-        });
-        await saveReceiveSubBatchdMetadata(name, parsedMessage);
-      } else if (parsedMessage.isAll) {
-        // Save smallFile
-        redux.saveReceivedMetadataInState({
-          name,
-          size,
-          batchesMetaData,
-          subBatchesMetaData: parsedMessage.subBatchesMetaData,
-          fileHash,
-          isReceived,
-          isOnlyMetadata: true,
-        });
-        await saveSmallFile(name, {
-          fileName: name,
-          fileSize: size,
-          batchesMetaData,
-          subBatchesMetaData: parsedMessage.subBatchesMetaData,
-          fileHash,
-          isReceived,
-          isOnlyMetadata: true,
-        });
-        await createBatchesDbs(batchesMetaData);
-      } else {
-        redux.saveReceivedMetadataInState({
-          name,
-          size,
-          batchesMetaData,
-          fileHash,
-          isReceived,
-          isOnlyMetadata: true,
-        });
-        await saveReceivedMetadata(name, size, batchesMetaData, fileHash);
-        await createBatchesDbs(batchesMetaData);
-      }
+        isReceived,
+        isOnlyMetadata: true,
+      });
+      await saveReceiveSubBatchdMetadata(name, parsedMessage);
       dataChannel.send(
         JSON.stringify({
           received: true,
